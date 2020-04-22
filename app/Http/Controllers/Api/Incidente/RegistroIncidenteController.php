@@ -74,34 +74,43 @@ class RegistroIncidenteController extends Controller
     {
         //
         $rules = [
-        	'incidente' => 'numeric|required|exists:catalogo_incidentes,id',
-			'estado' => 'numeric|required|exists:estados,id',
-			'municipio' =>'numeric|required|exists:municipios,id',
-			'descripcion' => 'required|string|max:560',
-			'locacion'  => 'required|string|max:250',
-			'latitud'   => 'required|numeric',
-			'longitud'  => 'required|numeric',
-			'lugares_afectados' => 'nullable|string|max:200',
-			'localidades_afectadas.*' => 'nullable|numeric|exists:localidads,id',
-			'fecha' => 'required|date|date_format:Y-m-d',
-			'hora'  => 'required|date_format:H:i',
-			'afectacion_vial'    => 'nullable|string|max:200',
-			'personas_afectadas'  => 'required|numeric|min:0',
-			'infraestructura' => 'nullable|string|max:200',
-			'personas_lesionadas' => 'required|numeric|min:0',
-			'danos_colaterales' => 'nullable|string|max:200',
-			'personas_fallecidas' => 'required|numeric|min:0',
-			'estatus_incidente' => 'required|boolean',
-			'personas_desaparecidas' => 'required|numeric|min:0',
-			'tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
-			'personas_evacuadas' => 'required|numeric|min:0',
-			'nivel_impacto' => 'required|numeric|exists:tipo_impactos,id',
-			'dependencia'   => 'required|string|max:200',
-			'nombre' => 'required|string|max:200',
-			'cargo' => 'required|string|max:200',
-			'medida_control' => 'required|string|max:200',
-			'dependencia' => "required"
+        	'incidente.id_incidente' => 'numeric|required|exists:catalogo_incidentes,id',
+			'incidente.id_estado' => 'numeric|required|exists:estados,id',
+			'incidente.id_municipio' =>"numeric|required|exists:municipios,id,estado_id,{$request['incidente.id_estado']}",
+			'incidente.descripcion' => 'required|string|max:560',
+			'incidente.locacion'  => 'required|string|max:250',
+			'incidente.latitud'   => 'required|numeric',
+			'incidente.longitud'  => 'required|numeric',
+			'incidente.lugares_afectados' => 'nullable|string|max:200',
+			'incidente.localidades_afectadas.*' => 'nullable|numeric|exists:localidads,id',
+			'incidente.fecha' => 'required|date|date_format:Y-m-d',
+			'incidente.hora'  => 'required|date_format:H:i',
+			'incidente.afectacion_vial'    => 'nullable|string|max:200',
+			'incidente.personas_afectadas'  => 'required|numeric|min:0',
+			'incidente.infraestructura' => 'nullable|string|max:200',
+			'incidente.personas_lesionadas' => 'required|numeric|min:0',
+			'incidente.danos_colaterales' => 'nullable|string|max:200',
+			'incidente.personas_fallecidas' => 'required|numeric|min:0',
+			'incidente.estatus_incidente' => 'required|boolean',
+			'incidente.personas_desaparecidas' => 'required|numeric|min:0',
+			'incidente.tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+			'incidente.personas_evacuadas' => 'required|numeric|min:0',
+			'incidente.nivel_impacto' => 'required|numeric|exists:tipo_impactos,id',
+			'incidente.medida_control' => 'required|string|max:200',
+			'respuestainstitucional.dependencia'   => 'required|string|max:200',
+			'respuestainstitucional.nombre' => 'required|string|max:200',
+			'respuestainstitucional.cargo' => 'required|string|max:200',
+			'dependencia.datos_llamada' => 'nullable|json',
+			'dependencia.tiempo_llamada' => 'nullable|json',
+			'dependencia.tiempo_atencion' => 'nullable|json',
+			'dependencia.descripcion_llamada' => 'nullable|json'
         ];
+        $validator = $request->validate($rules);
+        $incidente = $request->incidente;
+        $respuesta_institucional = $request->respuestainstitucional;
+        $dependencia = $request->dependencia;
+
+        return response()->json(['response'=>$request->all()],201);
     }
 
     /**

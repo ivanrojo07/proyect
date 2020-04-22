@@ -45,11 +45,11 @@ class User extends Authenticatable
     ];
 
     public function estado(){
-        return $this->belongsTo('App\Estado');
+        return $this->belongsTo('App\Estado','id_edo','id');
     }
 
     public function municipio(){
-        return $this->belongsTo('App\Municipio');
+        return $this->belongsTo('App\Municipio','id_mun','id');
     }
     
 }
