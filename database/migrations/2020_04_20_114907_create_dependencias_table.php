@@ -23,6 +23,7 @@ class CreateDependenciasTable extends Migration
             $table->jsonb('descripcion_llamada')->nullable();
 
             $table->timestamps();
+            $table->softDeletes();
 
             $table->foreign('registro_incidente_id')->references('id')->on('registro_incidentes');
         });

@@ -3,13 +3,15 @@
 namespace App\Dependencia;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Dependencia extends Model
 {
     //
+    use SoftDeletes;
 
     protected $fillable=[
-    	'registro_incidente_id',
+    	// 'registro_incidente_id',
     	'datos_llamada',
     	'tiempo_llamada',
     	'tiempo_atencion',
@@ -21,6 +23,13 @@ class Dependencia extends Model
     	'tiempo_llamada' => 'object',
     	'tiempo_atencion' => 'object',
     	'descripcion_llamada' => 'object',
+    ];
+
+    protected $hidden = [
+        'registro_incidente_id',
+        'created_at',
+        'updated_at',
+        'deleted_at'
     ];
 
     public function registro_incidente()

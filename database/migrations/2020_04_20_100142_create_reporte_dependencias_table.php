@@ -27,7 +27,7 @@ class CreateReporteDependenciasTable extends Migration
             $table->timestamp('f_transmision')->nullable();
             $table->string('atencion')->default('1');
             $table->string('razonamiento')->nullable();
-            $table->date('f_razonamiento')->nullable();
+            $table->timestamp('f_razonamiento')->nullable();
             $table->text('obs_noatencion')->nullable();
             $table->string('nombre_encargado')->nullable();
             $table->string('razon_noatencion')->nullable();

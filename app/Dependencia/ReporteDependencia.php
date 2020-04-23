@@ -3,10 +3,13 @@
 namespace App\Dependencia;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class ReporteDependencia extends Model
 {
     //
+
+    use SoftDeletes;
 
     protected $fillable=[
     	'zp',
@@ -24,6 +27,13 @@ class ReporteDependencia extends Model
 		'razon_noatencion',
 		'dependencia',
 		'folio'
+    ];
+
+    protected $hidden=[
+    	'registro_incidente_id',
+    	'created_at',
+  		'updated_at',
+  		'deleted_at'
     ];
 
     public function registro_incidente()

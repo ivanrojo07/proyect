@@ -28,9 +28,13 @@ Route::middleware('auth:api')
 
 		Route::get('/','RegistroIncidenteController@index')->name('index');
 		Route::get('/today','RegistroIncidenteController@incidentesHoy')->name('today');
-		Route::get('/show/{incidente}','RegistroIncidenteController@show')->name('show');
-		Route::post('/store','RegistroIncidenteController@store')->name('store');
+		Route::get('/show/{incidente}','RegistroIncidenteController@showIncidente')->name('show');
+		Route::post('/store','RegistroIncidenteController@storeIncidente')->name('store');
+		Route::post('/update/{incidente}','RegistroIncidenteController@updateIncidente')->name('update');
+		Route::post('/reporte_dependencia','RegistroIncidenteController@reporteDependencia')->name('reporte_dependencia');
 		Route::get('/catalogo_incidente','CatalogoIncidenteController@catalogo')->name('catalogo_incidente');
+		Route::get('/tipo_seguimiento','CatalogoIncidenteController@tipoSeguimiento')->name('tipo_seguimiento');
+		Route::get('/nivel_impacto','CatalogoIncidenteController@nivelImpacto')->name('nivel_impacto');
 
 
 		Route::get('/{fecha}','RegistroIncidenteController@incidentesDate')->name('date');
@@ -57,7 +61,7 @@ Route::namespace('Api\Web')
 		Route::get('estados','EstadosController@getEstados');
 		Route::get('estados/{estado_id}/municipios','EstadosController@getMunicipios');
 		Route::get('municipios/{municipio}/localidades','EstadosController@getLocalidades');
-		Route::get('estados/{categoria}','IncidentesController@getIncidentes');
-		Route::get('estadoscipios/{estado_id}','EstadosController@showMunicipios');
+		Route::get('incidentes/{categoria}','IncidentesController@getIncidentes');
+		Route::get('show_municipios/{estado_id}','EstadosController@showMunicipios');
 
 });
