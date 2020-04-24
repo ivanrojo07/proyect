@@ -161,7 +161,13 @@ class RegistroIncidenteController extends Controller
 	public function show(RegistroIncidente $incidente)
 	{
 		//
-		return view('registro_incidente.show',['incidente'=>$incidente]);
+		$dependencia = $incidente->dependencia_llamada;
+		$reportes = $incidente->dependencia_reportes;
+		return view('registro_incidente.show',[
+			'incidente'=>$incidente,
+			'dependencia'=>$dependencia,
+			'reportes'=>$reportes
+		]);
 	}
 
 	/**

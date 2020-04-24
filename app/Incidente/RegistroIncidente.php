@@ -84,7 +84,7 @@ class RegistroIncidente extends Model
         return $this->BelongsToMany('App\Localidad','localidad_registro_incidentes', 'registro_incidente_id','localidad_id')->withTimestamps();
     }
 
-    public function dependencia(){
+    public function dependencia_llamada(){
         return $this->hasOne('App\Dependencia\Dependencia','registro_incidente_id','id');
     }
 

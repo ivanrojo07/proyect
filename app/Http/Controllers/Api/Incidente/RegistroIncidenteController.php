@@ -150,7 +150,7 @@ class RegistroIncidenteController extends Controller
 		$registro_incidente->dependencia()->save($dependencia);
 
 
-        return response()->json(['incidente'=>$registro_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia'])],201);
+        return response()->json(['incidente'=>$registro_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada'])],201);
     }
 
     /**
@@ -162,7 +162,7 @@ class RegistroIncidenteController extends Controller
     public function showIncidente(RegistroIncidente $incidente)
     {
         //
-        $incidente_resp = $incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','incidente_siguiente','incidente_previo','dependencia','dependencia_reportes']);
+        $incidente_resp = $incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','incidente_siguiente','incidente_previo','dependencia_llamada','dependencia_reportes']);
         return response()->json(['incidente'=>$incidente_resp],201);
     }
 
@@ -258,19 +258,60 @@ class RegistroIncidenteController extends Controller
 			'dependencia.descripcion_llamada' => 'nullable|array'
         ];
         $request->validate($rules);
+        $incidente_param = $request->incidente;
+        $respuesta_institucional = $request->respuestainstitucional;
+        $dependencia = $request->dependencia;
 
-        return response()->json(['incidente'=>$incidente],201);
+        $new_incidente = new RegistroIncidente([
+            'descripcion' => $incidente_param['descripcion'],
+            'locacion' => $incidente_param['locacion'],
+            'lat_especifica' => $incidente_param['latitud'],
+            'long_especifica' => $incidente_param['longitud'],
+            'lugares_afectados' => $incidente_param['lugares_afectados'],
+            'fecha_ocurrencia' => $incidente_param['fecha'],
+            'hora_ocurrencia' => $incidente_param['hora'],
+            'afectacion_vial' => $incidente_param['afectacion_vial'],
+            'afectacion_infraestructural' => $incidente_param['infraestructura'],
+            'danio_colateral' => $incidente_param['danos_colaterales'],
+            'estatus' => $incidente_param['estatus_incidente'],
+            'medidas_control' => $incidente_param['medida_control'],
+            'personas_afectadas' => $incidente_param['personas_afectadas'],
+            'personas_lesionadas' => $incidente_param['personas_lesionadas'],
+            'personas_fallecidas' => $incidente_param['personas_fallecidas'],
+            'personas_desaparecidas' => $incidente_param['personas_desaparecidas'],
+            'personas_evacuadas' => $incidente_param['personas_evacuadas'],
+            'dependencia' => $respuesta_institucional['dependencia'],
+            'nombre_empleado' => $respuesta_institucional['nombre'],
+            'cargo_empleado' =>$respuesta_institucional['cargo']
+        ]);
+        $new_incidente->catalogo_incidente_id = $incidente->catalogo_incidente->id;
+        $new_incidente->estado_id = $incidente->estado->id;
+        $new_incidente->municipio_id = $incidente->municipio->id;
+        $new_incidente->tipo_seguimiento_id = $incidente_param['tipo_seguimiento'];
+        $new_incidente->tipo_impacto_id = $incidente_param['nivel_impacto'];
+        $new_incidente->user_id = $request->user()->id;
+        $new_incidente->registro_incidente_id = $incidente->id;
+        $new_incidente->save();
+        $new_incidente->localidades()->attach($incidente_param['localidades_afectadas']);
+        $dependencia = new Dependencia([
+            'datos_llamada' => $dependencia['datos_llamada'],
+            'tiempo_llamada' => $dependencia['tiempo_llamada'],
+            'tiempo_atencion' => $dependencia['tiempo_atencion'],
+            'descripcion_llamada' => $dependencia['descripcion_llamada']
+        ]);
+        $new_incidente->dependencia()->save($dependencia);
+        return response()->json(['incidente'=>$new_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada','incidente_previo'])],201);
 
     }
 
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
-    }
+    // /**
+    //  * Remove the specified resource from storage.
+    //  *
+    //  * @param  int  $id
+    //  * @return \Illuminate\Http\Response
+    //  */
+    // public function destroy($id)
+    // {
+    //     //
+    // }
 }

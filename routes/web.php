@@ -31,3 +31,7 @@ Route::middleware('auth')->namespace('Incidente')->prefix('incidente')->name('in
 	Route::put('/{incidente}/update','RegistroIncidenteController@update')->name('update');
 
 });
+
+Route::middleware('auth')->namespace('Pdf')->prefix('pdf')->name('pdf.')->group(function(){
+	Route::get('incidente/{incidente}','IncidentePdfController@incidenteReport')->name('incidente');
+});
