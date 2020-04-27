@@ -427,7 +427,7 @@
 						<a href="{{ route('incidente.edit',['incidente'=>$incidente]) }}" class="btn btn-block btn-info {{ $incidente->incidente_siguiente || $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}">Editar</a>
 					</div>
 					<div class="btn-group mr-2">
-						<a href="{{ route('pdf.incidente',['incidente'=>$incidente]) }}" class="btn btn-block btn-warning">Descargar</a>
+						<a target="_blank" href="{{ route('pdf.incidente.show',['incidente'=>$incidente]) }}" class="btn btn-block btn-warning">Descargar</a>
 					</div>
 				</div>
 			</div>

@@ -147,7 +147,7 @@ class RegistroIncidenteController extends Controller
 	    	'tiempo_atencion' => $dependencia['tiempo_atencion'],
 	    	'descripcion_llamada' => $dependencia['descripcion_llamada']
 		]);
-		$registro_incidente->dependencia()->save($dependencia);
+		$registro_incidente->dependencia_llamada()->save($dependencia);
 
 
         return response()->json(['incidente'=>$registro_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada'])],201);
@@ -299,7 +299,7 @@ class RegistroIncidenteController extends Controller
             'tiempo_atencion' => $dependencia['tiempo_atencion'],
             'descripcion_llamada' => $dependencia['descripcion_llamada']
         ]);
-        $new_incidente->dependencia()->save($dependencia);
+        $new_incidente->dependencia_llamada()->save($dependencia);
         return response()->json(['incidente'=>$new_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada','incidente_previo'])],201);
 
     }

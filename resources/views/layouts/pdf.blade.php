@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html>
+<head>
+    {{-- aqui va los estilos si se usan para diferentes vistas --}}
+    {{--      introducirlos en una etiqueta push o prepend      --}}
+    @stack('css')
+    <style type="text/css">
+        body {
+          font-family: 'Oswald', sans-serif !important;
+        }
+        {{-- separar hojas --}}
+        .page-break {
+            page-break-inside: avoid;
+        }
+        div.page
+        {
+            page-break-after: always;
+            page-break-inside: avoid;
+        }
+    </style>
+    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap4.css') }}">
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Sistema De Monitoreo y Control</title>
+</head>
+<body>
+@yield('header')
+    <nav class="navbar navbar-light bg-withe justify-content-between">
+        <h3 class="align-self-center">
+            Sistema De Monitoreo y Control
+        </h3>
+        <img src="{{ asset('images/claro.png') }}" alt="">
+    </nav>
+    <div style="top: 0px;bottom: 0px !important;">
+        @yield('content')
+    </div>
+</body>
+</html>

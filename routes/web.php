@@ -33,5 +33,6 @@ Route::middleware('auth')->namespace('Incidente')->prefix('incidente')->name('in
 });
 
 Route::middleware('auth')->namespace('Pdf')->prefix('pdf')->name('pdf.')->group(function(){
-	Route::get('incidente/{incidente}','IncidentePdfController@incidenteReport')->name('incidente');
+	Route::get('incidente','IncidentePdfController@incidenteIndexReport')->name('incidente.index');
+	Route::get('incidente/{incidente}','IncidentePdfController@incidenteShowReport')->name('incidente.show');
 });

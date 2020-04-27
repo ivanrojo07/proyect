@@ -1,10 +1,20 @@
 @extends('layouts.app')
 @section('content')
-	<div class="m-auto row">
+	<div class="form-group row">
 		<div class="col-3 bg-dark text-white">
-			<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-				<input class="form-control" type="date" name="fecha" id="fecha" value="{{$fecha}}" max="{{Date('Y-m-d')}}">
-			</form>
+			<div class="card bg-secondary text-center mt-3 ">
+				<div class="card-header">
+					<h4>Incidentes</h4>
+				</div>
+				<div class="card-body">
+					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
+						<input class="form-control" type="date" name="fecha" id="fecha" value="{{$fecha}}" max="{{Date('Y-m-d')}}">
+					</form>
+				</div>
+				<div class="card-footer">
+					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
+				</div>
+			</div>
 		</div>
 		<div class="col-9">
 			<div class="card">
@@ -46,7 +56,7 @@
 				$incidente->impacto->nombre == 'Alto' ? 'bg-danger text-white' : (
 					$incidente->impacto->nombre == 'Medio' ? 'bg-warning text-dark' :
 						'bg-success text-white')}}">
-											{{ date('Ymd',strtotime($incidente->fecha_ocurrencia)).$incidente->id}}
+											{{ $incidente->id }}
 										</a>
 									</th>
 									<td>
@@ -70,13 +80,22 @@
 									</td>
 								</tr>
 							@empty
-								{{-- empty expr --}}
+								<div class="alert alert-info" role="alert">
+									No hay registros de este día.
+								</div>
 							@endforelse
 						</tbody>
 					</table>
 				</div>
-				<div class="card-footer text-white bg-dark">
+				<div class="card-footer text-white bg-dark d-flex justify-content-around">
 					{{$registro_incidentes->appends(['fecha'=>$fecha])->render()}}
+					@if ($registro_incidentes->isNotEmpty())
+						<form class="inline" target="_blank" action="{{ route('pdf.incidente.index') }}" method="GET">
+							@csrf
+							<input type="hidden" name="fecha" value="{{$fecha}}">
+							<button class="btn btn-info">Descargar</button>
+						</form> 
+					@endif
 				</div>
 			</div>
 		</div>
