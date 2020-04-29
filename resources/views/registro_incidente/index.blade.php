@@ -93,7 +93,7 @@
 						<form class="inline" target="_blank" action="{{ route('pdf.incidente.index') }}" method="GET">
 							@csrf
 							<input type="hidden" name="fecha" value="{{$fecha}}">
-							<button class="btn btn-info">Descargar</button>
+							<button type="submit" class="btn btn-info">Descargar</button>
 						</form> 
 					@endif
 				</div>

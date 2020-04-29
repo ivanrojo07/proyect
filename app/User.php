@@ -51,5 +51,9 @@ class User extends Authenticatable
     public function municipio(){
         return $this->belongsTo('App\Municipio','id_mun','id');
     }
+
+    public function registro_covids(){
+        return $this->hasMany('App\Covid\Covid');
+    }
     
 }

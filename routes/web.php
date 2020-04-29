@@ -36,3 +36,10 @@ Route::middleware('auth')->namespace('Pdf')->prefix('pdf')->name('pdf.')->group(
 	Route::get('incidente','IncidentePdfController@incidenteIndexReport')->name('incidente.index');
 	Route::get('incidente/{incidente}','IncidentePdfController@incidenteShowReport')->name('incidente.show');
 });
+
+Route::middleware('auth')->namespace('Covid')->prefix('covid')->name('covid.')->group(function(){
+	Route::get('','CovidController@index')->name('index');
+	Route::get('/create','CovidController@create')->name('create');
+	Route::post('/store','CovidController@store')->name('store');
+	Route::get('/show/{covid}','CovidController@show')->name('show');
+});
