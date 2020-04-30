@@ -18,7 +18,7 @@ class CreateRegistroIncidentesTable extends Migration
             // CATALOGO INCIDENTES
             $table->unsignedBigInteger('catalogo_incidente_id');
             $table->unsignedBigInteger('estado_id');
-            $table->unsignedBigInteger('municipio_id');
+            $table->unsignedBigInteger('municipio_id')->nullable();
             $table->text('descripcion');
             $table->string('locacion')->nullable();
             $table->decimal('lat_especifica', 10, 7);

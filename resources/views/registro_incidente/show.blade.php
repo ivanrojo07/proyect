@@ -34,7 +34,7 @@
 						<label for="municipio" class="text-md-right col-form-label-sm">
 							Municipio
 						</label>
-						<input class="form-control" readonly="" value="{{$incidente->municipio->nombre}}">
+						<input class="form-control" readonly="" value="{{($incidente->municipio ? $incidente->municipio->nombre : 'N/A')}}">
 					</div>
 				</div>
 				<div class="form-group row">
@@ -215,7 +215,7 @@
 												<label for="subcategoria" class="text-md-right col-form-label-sm">
 													{{ucfirst(str_replace('_', ' ', $key))}}
 												</label>
-												<input class="form-control" readonly="" value="{{$element}}">
+												<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
 											</div>
 										@empty
 										    <div class="container text-muted text-center">
@@ -239,7 +239,7 @@
 												<label for="subcategoria" class="text-md-right col-form-label-sm">
 													{{ucfirst(str_replace('_', ' ', $key))}}
 												</label>
-												<input class="form-control" readonly="" value="{{$element}}">
+												<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
 											</div>
 										@empty
 											<div class="container text-muted text-center">
@@ -263,7 +263,7 @@
 												<label for="subcategoria" class="text-md-right col-form-label-sm">
 													{{ucfirst(str_replace('_', ' ', $key))}}
 												</label>
-												<input class="form-control" readonly="" value="{{$element}}">
+												<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
 											</div>
 										@empty
 											<div class="container text-muted text-center">
@@ -287,7 +287,7 @@
 												<label for="subcategoria" class="text-md-right col-form-label-sm">
 													{{ucfirst(str_replace('_', ' ', $key))}}
 												</label>
-												<input class="form-control" readonly="" value="{{$element}}">
+												<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
 											</div>
 										@empty
 											<div class="container text-muted text-center">

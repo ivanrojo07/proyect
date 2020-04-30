@@ -36,7 +36,7 @@
 						Municipio
 					</label>
 					<li class="list-group-item">
-						{{$incidente->municipio->nombre}}
+						{{$incidente->municipio ? $incidente->municipio->nombre : 'N/A'}}
 					</li>
 				</div>
 			</div>
