@@ -56,4 +56,7 @@ class User extends Authenticatable
         return $this->hasMany('App\Covid\Covid');
     }
     
+    public function institucion(){
+        return $this->belongsTo('App\Roles\Institucion');
+    }
 }

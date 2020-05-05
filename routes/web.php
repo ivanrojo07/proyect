@@ -43,3 +43,8 @@ Route::middleware('auth')->namespace('Covid')->prefix('covid')->name('covid.')->
 	Route::post('/store','CovidController@store')->name('store');
 	Route::get('/show/{covid}','CovidController@show')->name('show');
 });
+
+
+Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){	
+	Route::resource('institucion','InstitucionController');
+});

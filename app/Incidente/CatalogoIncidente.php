@@ -41,6 +41,8 @@ class CatalogoIncidente extends Model
     public function subcategoria(){
         return $this->belongsTo('App\Incidente\SubcategoriaIncidente','subcategoria_id','id');
     }
+
+
     
 
 }

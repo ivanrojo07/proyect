@@ -21,4 +21,17 @@ class CategoriaIncidente extends Model
     public function subcategorias(){
     	return $this->hasMany('App\Incidente\SubcategoriaIncidente','categoria_id','id');
     }
+
+    /**
+     * Obtiene todo el catalogo nacional de incidente de las subcategorias.
+     */
+    public function catalogo_incidentes()
+    {
+        return $this->hasManyThrough(
+            'App\Incidente\CatalogoIncidente',
+            'App\Incidente\SubcategoriaIncidente',
+            'categoria_id',
+            'subcategoria_id'
+        );
+    }
 }
