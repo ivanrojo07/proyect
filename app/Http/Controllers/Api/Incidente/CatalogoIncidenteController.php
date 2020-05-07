@@ -12,19 +12,16 @@ class CatalogoIncidenteController extends Controller
 {
     //
     public function catalogo(Request $request){
-    	$tipo_catalogo_user = $request->user()->tipo_catalogo;
-    	if ($tipo_catalogo_user == 'proteccion civil') {
-    		$catalogo_incidente = CategoriaIncidente::where('nombre','Protección civil')->get();
+    	$user = $request->user();
+        $institucion = $user->institucion;
+    	if ($institucion) {
+            $catalogo_incidente = $institucion->categorias_incidente;
+    	   return response()->json(['catalogo_incidente'=>$catalogo_incidente->load(['subcategorias','subcategorias.catalogos','subcategorias.catalogos.prioridad'])],200);
+        }
+        else{
+            return response()->json(['catalogo_incidente' => null],200);
+        }
 
-    	}
-    	elseif ($tipo_catalogo_user == 'incidente') {
-    		$catalogo_incidente = CategoriaIncidente::where('nombre','<>','Protección civil')->get();
-    	}
-    	else{
-    		$catalogo_incidente = CategoriaIncidente::get();
-    	}
-
-    	return response()->json(['catalogo_incidente'=>$catalogo_incidente->load(['subcategorias','subcategorias.catalogos','subcategorias.catalogos.prioridad'])],200);
     }
 
     public function tipoSeguimiento(Request $request)

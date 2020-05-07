@@ -17,6 +17,7 @@ class Institucion extends Model
 		'path_imagen_favicon',
 		'path_imagen_footer'
     ];
+    protected $hidden = ['pivot'];
 
     public function usuarios()
     {

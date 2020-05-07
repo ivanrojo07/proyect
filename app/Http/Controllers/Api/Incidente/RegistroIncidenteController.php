@@ -15,11 +15,32 @@ class RegistroIncidenteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
         //
-        $incidentes = RegistroIncidente::orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
-        return response()->json(['incidentes'=>$incidentes],200);
+        $user =$request->user();
+        $institucion = $user->institucion;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $incidentes = RegistroIncidente::orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+
+                case "Estatal":
+                    $incidentes = RegistroIncidente::whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+                
+                default:
+                    $incidentes = RegistroIncidente::whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+            }
+
+            return response()->json(['incidentes'=>$incidentes],200);
+        }
+        else{
+            return $response()->json(['incidentes'=>null],200);
+
+        }
     }
 
     /**
@@ -27,10 +48,33 @@ class RegistroIncidenteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function incidentesHoy(){
+    public function incidentesHoy(Request $request){
     	$hoy = Date('Y-m-d');
-    	$incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
-    	return response()->json(['incidentes'=>$incidentes],200);
+        $user =$request->user();
+        $institucion = $user->institucion;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+
+                case "Estatal":
+                    $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+                
+                default:
+                    $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    break;
+            }
+
+            return response()->json(['incidentes'=>$incidentes],200);
+        }
+        else{
+            return $response()->json(['incidentes'=>null],200);
+
+        }
+    	// $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+    	// return response()->json(['incidentes'=>$incidentes],200);
     }
 
     /**
@@ -38,11 +82,34 @@ class RegistroIncidenteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function incidentesDate($fecha){
+    public function incidentesDate($fecha, Request $request){
     	if ( \DateTime::createFromFormat('Y-m-d', $fecha) && \DateTime::createFromFormat('Y-m-d', $fecha)->format('Y-m-d') == $fecha ) {
+            $user =$request->user();
+            $institucion = $user->institucion;
+            if ($institucion) {
+                switch ($institucion->tipo_institucion) {
+                    case "Federal":
+                        $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+
+                    case "Estatal":
+                        $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                    
+                    default:
+                        $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                }
+
+                return response()->json(['incidentes'=>$incidentes],200);
+            }
+            else{
+                return $response()->json(['incidentes'=>null],200);
+
+            }
     		// it's a date
-    		$incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
-    		return response()->json(['incidentes'=>$incidentes],200);
+        		// $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+        		// return response()->json(['incidentes'=>$incidentes],200);
 		  
 		}
 		else{
@@ -55,12 +122,35 @@ class RegistroIncidenteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function incidentesBetween($fecha1,$fecha2){
+    public function incidentesBetween($fecha1,$fecha2,Request $request){
     	if ( \DateTime::createFromFormat('Y-m-d', $fecha1) && \DateTime::createFromFormat('Y-m-d', $fecha1)->format('Y-m-d') == $fecha1  && \DateTime::createFromFormat('Y-m-d', $fecha2) && \DateTime::createFromFormat('Y-m-d', $fecha2)->format('Y-m-d') == $fecha2 & strtotime($fecha1) < strtotime($fecha2) ) {
 
+            $user =$request->user();
+            $institucion = $user->institucion;
+            if ($institucion) {
+                switch ($institucion->tipo_institucion) {
+                    case "Federal":
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+
+                    case "Estatal":
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                    
+                    default:
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                }
+
+                return response()->json(['incidentes'=>$incidentes],200);
+            }
+            else{
+                return $response()->json(['incidentes'=>null],200);
+
+            }
     		// it's a date
-    		$incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
-    		return response()->json(['incidentes'=>$incidentes],200);
+    		// $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+    		// return response()->json(['incidentes'=>$incidentes],200);
     	}else{
     		return response()->json(['error'=>'formato de fecha incorrecto'],422);
     	}
@@ -159,11 +249,39 @@ class RegistroIncidenteController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function showIncidente(RegistroIncidente $incidente)
+    public function showIncidente(RegistroIncidente $incidente, Request $request)
     {
         //
-        $incidente_resp = $incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','incidente_siguiente','incidente_previo','dependencia_llamada','dependencia_reportes']);
-        return response()->json(['incidente'=>$incidente_resp],201);
+        $user = $request->user();
+        $institucion = $user->institucion;
+        $mostrar = false;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $mostrar = true;
+                    break;
+
+                case "Estatal":
+                    $estado_incidente = $incidente->estado;
+                    $mostrar = $institucion->estados()->where('regionable_id',$estado_incidente->id)->exists();
+                    break;
+                
+                default:
+                    $estado_incidente = $incidente->estado;
+                    $municipios_id = $institucion->municipios()->pluck('regionable_id');
+                    $mostrar = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->where('id',$estado_incidente->id)->exists();
+                    break;
+            }
+            
+        }
+        if ($mostrar) {
+            $incidente_resp = $incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','incidente_siguiente','incidente_previo','dependencia_llamada','dependencia_reportes']);
+            
+            return response()->json(['incidente'=>$incidente_resp],200);
+        }
+        else{
+            return response()->json(['error'=>['mensaje'=>'No se puede mostrar el incidente porque no corresponde a tu region']],422);
+        }
     }
 
     /**

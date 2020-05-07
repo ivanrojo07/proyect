@@ -262,7 +262,7 @@
 		<div class="card-footer text-muted">
 			<div class="d-flex justify-content-between">
 				<p>{{Date('Y-m-d')}}</p>
-				<p>Claro 360.</p>
+				<p>{{ $institucion ? $institucion->nombre : "Claro 360."}}</p>
 				<p>Descargado por: {{Auth::user()->nombre}}</p>
 			</div>
 		</div>

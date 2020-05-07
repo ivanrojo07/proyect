@@ -11,40 +11,105 @@ class EstadoController extends Controller
 {
     //
     public function estados(Request $request){
-    	if ($request->user()->estado) {
-    		return response()->json(['estados'=>[$request->user()->estado]],200);
-    	}
+        $user = $request->user();
+        $institucion=$user->institucion;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $estados = Estado::orderBy('nombre','asc')->get();
+                    break;
+
+                case "Estatal":
+                    $estados = $institucion->estados()->orderBy('nombre','asc')->get();
+                    break;
+                
+                default:
+                    $municipios_id = $institucion->municipios()->pluck('regionable_id');
+                    $estados = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->orderBy('nombre','asc')->get();
+                    break;
+            }
+        }
     	else{
-    		$estados = Estado::orderBy('id','ASC')->get();
-    		return response()->json(['estados'=>$estados],200);
-    	}
+            $estados = null;
+        }
+        return response()->json(['estados'=>$estados],200);
     }
 
     public function municipios(Request $request, Estado $estado){
-    	if ($request->user()->estado) {
-    		if ($request->user()->municipio) {
-    			$municipio = $request->user()->municipio;
-    			return response()->json(['municipios'=>[$municipio->load('estado')]],200);
-    		}
-    		else{
-    			$municipios = $request->user()->estado->municipios;
-    			return response()->json(['municipios'=>$municipios->load('estado')],200);
-    		}
-    	}
-    	else{
-    		$municipios = $estado->municipios;
-    		return response()->json(['municipios'=>$municipios->load('estado')],200);
-    	}
+        $user = $request->user();
+        $institucion=$user->institucion;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $municipios = $estado->municipios;
+                    break;
+
+                case "Estatal":
+                    $mostrar = $institucion->estados()->where('regionable_id',$estado->id)->exists();
+                    if ($mostrar) {
+                        $municipios = $estado->municipios;
+                    }
+                    else{
+                        $municipios=null;
+                    }
+                    break;
+                
+                default:
+                    $municipios = $institucion->municipios;
+                    break;
+            }
+            
+        }
+        else{
+            $municipios=null;
+        }
+        if ($municipios) {
+            return response()->json(['municipios'=>[$municipios->load('estado')]],200);
+        }
+        else{
+            return response()->json(['municipios'=>null],200);
+        }
     }
 
     public function localidades(Request $request, Municipio $municipio){
-    	if ($request->user()->municipio) {
-    		$localidades = $request->user()->municipio->localidads;
+        $user = $request->user();
+        $institucion=$user->institucion;
+        if ($institucion) {
+            switch ($institucion->tipo_institucion) {
+                case "Federal":
+                    $localidades = $municipio->localidads;
+                    break;
+
+                case "Estatal":
+                    $mostrar = $institucion->estados()->where('regionable_id',$municipio->estado->id)->exists();
+                    if ($mostrar) {
+                        $localidades = $municipio->localidads;
+                    }
+                    else{
+                        $localidades=null;
+                    }
+                    break;
+                
+                default:
+                    $mostrar = $institucion->municipios()->where('regionable_id',$municipio->id)->exists();
+                    if ($mostrar) {
+                        $localidades = $municipio->localidads;
+                    }
+                    else{
+                        $localidades=null;
+                    }
+                    break;
+            }
+            
+        }
+        else{
+            $localidades=null;
+        }
+    	if ($localidades) {
     		return response()->json(['localidades'=>$localidades->load(['municipio','municipio.estado'])],200);
     	}
     	else{
-    		$localidades = $municipio->localidads;
-    		return response()->json(['localidades'=>$localidades->load(['municipio','municipio.estado'])],200);
+    		return response()->json(['localidades'=>$localidades],200);
     	}
     }
 }

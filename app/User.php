@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Contracts\Auth\MustVerifyEmail;
+use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
 use Laravel\Passport\HasApiTokens;
@@ -10,7 +11,7 @@ use Laravel\Passport\HasApiTokens;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, Notifiable;
+    use HasApiTokens, Notifiable, SoftDeletes;
 
     /**
      * The attributes that are mass assignable.
@@ -21,9 +22,6 @@ class User extends Authenticatable
         'nombre',
         'apellido_paterno',
         'apellido_materno',
-        'tipo_catalogo',
-        'id_edo',
-        'id_mun',
         'email',
         'password',
     ];
@@ -44,12 +42,9 @@ class User extends Authenticatable
         'deleted_at'
     ];
 
-    public function estado(){
-        return $this->belongsTo('App\Estado','id_edo','id');
-    }
-
-    public function municipio(){
-        return $this->belongsTo('App\Municipio','id_mun','id');
+    public function getFullNameAttribute()
+    {
+        return ucfirst($this->nombre)." ".ucfirst($this->apellido_paterno)." ".ucfirst($this->apellido_materno);
     }
 
     public function registro_covids(){

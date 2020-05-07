@@ -34,8 +34,28 @@ class RegistroIncidenteController extends Controller
 		else{
 			$date = Date('Y-m-d');
 		}
-		$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc')->paginate(6);
-		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes,'fecha'=>$date]);
+		$institucion = Auth::user()->institucion;
+		if ($institucion) {
+			switch ($institucion->tipo_institucion) {
+				case "Federal":
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc')->paginate(7);
+					break;
+
+				case "Estatal":
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('hora_ocurrencia','asc')->paginate(7);
+					break;
+				
+				default:
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('hora_ocurrencia','asc')->paginate(7);
+					break;
+			}
+
+		}
+		else{
+			$registro_incidentes = null;
+
+		}
+		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes,'fecha'=>$date,'institucion' => $institucion]);
 
 	}
 
@@ -48,14 +68,29 @@ class RegistroIncidenteController extends Controller
 	{
 		//
 		$user = Auth::user();
-		$estados = null;
-		if ($user->id_edo) {
-			$estados= Estado::where('id',$user->id_edo)->get();
+		$institucion = $user->institucion;
+		$municipios_id = null;
+		if ($institucion) {
+			switch ($institucion->tipo_institucion) {
+				case "Federal":
+					$estados = Estado::orderBy('nombre','asc')->get();
+					break;
+
+				case "Estatal":
+					$estados = $institucion->estados()->orderBy('nombre','asc')->get();
+					break;
+				
+				default:
+					$municipios_id = $institucion->municipios()->pluck('regionable_id');
+					$estados = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->orderBy('nombre','asc')->get();
+					break;
+			}
+			$subcategorias = SubcategoriaIncidente::whereIn('categoria_id',$institucion->categorias_incidente()->pluck('categoria_incidente_id'))->orderBy('id','asc')->get();
 		}
 		else{
-			$estados = Estado::get();
+			return redirect()->route('incidente.index');
 		}
-		$subcategorias = SubcategoriaIncidente::get();
+		// $subcategorias = SubcategoriaIncidente::get();
 		$status = [
 			[
 				'value'=>1,
@@ -69,14 +104,16 @@ class RegistroIncidenteController extends Controller
 		];
 		$tipo_impacto = TipoImpacto::get();
 		$tipo_seguimiento = TipoSeguimiento::get();
-
+		$date = Date('Y-m-d');
 		return view('registro_incidente.create',[
 			'estados' => $estados,
 			'subcategorias' => $subcategorias,
-			'municipio_id' => $user->id_mun,
+			'municipios_id' => $municipios_id,
 			'estatus' => $status,
 			'tipo_impacto' => $tipo_impacto,
-			'tipo_seguimiento' => $tipo_seguimiento
+			'tipo_seguimiento' => $tipo_seguimiento,
+			'institucion' => $institucion,
+			'fecha' => $date
 		]);
 	}
 
@@ -161,13 +198,42 @@ class RegistroIncidenteController extends Controller
 	public function show(RegistroIncidente $incidente)
 	{
 		//
-		$dependencia = $incidente->dependencia_llamada;
-		$reportes = $incidente->dependencia_reportes;
-		return view('registro_incidente.show',[
-			'incidente'=>$incidente,
-			'dependencia'=>$dependencia,
-			'reportes'=>$reportes
-		]);
+		$user = Auth::user();
+		$institucion = $user->institucion;
+		$mostrar = false;
+		if ($institucion) {
+			switch ($institucion->tipo_institucion) {
+				case "Federal":
+					$mostrar = true;
+					break;
+
+				case "Estatal":
+					$estado_incidente = $incidente->estado;
+					$mostrar = $institucion->estados()->where('regionable_id',$estado_incidente->id)->exists();
+					break;
+				
+				default:
+					$estado_incidente = $incidente->estado;
+					$municipios_id = $institucion->municipios()->pluck('regionable_id');
+					$mostrar = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->where('id',$estado_incidente->id)->exists();
+					break;
+			}
+			
+		}
+		// var_dump($institucion->tipo_institucion);
+		if ($mostrar) {
+			$dependencia = $incidente->dependencia_llamada;
+			$reportes = $incidente->dependencia_reportes;
+			return view('registro_incidente.show',[
+				'incidente'=>$incidente,
+				'dependencia'=>$dependencia,
+				'reportes'=>$reportes,
+				'institucion' => $institucion
+			]);
+		}
+		else{
+			return redirect()->route('incidente.index');
+		}
 	}
 
 	/**
@@ -180,14 +246,28 @@ class RegistroIncidenteController extends Controller
 	{
 		//
 		$user = Auth::user();
-		$estados = null;
-		if ($user->id_edo) {
-			$estados= Estado::where('id',$user->id_edo)->get();
+		$institucion = $user->institucion;
+		$municipios_id = null;
+		if ($institucion) {
+			switch ($institucion->tipo_institucion) {
+				case "Federal":
+					$estados = Estado::orderBy('nombre','asc')->get();
+					break;
+
+				case "Estatal":
+					$estados = $institucion->estados()->orderBy('nombre','asc')->get();
+					break;
+				
+				default:
+					$municipios_id = $institucion->municipios()->pluck('regionable_id');
+					$estados = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->orderBy('nombre','asc')->get();
+					break;
+			}
+			$subcategorias = SubcategoriaIncidente::whereIn('categoria_id',$institucion->categorias_incidente()->pluck('categoria_incidente_id'))->orderBy('id','asc')->get();
 		}
 		else{
-			$estados = Estado::get();
+			return redirect()->route('incidente.index');
 		}
-		$subcategorias = SubcategoriaIncidente::get();
 		$status = [
 			[
 				'value'=>true,
@@ -209,7 +289,8 @@ class RegistroIncidenteController extends Controller
 			'estatus' => $status,
 			'tipo_impacto' => $tipo_impacto,
 			'tipo_seguimiento' => $tipo_seguimiento,
-			'incidente' => $incidente
+			'incidente' => $incidente,
+			'institucion' => $institucion
 		]);
 	}
 

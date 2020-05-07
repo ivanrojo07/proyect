@@ -173,7 +173,71 @@ class InstitucionController extends Controller
 
         ];
         $request->validate($rules);
-        dd($request->all());
+        // dd($request->all());
+        $request->validate($rules);
+        // verificamos si header_1 es archivo valido
+        if ($request->file('header_1')) {
+            $path_imagen_header = $this->uploadImage($request->file("header_1"));
+            if ($path_imagen_header) {
+                Storage::disk('public')->delete($institucion->path_imagen_header);
+                $institucion->path_imagen_header = $path_imagen_header;
+            }
+        } 
+
+        // verificamos si header_2 es archivo valido
+        if ($request->file('header_2')) {
+            $path_imagen_header2 = $this->uploadImage($request->file('header_2'));
+            if ($path_imagen_header2) {
+                Storage::disk('public')->delete($institucion->path_imagen_header2);
+                $institucion->path_imagen_header2 = $path_imagen_header2;
+            }
+        } 
+        // verificamos si favicon es archivo valido
+        if ($request->file('favicon')) {
+            $path_imagen_favicon = $this->uploadImage($request->file('favicon'));
+            if ($path_imagen_favicon) {
+                Storage::delete('public')->delete($institucion->path_imagen_favicon);
+                $institucion->path_imagen_favicon = $path_imagen_favicon;
+            }
+        } 
+        // verificamos si footer es archivo valido
+        if ($request->file('footer')) {
+            $path_imagen_footer = $this->uploadImage($request->file('footer'));
+            if ($path_imagen_footer) {
+                Storage::disk('public')->delete($institucion->path_imagen_favicon);
+                $institucion->path_imagen_footer = $path_imagen_footer;
+            }
+        }
+        $institucion->nombre = $request->nombre;
+        $institucion->tipo_institucion = $request->tipo_institucion;
+        $institucion->save();
+        // eliminando las relaciones con estados
+        $institucion->estados()->detach();
+        // Eliminando  las relaciones con municipios
+        $institucion->municipios()->detach();
+        // Actualizando nuevas relaciones
+        $institucion->categorias_incidente()->attach($request->categorias);
+        switch ($request->tipo_institucion) {
+            case "Federal":
+                $estados = Estado::get();
+                $institucion->estados()->saveMany($estados);
+                break;
+
+            case "Estatal":
+                $institucion->estados()->attach($request->estados);
+                break;
+
+            case "Municipal":
+                $institucion->municipios()->attach($request->municipios);
+                break;
+            
+        }
+        // Eliminando las relaciones con categorias de incidentes y creando las nuevas
+        $institucion->categorias_incidente()->detach();
+        $institucion->categorias_incidente()->attach($request->categorias);
+        return redirect()->route('admin.institucion.index');
+
+
 
     }
 
@@ -186,7 +250,8 @@ class InstitucionController extends Controller
     public function destroy(Institucion $institucion)
     {
         //
-        dd("destroy");
+        $institucion->delete();
+        return redirect()->route('admin.institucion.index');
     }
 
 

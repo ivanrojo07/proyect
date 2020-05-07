@@ -29,7 +29,7 @@
         <h3 class="align-self-center">
             Sistema De Monitoreo y Control
         </h3>
-        <img src="{{ asset('images/claro.png') }}" alt="">
+        <img src="{{ $institucion ? asset('storage/'.$institucion->path_imagen_header) : asset('images/claro.png') }}" alt="" height="50px" width="250px">
     </nav>
     <div style="top: 0px;bottom: 0px !important;">
         @yield('content')

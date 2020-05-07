@@ -79,7 +79,7 @@
 					{{Date('Y-m-d')}}
 				</p>
 				<p>
-					Claro 360.
+					{{ $institucion ? $institucion->nombre : "Claro 360."}}
 				</p>
 				<p>
 					Descargado por: {{Auth::user()->nombre}}

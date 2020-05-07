@@ -1,239 +1,257 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container">
-		<div class="row justify-content-center">
-			<div class="col-12">
-				<div class="card">
-					<div class="card-header">
-						Nuevo Incidente
-					</div>
-					<form method="POST" action="{{ route('incidente.store') }}">
-						@csrf
-						<div class="card-body">
-							<div class="form-group row">
-								<div class="col-12 col-md-6">
-									<label for="subcategoria" class="text-md-right col-form-label-sm">
-										Tipo de Incidente
-									</label>
-									<select class="form-control" id="subcategoria" name="subcategoria" required="">
-										<option value="">Seleccione una categoria</option>
-										@foreach ($subcategorias as $element)
-											<option value="{{$element->id}}" {{old('subcategoria') == $element->id ? 'selected=""' : ''}}>{{$element->categoria->nombre." / ".$element->nombre}}</option>
-										@endforeach
-									</select>
-								</div>
-								<div class="col-12 col-md-6">
-									<label for="incidente" class="text-md-right col-form-label-sm">
-										Incidente
-									</label>
-									<select class="form-control" id="incidente" name="incidente" required="">
-										<option value="">Seleccione el incidente</option>
-										
-									</select>
-								</div>
-								<div class="col-12 col-md-6">
-									<label for="estado" class="text-md-right col-form-label-sm">
-										Estado
-									</label>
-									<select class="form-control" id="estado" name="estado" required="">
-										<option value="">Seleccione el estado</option>
-										@foreach ($estados as $estado)
-											<option value="{{$estado->id}}">{{$estado->nombre}}</option>
-										@endforeach
-									</select>
-								</div>
-								<div class="col-12 col-md-6">
-									<label for="municipio" class="text-md-right col-form-label-sm">
-										Municipio
-									</label>
-									<select class="form-control" id="municipio" name="municipio" required="">
-										<option value="">Seleccione el municipio</option>
-									</select>
-								</div>
-								<div class="col-12 col-md-6">
-									<label for="descripcion" class="text-md-right col-form-label-sm">Descripción del Incidente:</label>
-									<textarea class="form-control" id="descripcion" name="descripcion" rows="5" required=""></textarea>
-									<label for="locacion" class="col-md-12 col-form-label text-md-center">Ubicación:</label>
-									<div class="col-12">
-										<div class="row">
-											<div class="col-12">
-												<label for="locacion" class="text-md-right col-form-label-sm">
-													Dirección
-												</label>
-												<input id="locacion" type="text" class="form-control {{ $errors->has('locacion') ? ' is-invalid' : ''  }}" name="locacion" value="" required>
-											</div>
-											<div class="col-6 mt-2 mb-2">
-												<label for="latitud" class="text-md-right col-form-label-sm">
-													Latitud
-												</label>
-												<input type="numeric" class="form-control" name="latitud" id="latitud" value="" required="">
-											</div>
-											<div class="col-6 mt-2 mb-2">
-												<label for="longitud" class="text-md-right col-form-label-sm">
-													Longitud	
-												</label>
-												<input type="numeric" name="longitud" class="form-control" id="longitud" value="" required="">
-												
-											</div>
-											<div class="col-12 mt-2 mb-2">
-												<label for="lugares_afectados" class="text-md-right col-form-label-sm">
-													Lugares Afectados
-												</label>
-												<select class="form-control" id="localidades_afectadas" name="localidades_afectadas[]" multiple="multiple"></select>
-												<textarea class="form-control mt-2" id="lugares_afectados" name="lugares_afectados" placeholder="localidades que no se encuentran en la lista">{{old('lugares_afectados')}}</textarea>
-											</div>
-										</div>
-										@if ($errors->has('locacion'))
-											{{-- expr --}}
-											<span class="invalid-feedback">
-												<strong>{{ $errors->first("locacion")}}</strong>
-											</span>
-										@endif
-									</div>
-									<input name="mapinput" id="pac-input" class="form-control mt-3 w-50" type="text">
-									<div id="map"></div>
+	<div class="form-group row">
+		<div class="col-3 bg-dark text-white">
+			<div class="card bg-secondary text-center mt-3 ">
+				<div class="card-header">
+					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
+				</div>
+				<div class="card-body">
+					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
+						<input class="form-control" type="date" name="fecha" id="fecha" value="{{$fecha}}" max="{{Date('Y-m-d')}}">
+					</form>
+				</div>
+				<div class="card-footer">
+					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
+					<a href="{{ route('incidente.index') }}" class="btn btn-block btn-success">Incidentes del día</a>
+				</div>
+			</div>
+		</div>
+		<div class="col-9">
+			<div class="card bg-secondary text-white">
+				<div class="card-header bg-dark">
+					Nuevo Incidente
+				</div>
+				<form method="POST" action="{{ route('incidente.store') }}">
+					@csrf
+					<div class="card-body">
+						<div class="form-group row">
+							<div class="col-12 col-md-6">
+								<label for="subcategoria" class="text-md-right col-form-label-sm">
+									Tipo de Incidente
+								</label>
+								<select class="form-control" id="subcategoria" name="subcategoria" required="">
+									<option value="">Seleccione una categoria</option>
+									@foreach ($subcategorias as $element)
+										<option value="{{$element->id}}" {{old('subcategoria') == $element->id ? 'selected=""' : ''}}>{{$element->categoria->nombre." / ".$element->nombre}}</option>
+									@endforeach
+								</select>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="incidente" class="text-md-right col-form-label-sm">
+									Incidente
+								</label>
+								<select class="form-control" id="incidente" name="incidente" required="">
+									<option value="">Seleccione el incidente</option>
 									
-								</div>
-								<div class="col-12 col-md-6">
+								</select>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="estado" class="text-md-right col-form-label-sm">
+									Estado
+								</label>
+								<select class="form-control" id="estado" name="estado" required="">
+									<option value="">Seleccione el estado</option>
+									@foreach ($estados as $estado)
+										<option value="{{$estado->id}}">{{$estado->nombre}}</option>
+									@endforeach
+								</select>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="municipio" class="text-md-right col-form-label-sm">
+									Municipio
+								</label>
+								<select class="form-control" id="municipio" name="municipio" required="">
+									<option value="">Seleccione el municipio</option>
+								</select>
+							</div>
+							<div class="col-12 col-md-6">
+								<label for="descripcion" class="text-md-right col-form-label-sm">Descripción del Incidente:</label>
+								<textarea class="form-control" id="descripcion" name="descripcion" rows="5" required=""></textarea>
+								<label for="locacion" class="col-md-12 col-form-label text-md-center">Ubicación:</label>
+								<div class="col-12">
 									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="fecha" class="text-md-right col-form-label-sm">
-												Fecha de Ocurrencia	
-											</label>
-											<input type="date" class="form-control" name="fecha" id="fecha" value="{{Date('Y-m-d')}}" required="">
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="hora" class="text-md-right col-form-label-sm">
-												Hora de ocurrencia 
-											</label>
-											<input type="time" class="form-control" name="hora" id="hora" value="{{Date('H:i')}}" required="">
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="afectacion_vial" class="text-md-right col-form-label-sm">
-												Afectación Vial
-											</label>
-											<input type="text" class="form-control" name="afectacion_vial" id="afectacion_vial" value="{{old('afectacion_vial')}}">
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="personas_afectadas" class="text-md-right col-form-label-sm">
-												Personas Afectadas 
-											</label>
-											<input type="number" min="0" step="1" class="form-control" name="personas_afectadas" id="personas_afectadas" value="{{ old('personas_afectadas') ? old('personas_afectadas') : 0}}" required="">
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="infraestructura" class="text-md-right col-form-label-sm">
-												Infraesctructura Afectada
-											</label>
-											<input type="text" class="form-control" name="infraestructura" id="infraestructura" value="{{old('infraestructura')}}">
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="personas_lesionadas" class="text-md-right col-form-label-sm">
-												Personas Lesionadas 
-											</label>
-											<input type="number" min="0" step="1" class="form-control" name="personas_lesionadas" id="personas_lesionadas" value="{{old('personas_lesionadas') ? old('personas_lesionadas') : 0}}">
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="danos_colaterales" class="text-md-right col-form-label-sm">
-												Daños Colaterales
-											</label>
-											<input type="text" class="form-control" name="danos_colaterales" id="danos_colaterales" value="{{old('danos_colaterales')}}">
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="personas_fallecidas" class="text-md-right col-form-label-sm">
-												Personas Fallecidas 
-											</label>
-											<input type="number" min="0" step="1" class="form-control" name="personas_fallecidas" id="personas_fallecidas" value="{{old('personas_fallecidas') ? old('personas_fallecidas') : 0}}" required="">
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="estatus_incidente" class="text-md-right col-form-label-sm">
-												Estatus del Incidente
-											</label>
-											<select class="form-control" name="estatus_incidente" id="estatus_incidente" required="">
-												@foreach ($estatus as $statu)
-													<option value="{{$statu['value']}}" {{old('estatus_incidente') == $statu['value'] ? 'selected=""': ''}}>{{$statu['nombre']}}</option>
-												@endforeach
-											</select>
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="personas_desaparecidas" class="text-md-right col-form-label-sm">
-												Personas Desaparecidas
-											</label>
-											<input type="number" step="1" min="0" class="form-control" name="personas_desaparecidas" id="personas_desaparecidas" value="{{ old('personas_desaparecidas') ? old('personas_desaparecidas') : 0}}" required="">
-										</div>
-									</div>
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="tipo_seguimiento" class="text-md-right col-form-label-sm">
-												Tipo de Seguimiento
-											</label>
-											<select class="form-control" name="tipo_seguimiento" id="tipo_seguimiento" required="">
-												<option value="">Seleccione una opción</option>
-												@foreach ($tipo_seguimiento as $seguimiento)
-													<option value="{{$seguimiento->id}}" {{ $seguimiento->id == old('tipo_seguimiento') ? 'selected=""' :''}}>{{$seguimiento->nombre}}</option>
-												@endforeach
-											</select>
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="personas_evacuadas" class="text-md-right col-form-label-sm">
-												Personas Evacuadas
-											</label>
-											<input type="number" min="0" step="1" class="form-control" name="personas_evacuadas" id="personas_evacuadas" value="{{ old('personas_evacuadas') ? old('personas_evacuadas') : 0}}" required="">
-										</div>
-									</div>
-
-									<div class="row">
-										<div class="col-12 col-md-6">
-											<label for="nivel_impacto" class="text-md-right col-form-label-sm">
-												Nivel de Impacto
-											</label>
-											<div class="col-12">
-												@foreach ($tipo_impacto as $impacto)
-													
-													<div class="form-check form-check-inline">
-														<input class="form-check-input" type="radio" name="nivel_impacto" id="nivel_impacto_{{$impacto->id}}" {{ old('nivel_impacto') == $impacto->id ? 'checked=""' : '' }} value="{{$impacto->id}}" required="">
-															<label class="form-check-label" for="nivel_impacto_{{$impacto->id}}">{{$impacto->nombre}}</label>
-													</div>
-												@endforeach
-												
-											</div>
-										</div>
-										<div class="col-12 col-md-6">
-											<label for="dependencia" class="text-md-right col-form-label-sm">
-												Respuesta Institucional
-											</label>
-											<input type="text" class="form-control" name="dependencia" id="dependencia" value="{{old('dependencia')}}" required="" placeholder="Dependencia">
-											<input type="text" class="form-control mt-2" name="nombre" id="nombre" value="{{old('nombre')}}" required="" placeholder="Nombre">
-											<input type="text" class="form-control mt-2" name="cargo" id="cargo" value="{{old('cargo')}}" required="" placeholder="Cargo">
-										</div>
 										<div class="col-12">
-											<label for="medida_control" class="text-md-right col-form-label-sm">
-												Medidas de Control
+											<label for="locacion" class="text-md-right col-form-label-sm">
+												Dirección
 											</label>
-											<input type="text" class="form-control" name="medida_control" id="medida_control" value="{{old('medida_control')}}" required="">
+											<input id="locacion" type="text" class="form-control {{ $errors->has('locacion') ? ' is-invalid' : ''  }}" name="locacion" value="" required>
 										</div>
-										<div class="col-12 mt-2">
-											<button class="btn btn-block btn-success" type="submit">Registrar</button>
+										<div class="col-6 mt-2 mb-2">
+											<label for="latitud" class="text-md-right col-form-label-sm">
+												Latitud
+											</label>
+											<input type="numeric" class="form-control" name="latitud" id="latitud" value="" required="">
 										</div>
+										<div class="col-6 mt-2 mb-2">
+											<label for="longitud" class="text-md-right col-form-label-sm">
+												Longitud	
+											</label>
+											<input type="numeric" name="longitud" class="form-control" id="longitud" value="" required="">
+											
+										</div>
+										<div class="col-12 mt-2 mb-2">
+											<label for="lugares_afectados" class="text-md-right col-form-label-sm">
+												Lugares Afectados
+											</label>
+											<select class="form-control" id="localidades_afectadas" name="localidades_afectadas[]" multiple="multiple"></select>
+											<textarea class="form-control mt-2" id="lugares_afectados" name="lugares_afectados" placeholder="localidades que no se encuentran en la lista">{{old('lugares_afectados')}}</textarea>
+										</div>
+									</div>
+									@if ($errors->has('locacion'))
+										{{-- expr --}}
+										<span class="invalid-feedback">
+											<strong>{{ $errors->first("locacion")}}</strong>
+										</span>
+									@endif
+								</div>
+								<input name="mapinput" id="pac-input" class="form-control mt-3 w-50" type="text">
+								<div id="map"></div>
+								
+							</div>
+							<div class="col-12 col-md-6">
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="fecha" class="text-md-right col-form-label-sm">
+											Fecha de Ocurrencia	
+										</label>
+										<input type="date" class="form-control" name="fecha" id="fecha" value="{{Date('Y-m-d')}}" required="">
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="hora" class="text-md-right col-form-label-sm">
+											Hora de ocurrencia 
+										</label>
+										<input type="time" class="form-control" name="hora" id="hora" value="{{Date('H:i')}}" required="">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="afectacion_vial" class="text-md-right col-form-label-sm">
+											Afectación Vial
+										</label>
+										<input type="text" class="form-control" name="afectacion_vial" id="afectacion_vial" value="{{old('afectacion_vial')}}">
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="personas_afectadas" class="text-md-right col-form-label-sm">
+											Personas Afectadas 
+										</label>
+										<input type="number" min="0" step="1" class="form-control" name="personas_afectadas" id="personas_afectadas" value="{{ old('personas_afectadas') ? old('personas_afectadas') : 0}}" required="">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="infraestructura" class="text-md-right col-form-label-sm">
+											Infraesctructura Afectada
+										</label>
+										<input type="text" class="form-control" name="infraestructura" id="infraestructura" value="{{old('infraestructura')}}">
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="personas_lesionadas" class="text-md-right col-form-label-sm">
+											Personas Lesionadas 
+										</label>
+										<input type="number" min="0" step="1" class="form-control" name="personas_lesionadas" id="personas_lesionadas" value="{{old('personas_lesionadas') ? old('personas_lesionadas') : 0}}">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="danos_colaterales" class="text-md-right col-form-label-sm">
+											Daños Colaterales
+										</label>
+										<input type="text" class="form-control" name="danos_colaterales" id="danos_colaterales" value="{{old('danos_colaterales')}}">
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="personas_fallecidas" class="text-md-right col-form-label-sm">
+											Personas Fallecidas 
+										</label>
+										<input type="number" min="0" step="1" class="form-control" name="personas_fallecidas" id="personas_fallecidas" value="{{old('personas_fallecidas') ? old('personas_fallecidas') : 0}}" required="">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="estatus_incidente" class="text-md-right col-form-label-sm">
+											Estatus del Incidente
+										</label>
+										<select class="form-control" name="estatus_incidente" id="estatus_incidente" required="">
+											@foreach ($estatus as $statu)
+												<option value="{{$statu['value']}}" {{old('estatus_incidente') == $statu['value'] ? 'selected=""': ''}}>{{$statu['nombre']}}</option>
+											@endforeach
+										</select>
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="personas_desaparecidas" class="text-md-right col-form-label-sm">
+											Personas Desaparecidas
+										</label>
+										<input type="number" step="1" min="0" class="form-control" name="personas_desaparecidas" id="personas_desaparecidas" value="{{ old('personas_desaparecidas') ? old('personas_desaparecidas') : 0}}" required="">
+									</div>
+								</div>
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="tipo_seguimiento" class="text-md-right col-form-label-sm">
+											Tipo de Seguimiento
+										</label>
+										<select class="form-control" name="tipo_seguimiento" id="tipo_seguimiento" required="">
+											<option value="">Seleccione una opción</option>
+											@foreach ($tipo_seguimiento as $seguimiento)
+												<option value="{{$seguimiento->id}}" {{ $seguimiento->id == old('tipo_seguimiento') ? 'selected=""' :''}}>{{$seguimiento->nombre}}</option>
+											@endforeach
+										</select>
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="personas_evacuadas" class="text-md-right col-form-label-sm">
+											Personas Evacuadas
+										</label>
+										<input type="number" min="0" step="1" class="form-control" name="personas_evacuadas" id="personas_evacuadas" value="{{ old('personas_evacuadas') ? old('personas_evacuadas') : 0}}" required="">
+									</div>
+								</div>
+
+								<div class="row">
+									<div class="col-12 col-md-6">
+										<label for="nivel_impacto" class="text-md-right col-form-label-sm">
+											Nivel de Impacto
+										</label>
+										<div class="col-12">
+											@foreach ($tipo_impacto as $impacto)
+												
+												<div class="form-check form-check-inline">
+													<input class="form-check-input" type="radio" name="nivel_impacto" id="nivel_impacto_{{$impacto->id}}" {{ old('nivel_impacto') == $impacto->id ? 'checked=""' : '' }} value="{{$impacto->id}}" required="">
+														<label class="form-check-label" for="nivel_impacto_{{$impacto->id}}">{{$impacto->nombre}}</label>
+												</div>
+											@endforeach
+											
+										</div>
+									</div>
+									<div class="col-12 col-md-6">
+										<label for="dependencia" class="text-md-right col-form-label-sm">
+											Respuesta Institucional
+										</label>
+										<input type="text" class="form-control" name="dependencia" id="dependencia" value="{{old('dependencia')}}" required="" placeholder="Dependencia">
+										<input type="text" class="form-control mt-2" name="nombre" id="nombre" value="{{old('nombre')}}" required="" placeholder="Nombre">
+										<input type="text" class="form-control mt-2" name="cargo" id="cargo" value="{{old('cargo')}}" required="" placeholder="Cargo">
+									</div>
+									<div class="col-12">
+										<label for="medida_control" class="text-md-right col-form-label-sm">
+											Medidas de Control
+										</label>
+										<input type="text" class="form-control" name="medida_control" id="medida_control" value="{{old('medida_control')}}" required="">
+									</div>
+									<div class="col-12 mt-2">
+										<button class="btn btn-block btn-success" type="submit">Registrar</button>
 									</div>
 								</div>
 							</div>
 						</div>
-					</form>
-				</div>
+					</div>
+				</form>
 			</div>
 		</div>
 	</div>
 @endsection
 @push('scripts')
-
+	<script type="text/javascript">
+		$("#fecha").change(function(){
+			$("#changeFecha").submit();
+		})
+	</script>
 	<script type="text/javascript">
 		var map;
 		var marker;
@@ -374,14 +392,15 @@
 			var municipio_html = $("#municipio");
 			municipio_html.empty();
 			municipio_html.append("<option value=''>Seleccione el municipio</option>");
-			var municipio_id = {{$municipio_id ? $municipio_id : 'null'}};
+			var municipios_id = {{$municipios_id ? $municipios_id : 'null'}};
+			console.log(municipios_id);
 			var estado_id = $("#estado").val();
 			axios.get(`{{ url('api/web/show_municipios/') }}/${estado_id}`).then(res=>{
 				// var municipios = res.data.municipios.map(res=>JSON.parse(res.json_info));
 				var municipios = res.data.municipios;
 				municipios.forEach(element=>{
-					if (municipio_id) {
-						if (municipio_id == element.id) {
+					if (municipios_id) {
+						if (municipios_id.includes(element.id)) {
 							console.log('con municipio_id',element);
 							option_html = `<option value="${element.id}" data-lat="${element.lat}" data-lng="${element.long}">${element.nombre}</option>`;
 							municipio_html.append(option_html);

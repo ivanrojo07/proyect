@@ -4,7 +4,7 @@
 		<div class="col-3 bg-dark text-white">
 			<div class="card bg-secondary text-center mt-3 ">
 				<div class="card-header">
-					<h4>Incidentes</h4>
+					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
 				</div>
 				<div class="card-body">
 					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >

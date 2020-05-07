@@ -47,4 +47,5 @@ Route::middleware('auth')->namespace('Covid')->prefix('covid')->name('covid.')->
 
 Route::middleware('auth')->namespace('Admin')->prefix('admin')->name('admin.')->group(function(){	
 	Route::resource('institucion','InstitucionController');
+	Route::resource('usuarios','UsuariosController');
 });
