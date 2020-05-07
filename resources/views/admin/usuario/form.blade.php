@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-	<div class="form-group row">
-		<div class="col-3 bg-dark text-white">
+	<div class="container-fluid d-flex">
+		<div class="w-25 p-3 mr-3 bg-dark text-white">
 			<div class="card bg-secondary text-center mt-3 ">
 				<div class="card-header">
 					<h4>Nuevo usuarios</h4>
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9">
+		<div class="w-75">
 			<div class="card text-white bg-secondary">
 				<div class="card-header bg-dark">
 					Nuevo usuarios

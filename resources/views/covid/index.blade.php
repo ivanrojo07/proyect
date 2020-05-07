@@ -1,8 +1,8 @@
 @extends('layouts.app')
 @section('content')
-	<div class="row">
+	<div class="container-fluid d-flex">
 		@include('covid.menu', ['fecha' => $fecha])
-		<div class="col-9">
+		<div class="w-75">
 			<div class="card bg-secondary text-white">
 				<div class="card-header bg-dark">
 					<h4>Registro COVID-19</h4>

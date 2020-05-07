@@ -1,7 +1,7 @@
 @extends('layouts.app')
 @section('content')
-	<div class="form-group row">
-		<div class="col-3 bg-dark text-white">
+	<div class="container-fluid d-flex">
+		<div class="w-25 p-3 mr-3 bg-dark text-white">
 			<div class="card bg-secondary text-center mt-3 ">
 				<div class="card-header">
 					<h4>Incidentes</h4>
@@ -11,7 +11,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-9">
+		<div class="w-75">
 			<div class="card bg-secondary text-white">
 				<div class="card-header bg-dark">
 					Editar Institución {{$institucion->nombre}}
@@ -207,7 +207,7 @@
 		var tipo_institucion = '{{$institucion->tipo_institucion}}';
 		$("#tipo_institucion").val(tipo_institucion);
 		if (tipo_institucion == "Municipal") {
-			var estado_id = '{{$institucion->municipios[0]->estado->id}}';
+			var estado_id = '{{$institucion->municipios->isNotEmpty() ? $institucion->municipios[0]->estado->id : null}}';
 			var mis_municipios = {{$institucion->municipios->pluck('id')}};
 			$("#estado").removeClass('d-none').addClass('d-block');
 			$("#estado").val(estado_id);

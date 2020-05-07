@@ -1,4 +1,4 @@
-<div class="col-3 bg-dark text-white">
+<div class="w-25 p-3 mr-3 bg-dark text-white">
 	<div class="card bg-secondary text-center mt-3">
 		<div class="card-header">
 			<h4>COVID-19</h4>
