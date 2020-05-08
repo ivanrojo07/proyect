@@ -21,7 +21,7 @@
 </head>
 <body>
     <div id="app">
-        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm">
+        <nav class="navbar navbar-expand-md navbar-light bg-white shadow-sm border-bottom border-danger p-2">
             <div class="container">
                 <a class="navbar-brand" href="{{ url('/') }}">
                     @guest
@@ -76,9 +76,27 @@
             </div>
         </nav>
 
-        <main class="py-4">
+        <main class="pb-5 py-4">
             @yield('content')
         </main>
+        <footer class="bg-dark text-white fixed-bottom">
+            <div class="container d-flex justify-content-between text-center">
+                <div class="w-25">
+                    @guest
+                        <span>{{ config('app.name', 'Incidentes') }}</span>
+                    @else
+                        <img src="{{ Auth::user()->institucion ?  (asset('storage/'.Auth::user()->institucion->path_imagen_footer) ? asset('storage/'.Auth::user()->institucion->path_imagen_footer) : "") : asset('images/claro.png') }}" height="50">
+                    @endguest
+                </div>
+                <div class="w-50">
+                    <span>Incidentes fue creado por Global Human Services.
+                        <br>Copyright © 2017-2020 Global Human Services.</span>
+                </div>
+                <div class="w-25 align-self-center">
+                    <span>{{Date('Y-m-d')}}</span>
+                </div>
+            </div>
+        </footer>
     </div>
 </body>
 @stack('scripts')
