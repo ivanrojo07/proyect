@@ -53,7 +53,7 @@
 								<select class="form-control" id="estado" name="estado" required="">
 									<option value="">Seleccione el estado</option>
 									@foreach ($estados as $estado)
-										<option value="{{$estado->id}}">{{$estado->nombre}}</option>
+										<option value="{{$estado->id}}" data-edo="{{$estado->nombre}}">{{$estado->nombre}}</option>
 									@endforeach
 								</select>
 							</div>
@@ -106,7 +106,7 @@
 									@endif
 								</div>
 								<input name="mapinput" id="pac-input" class="form-control mt-3 w-50" type="text">
-								<div id="map"></div>
+								<div id="map" class="text-dark"></div>
 								
 							</div>
 							<div class="col-12 col-md-6">
@@ -286,17 +286,19 @@
           if (e.keyCode == 13) {
               e.preventDefault();
           }
+
       });
       var select_localidad = document.getElementById('municipio');
       google.maps.event.addDomListener(select_localidad, 'change', function(e){
       	e.preventDefault();
       	var lat = parseFloat($('#municipio option:selected').attr('data-lat'));
-      	console.log(lat);
       	var lng = parseFloat($('#municipio option:selected').attr('data-lng'));
+      	$("#pac-input").val($("#pac-input").val()+", "+$('#municipio option:selected').attr('data-mun')+", "+$('#estado option:selected').attr('data-edo'));
       	var latlng = new google.maps.LatLng( lat,lng);
     	marker.setPosition(latlng);
     	map.panTo(latlng);
     	map.setZoom(17);
+
     	var geocodeder = geocoder = new google.maps.Geocoder();
     	geocoder.geocode({'latLng':latlng},function(results,status){
     		if (status == google.maps.GeocoderStatus.OK) {
@@ -305,6 +307,8 @@
                   	document.getElementById('longitud').value = marker.position.lng();
                   	document.getElementById('locacion').value = results[0].formatted_address;
     			} 
+    			infowindow.setContent('<div><strong>' + results[0].formatted_address + '</strong><br>' + results[0].formatted_address);
+          		infowindow.open(map, marker);
     		}
     	})
       })
@@ -326,7 +330,9 @@
       var types = document.getElementById('type-selector');
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
       map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
-      var autocomplete = new google.maps.places.Autocomplete(input);
+      var autocomplete = new google.maps.places.Autocomplete(input,{
+        componentRestrictions: { country: 'mx' }
+      });
       autocomplete.bindTo('bounds', map);
       var infowindow = new google.maps.InfoWindow();
       if(navigator.geolocation) {
@@ -346,6 +352,7 @@
           map.setCenter(new google.maps.LatLng(19.390858961426655,-99.14361265000002));
           map.setZoom(17);
       }
+
       autocomplete.addListener('place_changed', function() {
           infowindow.close();
           marker.setVisible(false);
@@ -354,12 +361,11 @@
               window.alert("Error");
               return;
           }
-          // If the place has a geometry, then present it on a map.
           if (place.geometry.viewport) {
               map.fitBounds(place.geometry.viewport);
           } else {
               map.setCenter(place.geometry.location);
-              map.setZoom(17);  // Why 17? Because it looks good.
+              map.setZoom(17);  
           }
           marker.setIcon(/** @type {google.maps.Icon} */({
               url: place.icon,
@@ -369,7 +375,6 @@
               scaledSize: new google.maps.Size(35, 35)
           }));
           marker.setPosition(place.geometry.location);
-          console.log(place.geometry.location);
           marker.setVisible(true);
           var address = '';
           if (place.address_components) {
@@ -378,6 +383,7 @@
                   (place.address_components[1] && place.address_components[1].short_name || ''),
                   (place.address_components[2] && place.address_components[2].short_name || '')
               ].join(' ');
+              console.log(place);
           }
           document.getElementById('locacion').value = address;
           infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
@@ -402,12 +408,12 @@
 					if (municipios_id) {
 						if (municipios_id.includes(element.id)) {
 							console.log('con municipio_id',element);
-							option_html = `<option value="${element.id}" data-lat="${element.lat}" data-lng="${element.long}">${element.nombre}</option>`;
+							option_html = `<option value="${element.id}" data-lat="${element.lat}" data-lng="${element.long}" data-mun="${element.nombre}">${element.nombre}</option>`;
 							municipio_html.append(option_html);
 						} 
 					} else {
 						console.log('sin municipio_id',element);
-						option_html = `<option value="${element.id}" data-lat="${element.lat}" data-lng="${element.long}">${element.nombre}</option>`;
+						option_html = `<option value="${element.id}" data-lat="${element.lat}" data-lng="${element.long}" data-mun="${element.nombre}">${element.nombre}</option>`;
 						municipio_html.append(option_html);
 					}
 				})
@@ -445,19 +451,19 @@
 		});
 
 		var vals = [];
-$("select[multiple]").click(function(e){
-        var scroll_offset= this.scrollTop;
-      var newVals = $(this).val();
-    if (newVals.length === 1) {
-        var index = vals.indexOf(newVals[0])
-        if (index > -1) {
-        vals.splice(index, 1);
-      } else {
-        vals.push(newVals[0])
-      }
-      $(this).val(vals);
-      this.scrollTop = scroll_offset;
-    }
-});
+		$("select[multiple]").click(function(e){
+		        var scroll_offset= this.scrollTop;
+		      var newVals = $(this).val();
+		    if (newVals.length === 1) {
+		        var index = vals.indexOf(newVals[0])
+		        if (index > -1) {
+		        vals.splice(index, 1);
+		      } else {
+		        vals.push(newVals[0])
+		      }
+		      $(this).val(vals);
+		      this.scrollTop = scroll_offset;
+		    }
+		});
 	</script>
 @endpush

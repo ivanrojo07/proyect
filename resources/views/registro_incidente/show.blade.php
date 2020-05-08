@@ -82,9 +82,9 @@
 									<label for="localidades_afectadas" class="text-md-right col-form-label-sm">Localidades afectadas</label>
 									<ul class="list-group">
 										@forelse ($incidente->localidades as $localidad)
-											<li class="list-group-item">{{$localidad->nombre}}</li>
+											<li class="list-group-item text-dark">{{$localidad->nombre}}</li>
 										@empty
-											<li class="list-group-item">Sin Localidades</li>
+											<li class="list-group-item text-dark">Sin Localidades</li>
 										@endforelse
 									</ul>
 								</div>

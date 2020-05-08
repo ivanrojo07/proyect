@@ -76,7 +76,7 @@
 										{{$incidente->user->nombre}}
 									</td>
 									<td>
-										{{$incidente->user->nombre}}
+										{{$incidente->user->institucion ? $incidente->user->institucion->nombre : ""}}
 									</td>
 								</tr>
 							@empty
