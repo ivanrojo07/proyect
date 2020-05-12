@@ -19,8 +19,23 @@ class TipoImpacto extends Model
     	'deleted_at'
     ];
 
+    /**
+     * Obtiene el nombre en capitalcase (primera en mayuscula)
+     *
+     * @return string
+     */
     public function getNombreAttribute($value)
     {
     	return ucfirst($value);
+    }
+
+    /**
+     * Obtiene todos los incidentes con ese tipo de seguimiento
+     *
+     * @return \Illuminate\Database\Relations\HasMany
+     */
+    public function registro_incidentes()
+    {
+        return $this->hasMany('App\Incidente\RegistroIncidente');
     }
 }

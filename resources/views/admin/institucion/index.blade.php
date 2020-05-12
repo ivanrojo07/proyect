@@ -1,18 +1,11 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		<div class="w-25 p-3 mr-3 bg-dark text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>Incidentes</h4>
-				</div>
-				<div class="card-body">
-					<a href="{{ route('admin.institucion.create') }}" class="btn btn-block btn-info">Nueva institución</a>
-				</div>
-			</div>
+	<div class="container-fluid d-md-flex d-block">
+		<div class="col-12 col-md-3 text-white">
+			@include('admin.institucion.menu',['institucion'=>Auth::user()->institucion,'fecha'=>Date('Y-m-d')])
 		</div>
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header text-white bg-dark">
 					Instituciones
 				</div>

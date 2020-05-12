@@ -1,24 +1,11 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		<div class="w-25 p-3 mr-3 bg-dark text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
-				</div>
-				<div class="card-body">
-					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-						<input class="form-control" type="date" name="fecha" id="fecha" value="{{Date('Y-m-d')}}" max="{{Date('Y-m-d')}}">
-					</form>
-				</div>
-				<div class="card-footer">
-					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
-					<a href="{{ route('incidente.index') }}" class="btn btn-block btn-success">Incidentes del día</a>
-				</div>
-			</div>
+	<div class="container-fluid d-md-flex d-block">
+		<div class="col-12 col-md-3 text-white">
+			@include('registro_incidente.menu', ['institucion' => $institucion,'fecha'=>$incidente->fecha_ocurrencia])
 		</div>
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header {{ 
 					$incidente->impacto->nombre == 'Alto' ? 'bg-danger text-white' : (
 						$incidente->impacto->nombre == 'Medio' ? 'bg-warning text-dark' :
@@ -65,20 +52,20 @@
 							</label>
 							<textarea class="form-control" rows="3" readonly="">{{$incidente->locacion}}</textarea>
 							<div class="row">
-								<div class="col-6">
+								<div class="col-12 col-md-6">
 									<label for="latitud" class="text-md-right col-form-label-sm">
 										Latitud
 									</label>
 									<input class="form-control" readonly="" value="{{$incidente->lat_especifica}}">
 								</div>
-								<div class="col-6">
+								<div class="col-12 col-md-6">
 									<label for="longitud" class="text-md-right col-form-label-sm">
 										Longitud
 									</label>
 									<input class="form-control" readonly="" value="{{$incidente->long_especifica}}">
 								</div>
 
-								<div class="col-6">
+								<div class="col-12 col-md-6	">
 									<label for="localidades_afectadas" class="text-md-right col-form-label-sm">Localidades afectadas</label>
 									<ul class="list-group">
 										@forelse ($incidente->localidades as $localidad)
@@ -88,7 +75,7 @@
 										@endforelse
 									</ul>
 								</div>
-								<div class="col-6">
+								<div class="col-12 col-md-6	">
 									<label for="lugares afectados" class="text-md-right col-form-label-sm">Lugares afectados</label>
 									<textarea class="form-control" readonly="">{{$incidente->lugares_afectados ? $incidente->lugares_afectados : 'N/A'}}</textarea>
 								</div>
@@ -209,236 +196,12 @@
 					</div>
 				</div>
 				<div id="accordion">
-					@if ($dependencia)
+					@include('registro_incidente.dependencia',['dependencia'=>$dependencia])
 
-						<div class="card bg-secondary">
-							<div class="card-header bg-dark" id="dependencia">
-								<h5 class="mb-0">
-									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseDependencia" aria-expanded="false" aria-controls="collapseDependencia">
-										Dependencia
-									</button>
-								</h5>
-							</div>
-							<div class="collapse" id="collapseDependencia" aria-labelledby="dependencia" data-parent="#accordion">
-								<div class="card-body">
-									<div class="text-center">
-										<h4>Datos de llamada</h4>
-									</div>
-									<div class="form-group row">
-										@if ($dependencia->datos_llamada)
-											@forelse ($dependencia->datos_llamada as $key=>$element)
-
-												<div class="col-12 col-md-4 mt-2">
-													<label for="subcategoria" class="text-md-right col-form-label-sm">
-														{{ucfirst(str_replace('_', ' ', $key))}}
-													</label>
-													<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
-												</div>
-											@empty
-											    <div class="container text-center">
-													<h4>Sin información</h4>
-												</div>
-											@endforelse
-										@else
-											<div class="container text-center">
-												<h5>Sin información</h5>
-											</div>
-										@endif
-									</div>
-									<hr>
-									<div class="text-center">
-										<h4>Tiempo de llamada</h4>
-									</div>
-									<div class="form-group row">
-										@if ($dependencia->tiempo_llamada)
-											@forelse ($dependencia->tiempo_llamada as $key=>$element)
-												<div class="col-12 col-md-4">
-													<label for="subcategoria" class="text-md-right col-form-label-sm">
-														{{ucfirst(str_replace('_', ' ', $key))}}
-													</label>
-													<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
-												</div>
-											@empty
-												<div class="container text-center">
-													<h4>Sin información</h4>
-												</div>
-											@endforelse
-										@else
-											<div class="container text-center">
-												<h5>Sin información</h5>
-											</div>
-										@endif
-									</div>
-									<hr>
-									<div class="text-center">
-										<h4>Tiempo Atención</h4>
-									</div>
-									<div class="form-group row">
-										@if ($dependencia->tiempo_atencion)
-											@forelse ($dependencia->tiempo_atencion as $key=>$element)
-												<div class="col-12 col-md-4">
-													<label for="subcategoria" class="text-md-right col-form-label-sm">
-														{{ucfirst(str_replace('_', ' ', $key))}}
-													</label>
-													<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
-												</div>
-											@empty
-												<div class="container text-center">
-													<h4>Sin información</h4>
-												</div>
-											@endforelse
-										@else
-											<div class="container text-center">
-												<h5>Sin información</h5>
-											</div>
-										@endif
-									</div>
-									<hr>
-									<div class="text-center">
-										<h4>Descripción de la llamada</h4>
-									</div>
-									<div class="form-group row">
-										@if ($dependencia->descripcion_llamada)
-											@forelse ($dependencia->descripcion_llamada as $key=>$element)
-												<div class="col-12 col-md-4">
-													<label for="subcategoria" class="text-md-right col-form-label-sm">
-														{{ucfirst(str_replace('_', ' ', $key))}}
-													</label>
-													<input class="form-control" readonly="" value="{{is_array($element) ? json_encode($element) : $element}}">
-												</div>
-											@empty
-												<div class="container text-center">
-													<h4>Sin información</h4>
-												</div>
-											@endforelse
-										@else
-											<div class="container text-center">
-												<h5>Sin información</h5>
-											</div>
-										@endif
-									</div>
-								</div>
-							</div>
-						</div>
-						
-					@endif
-
-					@if ($reportes->isNotEmpty())
-						<div class="card bg-secondary">
-							<div class="card-header bg-dark" id="reportesDependencia">
-								<h5 class="mb-0">
-									<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseReporteDependencia" aria-expanded="false" aria-controls="collapseReporteDependencia">
-										Reportes dependencia
-									</button>
-								</h5>
-							</div>
-							<div class="collapse" id="collapseReporteDependencia" aria-labelledby="reportesDependencia" data-parent="#accordion">
-								<div class="card-body">
-									@foreach ($reportes as $index=>$reporte)
-										<div class="text-center">
-											<h5>Reporte {{$index+1}}</h5>
-										</div>
-										<div class="for-group row">
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													ZP
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->zp}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Sector
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->sector}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Cuadrante
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->cuadrante}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Hora de lectura
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->h_lectura}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Motivo
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->motivo}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Observaciones
-												</label>
-												<textarea class="form-control" readonly="">{{$reporte->observacion}}</textarea>
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Fecha de transmisión
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->f_transmision}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Atención 
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->atencion}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Razonamiento 
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->razonamiento}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Fecha de razonamiento 
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->f_razonamiento}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Observaciones de no atención 
-												</label>
-												<textarea class="form-control" readonly="">{{$reporte->razonamiento}}</textarea>
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Encargado 
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->nombre_encargado}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Razón de no atención 
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->razon_noatencion}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Dependencia
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->dependencia}}">
-											</div>
-											<div class="col-12 col-md-4 mt-2">
-												<label class="text-md-right col-form-label-sm">
-													Folio
-												</label>
-												<input class="form-control" readonly="" value="{{$reporte->folio}}">
-											</div>
-										</div>
-										<hr>
-									@endforeach
-								</div>
-							</div>
-						</div>
-					@endif
+					@include('registro_incidente.reportes',['reportes'=>$reportes])
 						
 				</div>
-				<div class="card-footer">
+				<div class="card-footer bg-dark">
 					<div class="btn-toolbar justify-content-end">
 						<div class="btn-group mr-2">
 							<a href="{{ route('incidente.edit',['incidente'=>$incidente]) }}" class="btn btn-block btn-info {{ $incidente->incidente_siguiente || $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}">Editar</a>
@@ -468,6 +231,6 @@
 
       	}
 	</script>
-	<script src="https://maps.googleapis.com/maps/api/js?key=AIzaSyAe5gzNGneaWmWLzmZs6bFKNlwdCTr0Odk&callback=initMap"
+	<script src="https://maps.googleapis.com/maps/api/js?key={{env('MAP_KEY')}}&callback=initMap"
     ></script>
 @endpush

@@ -42,16 +42,41 @@ class User extends Authenticatable
         'deleted_at'
     ];
 
+    /**
+     * Crea un atributo con el nombre completo del usuario
+     *
+     */
     public function getFullNameAttribute()
     {
         return ucfirst($this->nombre)." ".ucfirst($this->apellido_paterno)." ".ucfirst($this->apellido_materno);
     }
 
+    /**
+    * Obtener relación con los registros de covid-19 que realizo el usuario 
+    * 
+    * @return \Illuminate\Database\Eloquent\Relations\HasMany|null
+    */
     public function registro_covids(){
         return $this->hasMany('App\Covid\Covid');
     }
+
+    /**
+     * Obtener los registro de incidentes que realizo el usuario
+     *
+     * @return \Illuminate\Database\Relations\HasMany
+     */
+    public function registro_incidentes()
+    {
+        return $this->hasMany('App\Incidente\RegistroIncidente');
+    }
     
+    /**
+    * Obtener la institucion a la que pertenece este usuario
+    * 
+    * @return \Iluminate\Database\Eloquent\Relations\BelongsTo|null
+    */
     public function institucion(){
         return $this->belongsTo('App\Roles\Institucion');
     }
+
 }

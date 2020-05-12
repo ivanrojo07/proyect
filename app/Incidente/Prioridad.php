@@ -18,6 +18,11 @@ class Prioridad extends Model
     	'updated_at'
     ];
 
+    /**
+     * Se muesta los incidentes que se considera con esa prioridad
+     *
+     * @return \Illuminate\Database\Relations\HasMany
+     */
     public function catalogo_incidentes(){
     	return $this->hasMany('App\Incidente\CatalogoIncidente');
     }

@@ -2,22 +2,10 @@
 @section('content')
 	<div class="container-fluid d-md-flex d-block">
 		<div class="col-12 col-md-3 text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
-				</div>
-				<div class="card-body">
-					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-						<input class="form-control" type="date" name="fecha" id="fecha" value="{{$fecha}}" max="{{Date('Y-m-d')}}">
-					</form>
-				</div>
-				<div class="card-footer">
-					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
-				</div>
-			</div>
+			@include('registro_incidente.menu', ['institucion' => $institucion,'fecha'=>$fecha])
 		</div>
 		<div class="col-12 col-md-9">
-			<div class="card bg-secondary">
+			<div class="card bg-secondary mt-3 mb-5">
 				<div class="card-header text-white bg-dark">
 					Incidentes
 				</div>
@@ -101,10 +89,3 @@
 		</div>
 	</div>
 @endsection
-@push('scripts')
-	<script type="text/javascript">
-		$("#fecha").change(function(){
-			$("#changeFecha").submit();
-		})
-	</script>
-@endpush

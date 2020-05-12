@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-<div class="container-fluid d-flex">
-	@include('covid.menu', ['fecha' => Date('Y-m-d')])
-	<div class="w-75">
-		<div class="card bg-secondary text-white">
+<div class="container-fluid d-md-flex d-block">
+	@include('covid.menu', ['institucion' => Auth::user()->institucion,'fecha' => Date('Y-m-d')])
+	<div class="col-12 col-md-9">
+		<div class="card bg-secondary text-white mt-3 mb-5">
 			<div class="card-header bg-dark">
 				<h4>Nuevo registro COVID-19</h4>
 			</div>
@@ -23,7 +23,7 @@
 					    </div>
 					@endif
 					<div class="row"> 
-						 <div class="col-4">
+						 <div class="col-12 col-md-4">
 						 	<label for="edad" class="text-md-left col-form-label-sm">Edad</label>
 						 	<div class="input-group mb-3">
 						 		<input type="number" class="form-control" name="edad" id="edad" min="0" max="120" value="{{ old('edad') }}">
@@ -34,7 +34,7 @@
 						 		</div>
 						 	</div>
 						 </div>
-						 <div class="col-4">
+						 <div class="col-12 col-md-4">
 						 	<label for="genero" class="text-md-left col-form-label-sm">
 						 		Genero
 						 	</label>
@@ -44,7 +44,7 @@
 						 		<option value="Hombre" {{ old('genero') == "Hombre" ? "selected=''" : "" }}>Hombre</option>
 						 	</select>
 						 </div>
-						 <div class="col-4">
+						 <div class="col-12 col-md-4">
 						 	<label for="codigo_postal" class="text-md-left col-form-label-sm">Código Postal</label>
 						 	<input type="text" class="form-control" pattern="[0-9]{5}" name="codigo_postal" id="codigo_postal" title="El código postal consta de 5 números" value="{{ old('codigo_postal') }}">
 						 </div>
@@ -53,7 +53,7 @@
 						<h5>Test COVID-19</h5>
 					</div>
 					<div class="form-group row">
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="convivir_enfermo" class="text-md-left col-form-label-sm">
 								¿Has convivido con alguna persona que sea un caso confirmado de COVID-19 (Coronavirus)?
 							</label>
@@ -63,7 +63,7 @@
 								<option data-convivir_enfermo="0" value="0" {{ old('convivir_enfermo') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="fiebre" class="text-md-left col-form-label-sm">
 								¿Tienes fiebre? (Temperatura igual o mayor a 38ºC)
 							</label>
@@ -73,7 +73,7 @@
 								<option data-fiebre="0" value="0" {{ old('fiebre') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="dolor_cabeza" class="text-md-left col-form-label-sm">
 								¿Tienes dolor de cabeza?
 							</label>
@@ -85,7 +85,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="tos" class="text-md-left col-form-label-sm">
 								¿Tienes tos?
 							</label>
@@ -95,7 +95,7 @@
 								<option data-tos="0" value="0" {{ old('tos') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="dolor_pecho" class="text-md-left col-form-label-sm">
 								¿Tienes dolor en el pecho?
 							</label>
@@ -105,7 +105,7 @@
 								<option data-dolor_pecho="0" value="0" {{ old('dolor_pecho') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="dolor_garganta" class="text-md-left col-form-label-sm">
 								¿Tienes dolor de garganta?
 							</label>
@@ -117,7 +117,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="dificultad_respirar" class="text-md-left col-form-label-sm">
 								¿Tienes dificultad para respirar?
 							</label>
@@ -127,7 +127,7 @@
 								<option data-dificultad_respirar="0" value="0" {{ old('dificultad_respirar') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="escurrimiento_nasal" class="text-md-left col-form-label-sm">
 								¿Tienes escurrimiento nasal?
 							</label>
@@ -137,7 +137,7 @@
 								<option data-escurrimiento_nasal="0" value="0" {{ old('escurrimiento_nasal') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="dolor_cuerpo" class="text-md-left col-form-label-sm">
 								¿Tienes dolor en el cuerpo?
 							</label>
@@ -149,7 +149,7 @@
 						</div>
 					</div>
 					<div class="form-group row">
-						<div class="col-4">
+						<div class="col-12 col-md-4">
 							<label for="conjuntivitis" class="text-md-left col-form-label-sm">
 								¿Tienes conjuntivitis?
 							</label>
@@ -159,7 +159,7 @@
 								<option data-conjuntivitis="0" value="0" {{ old('conjuntivitis') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-8">
+						<div class="col-12 col-md-8">
 							<label for="condiciones_medicas" class="text-md-left col-form-label-sm">
 								¿Tienes alguna de las siguientes condiciones? (diabetes, hipertensión, obesidad, problemas cardiacos, asma, EPOC, VIH, cáncer)
 							</label>
@@ -171,7 +171,7 @@
 						</div>
 					</div>
 					<div class="form-group row d-none" id="only_woman">
-						<div class="col-6">
+						<div class="col-12 col-md-6">
 							<label for="embarazada" class="text-md-left col-form-label-sm">
 								¿Estás embarazada?
 							</label>
@@ -181,7 +181,7 @@
 								<option data-embarazada="0" value="0" {{ old('embarazada') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-6">
+						<div class="col-12 col-md-6">
 							<label for="meses_embarazo" class="text-md-left col-form-label-sm">
 								¿Tienes 6 o más meses de embarazo?
 							</label>
@@ -193,13 +193,13 @@
 						</div>
 					</div>
 					<div class="form-group row d-none" id="more_info">
-						<div class="col-3">
+						<div class="col-12 col-md-4 col-lg-3">
 							<label for="dias_sintomas" class="text-md-left col-form-label-sm">
 								¿Hace cuántos días iniciaron tus síntomas? Escribe el número de días, si iniciaron hoy responde "0"
 							</label>
 							<input class="form-control " type="number" name="dias_sintomas" id="dias_sintomas" step="1" min="-1" value="{{ old('dias_sintomas') }}">
 						</div>
-						<div class="col-3">
+						<div class="col-12 col-md-4 col-lg-3">
 							<label for="dolor_respirar" class="text-md-left col-form-label-sm">
 								¿Sientes dolor al respirar?
 							</label>
@@ -209,7 +209,7 @@
 								<option value="0" data-dolor_respirar="0" {{ old('dolor_respirar') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-3">
+						<div class="col-12 col-md-4 col-lg-3">
 							<label for="falta_aire" class="text-md-left col-form-label-sm">¿Sientes falta de aire al hablar o caminar algunos pasos?</label>
 							<select name="falta_aire" id="falta_aire" class="form-control">
 								<option value="">Seleccione una opción</option>
@@ -217,7 +217,7 @@
 								<option value="0" data-falta_aire="0" {{ old('falta_aire') == '0' ? "selected=''" : "" }}>No</option>
 							</select>
 						</div>
-						<div class="col-3">
+						<div class="col-12 col-md-4 col-lg-3">
 							<label for="coloracion_azul" class="text-md-left col-form-label-sm">¿Tienes coloración azul o morada en labios, dedos o uñas?</label>
 							<select name="coloracion_azul" id="coloracion_azul" class="form-control">
 								<option value="">Seleccione una opción</option>

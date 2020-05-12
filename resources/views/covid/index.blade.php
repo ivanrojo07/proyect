@@ -1,9 +1,9 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		@include('covid.menu', ['fecha' => $fecha])
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+	<div class="container-fluid d-md-flex d-block">
+		@include('covid.menu', ['institucion' => Auth::user()->institucion,'fecha' => $fecha])
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header bg-dark">
 					<h4>Registro COVID-19</h4>
 				</div>

@@ -27,7 +27,7 @@
                     @guest
                         {{ config('app.name', 'Incidentes') }}
                     @else
-                        <img src="{{ Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_header) : asset('images/claro.png') }}" height="50">
+                        <img src="{{ Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_header) : asset('images/claro.png') }}" height="40">
                     @endguest
                 </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="{{ __('Toggle navigation') }}">
@@ -81,18 +81,18 @@
         </main>
         <footer class="bg-dark text-white fixed-bottom">
             <div class="container d-flex justify-content-between text-center">
-                <div class="w-25">
+                <div class="col-md-3 d-none d-lg-block">
                     @guest
                         <span>{{ config('app.name', 'Incidentes') }}</span>
                     @else
                         <img src="{{ Auth::user()->institucion ?  (asset('storage/'.Auth::user()->institucion->path_imagen_footer) ? asset('storage/'.Auth::user()->institucion->path_imagen_footer) : "") : asset('images/claro.png') }}" height="50">
                     @endguest
                 </div>
-                <div class="w-50">
+                <div class="col-12 col-lg-6">
                     <span>Incidentes fue creado por Global Human Services.
                         <br>Copyright © 2017-2020 Global Human Services.</span>
                 </div>
-                <div class="w-25 align-self-center">
+                <div class="col-md-3 align-self-center d-none d-lg-block">
                     <span>{{Date('Y-m-d')}}</span>
                 </div>
             </div>

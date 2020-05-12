@@ -1,18 +1,11 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		<div class="w-25 p-3 mr-3 bg-dark text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>Incidentes</h4>
-				</div>
-				<div class="card-body">
-					<a href="{{ route('admin.institucion.create') }}" class="btn btn-block btn-info">Nueva institución</a>
-				</div>
-			</div>
+	<div class="container-fluid d-md-flex d-block">
+		<div class="col-12 col-md-3 text-white">
+			@include('admin.institucion.menu',['institucion'=>Auth::user()->institucion,'fecha'=>Date('Y-m-d')])
 		</div>
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header bg-dark">
 					Nueva Institucion
 				</div>
@@ -73,7 +66,7 @@
 										</label>
 									</div>
 									@foreach ($estados as $estado)
-										<div class="col-4 mt-2">
+										<div class="col-12 col-md-6 col-lg-4 mt-2">
 											<div class="form-check">
 												<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
 	  											<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
@@ -96,7 +89,7 @@
 								</div>
 								<div class="row form-group">
 									@foreach ($categorias_incidente  as $categoria)
-										<div class="col-4 mt-2">
+										<div class="col-12 col-md-6 col-lg-4 mt-2">
 											<div class="form-check">
 												<input class="form-check-input" type="checkbox" id="{{$categoria->nombre}}" name="categorias[]" value="{{$categoria->id}}">
 	  											<label class="form-check-label" for="{{$categoria->nombre}}">{{$categoria->nombre}}</label>
@@ -169,7 +162,7 @@
 			if (municipios) {
 				municipios.forEach(municipio=>{
 					checkbox_html = `
-						<div class="col-4 mt-2">
+						<div class="col-12 col-md-6 col-lg-4 mt-2">
 							<div class="form-check">
 								<input class="form-check-input" type="checkbox" id="${municipio.nombre}" name="municipios[]" value="${municipio.id}">
 									<label class="form-check-label" for="${municipio.nombre}">${municipio.nombre}</label>

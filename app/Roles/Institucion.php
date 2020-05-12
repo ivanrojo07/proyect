@@ -19,17 +19,29 @@ class Institucion extends Model
     ];
     protected $hidden = ['pivot'];
 
+    /**
+     * Obtener los usuarios que pertenecen esta institucion
+     *
+     * @return \Illuminate\Database\Relations\HasMany
+     */
     public function usuarios()
     {
     	return $this->hasMany('App\User');
     }
 
+    /**
+     * Obtener las categorias incidentes que puede crear esta institucion
+     *
+     *  @return \Illuminate\Database\Relations\BelongsToMany
+     */
     public function categorias_incidente(){
     	return $this->belongsToMany('App\Incidente\CategoriaIncidente','categoria_incidente_institucion')->withTimestamps();
     }
 
     /**
      * obtiene todos los estados asignados a esta institucion.
+     * 
+     * @return \Illuminate\Database\Relations\MorphedByMany
      */
     public function estados()
     {
@@ -38,9 +50,21 @@ class Institucion extends Model
 
     /**
      * obtiene todos los municipios asignados a esta institucion.
+     * 
+     * @return \Illuminate\Database\Relations\MorphedByMany
      */
     public function municipios()
     {
         return $this->morphedByMany('App\Municipio', 'regionable')->withTimestamps();
     }
+
+    public function registro_incidentes(){
+        return $this->hasManyThrough(
+            'App\Incidente\RegistroIncidente',
+            'App\User',
+            'institucion_id',
+            'user_id'
+        );
+    }
+
 }

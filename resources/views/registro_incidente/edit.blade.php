@@ -1,24 +1,11 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		<div class="w-25 p-3 mr-3 bg-dark text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
-				</div>
-				<div class="card-body">
-					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-						<input class="form-control" type="date" name="fecha" id="fecha" value="{{Date('Y-m-d')}}" max="{{Date('Y-m-d')}}">
-					</form>
-				</div>
-				<div class="card-footer">
-					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
-					<a href="{{ route('incidente.index') }}" class="btn btn-block btn-success">Incidentes del día</a>
-				</div>
-			</div>
+	<div class="container-fluid d-md-flex d-block">
+		<div class="col-12 col-md-3 text-white">
+			@include('registro_incidente.menu', ['institucion' => $institucion,'fecha'=>Date('Y-m-d')])
 		</div>
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header bg-dark">
 					Actualización Incidente {{Date('d-m-Y',strtotime($incidente->fecha_ocurrencia))." ".$incidente->catalogo_incidente->nombre}}
 				</div>
@@ -26,6 +13,15 @@
 					@csrf
 					@method('PUT')
 					<div class="card-body">
+						@if ($errors->any())
+						    <div class="alert alert-danger">
+						        <ul>
+						            @foreach ($errors->all() as $error)
+						                <li>{{ $error }}</li>
+						            @endforeach
+						        </ul>
+						    </div>
+						@endif
 						<div class="form-group row">
 							<div class="col-12 col-md-6">
 								<label for="subcategoria" class="text-md-right col-form-label-sm">
@@ -65,13 +61,13 @@
 								</label>
 								<input type="text" name="locacion" id="locacion" class="form-control {{ $errors->has('locacion') ? ' is-invalid' : ''  }}" required="" value="{{old('locacion') ? old('locacion') : $incidente->locacion}}">
 								<div class="form-group row">
-									<div class="col-6 mt-2 mb-2">
+									<div class="col-12 col-md-6 mt-2 mb-2">
 										<label for="latitud" class="text-md-right col-form-label-sm">
 											Latitud
 										</label>
 										<input type="numeric" name="latitud" id="latitud" class="form-control" value="{{old('latitud') ? old('latitud') : $incidente->lat_especifica}}">
 									</div>
-									<div class="col-6 mt-2 mb-2">
+									<div class="col-12 col-md-6 mt-2 mb-2">
 										<label for="longitud" class="text-md-right col-form-label-sm">
 											Longitud
 										</label>
@@ -237,7 +233,7 @@
         document.getElementsByTagName("head")[0].appendChild(script);
         script.src = src;
     }
-    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key=AIzaSyAe5gzNGneaWmWLzmZs6bFKNlwdCTr0Odk',
+    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
             function(){/*log('google-loader has been loaded, but not the maps-API ');*/});
     function initialize() 
     {
@@ -269,6 +265,7 @@
           map.panTo( event.latLng );
           var geocoder = geocoder = new google.maps.Geocoder();
           geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
+      		infowindow.close();
           	console.log(results);
               if (status == google.maps.GeocoderStatus.OK) {
                   if (results[0]) {

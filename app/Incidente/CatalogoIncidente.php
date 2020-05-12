@@ -25,24 +25,41 @@ class CatalogoIncidente extends Model
         'deleted_at'
     ];
 
+    /**
+     * Convierte el nombre en la primera letra en mayuscula
+     *
+     * @return string
+     */
     public function getNombreAttribute($value){
         return ucfirst($value);
     }
 
+    /**
+     * Obtiene los registros de incidente que esten catalogados como este incidente
+     *
+     * @return \Illuminate\Database\Relations\HasMany
+     */
     public function registro_incidentes(){
     	return $this->hasMany('App\Incidente\RegistroIncidente');
 
     }
 
+    /**
+     * Obtiene la prioridad de este incidente
+     *
+     * @return \Illuminate\Database\Relations\BelongsTo
+     */
     public function prioridad(){
     	return $this->belongsTo('App\Incidente\Prioridad');
     }
 
+    /**
+     * Obtiene la subcategoria que pertenece este Catalogo
+     *
+     * @return \Illuminate\Database\Relations\BelongsTo
+     */
     public function subcategoria(){
         return $this->belongsTo('App\Incidente\SubcategoriaIncidente','subcategoria_id','id');
     }
-
-
-    
 
 }

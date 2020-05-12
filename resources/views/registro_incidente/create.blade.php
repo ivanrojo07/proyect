@@ -1,30 +1,26 @@
 @extends('layouts.app')
 @section('content')
-	<div class="container-fluid d-flex">
-		<div class="w-25 p-3 mr-3 bg-dark text-white">
-			<div class="card bg-secondary text-center mt-3 ">
-				<div class="card-header">
-					<h4>{{$institucion ? $institucion->nombre : "CLARO 360"}}</h4>
-				</div>
-				<div class="card-body">
-					<form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-						<input class="form-control" type="date" name="fecha" id="fecha" value="{{$fecha}}" max="{{Date('Y-m-d')}}">
-					</form>
-				</div>
-				<div class="card-footer">
-					<a href="{{ route('incidente.create') }}" class="btn btn-block btn-info">Nuevo incidente</a>
-					<a href="{{ route('incidente.index') }}" class="btn btn-block btn-success">Incidentes del día</a>
-				</div>
-			</div>
+	<div class="container-fluid d-md-flex d-block">
+		<div class="col-12 col-md-3 text-white">
+			@include('registro_incidente.menu', ['institucion' => $institucion,'fecha'=>Date('Y-m-d')])
 		</div>
-		<div class="w-75">
-			<div class="card bg-secondary text-white">
+		<div class="col-12 col-md-9">
+			<div class="card bg-secondary text-white mt-3 mb-5">
 				<div class="card-header bg-dark">
 					Nuevo Incidente
 				</div>
 				<form method="POST" action="{{ route('incidente.store') }}">
 					@csrf
 					<div class="card-body">
+						@if ($errors->any())
+						    <div class="alert alert-danger">
+						        <ul>
+						            @foreach ($errors->all() as $error)
+						                <li>{{ $error }}</li>
+						            @endforeach
+						        </ul>
+						    </div>
+						@endif
 						<div class="form-group row">
 							<div class="col-12 col-md-6">
 								<label for="subcategoria" class="text-md-right col-form-label-sm">
@@ -262,7 +258,7 @@
         document.getElementsByTagName("head")[0].appendChild(script);
         script.src = src;
     }
-    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key=AIzaSyAe5gzNGneaWmWLzmZs6bFKNlwdCTr0Odk',
+    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
             function(){/*log('google-loader has been loaded, but not the maps-API ');*/});
     function initialize() 
     {

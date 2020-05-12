@@ -36,6 +36,11 @@ class ReporteDependencia extends Model
   		'deleted_at'
     ];
 
+    /**
+     * Obtiene el registro del incidente al que se realiza dicho reporte
+     *
+     * @return \Illuminate\Database\Relations\BelongsTo
+     */
     public function registro_incidente()
     {
     	return $this->belongsTo('App\Incidente\RegistroIncidente','registro_incidente_id','id');
