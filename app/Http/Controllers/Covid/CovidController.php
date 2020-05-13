@@ -13,22 +13,31 @@ class CovidController extends Controller
     /**
      * Display a listing of the resource.
      *
+     * Ruta GET ../covid
+     *
      * @return \Illuminate\Http\Response
      */
     public function index(Request $request)
     {
-        //
+        //Si existe el request fecha
         if ($request->fecha) {
+            // Validamos el request a que sea una fecha valida
             $validate = Validator::make($request->all(),['fecha'=>'required|date|date_format:Y-m-d']);
+            // Si la validacion falla 
             if ($validate->fails()) {
+                // redirigimos al index
                 return redirect()->route('covid.index');
             } else {
+                // creamos la fecha
                 $date = Date($request->fecha);
             }
         } else {
+            // Si no existe la fecha la creamos con la fecha actual
             $date = Date('Y-m-d');
         }
+        // Obtenemos los registros de covid de esa fecha paginado cada 15 registro
         $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->paginate(15);
+        // retornamos la vista con los registros y la fecha
         return view('covid.index',[
             'registros' => $registros_covid,
             'fecha' => $date
@@ -38,23 +47,27 @@ class CovidController extends Controller
     /**
      * Show the form for creating a new resource.
      *
+     * Ruta GET ../covid/create
+     *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        //
+        // Retornamos la vista para el formulario
         return view('covid.create');
     }
 
     /**
      * Store a newly created resource in storage.
      *
+     * Ruta POST ../covid/store
+     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
     public function store(Request $request)
     {
-        //
+        // Creamos las reglas de validacion
         $rules = [
             "edad" => "required|numeric",
             "genero" => "required|string|in:Mujer,Hombre",
@@ -77,7 +90,9 @@ class CovidController extends Controller
             "falta_aire" => "nullable|numeric|in:1,0",
             "coloracion_azul" => "nullable|numeric|in:1,0"
         ];
+        // validamos el request con las reglas
         $request->validate($rules);
+        // Creamos un nuevo modelo covid
         $registro = new Covid([
             'convivir_enfermo' => $request->convivir_enfermo,
             'fiebre' => $request->fiebre,
@@ -109,8 +124,11 @@ class CovidController extends Controller
                         ]),
             'rango' => $request->score
         ]);
+        // le asignamos el usuario que registro
         $registro->user_id = Auth::user()->id;
+        // Salvamos el registro
         $registro->save();
+        // Redireccionamos al index
         return redirect()->route('covid.index');
 
     }
@@ -118,19 +136,23 @@ class CovidController extends Controller
     /**
      * Display the specified resource.
      *
+     * Ruta GET ../covid/show/{covid}
+     *
      * @param  \App\Covid\Covid  $covid
      * @return \Illuminate\Http\Response
      */
     public function show(Covid $covid)
     {
-        //
+        // creamos en objeto el string en json del perfil
         $perfil = json_decode($covid->perfil);
+        // retornamos la vista con el registro
         return view('covid.show',['covid'=>$covid,'perfil'=>$perfil]);
     }
 
     /**
      * Show the form for editing the specified resource.
      *
+     * 
      * @param  \App\Covid\Covid  $covid
      * @return \Illuminate\Http\Response
      */
@@ -146,10 +168,10 @@ class CovidController extends Controller
      * @param  \App\Covid\Covid  $covid
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, Covid $covid)
-    {
-        //
-    }
+    // public function update(Request $request, Covid $covid)
+    // {
+    //     //
+    // }
 
     /**
      * Remove the specified resource from storage.
@@ -157,8 +179,8 @@ class CovidController extends Controller
      * @param  \App\Covid\Covid  $covid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Covid $covid)
-    {
-        //
-    }
+    // public function destroy(Covid $covid)
+    // {
+    //     //
+    // }
 }

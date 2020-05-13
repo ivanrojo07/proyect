@@ -10,13 +10,16 @@ use Illuminate\Support\Facades\DB;
 
 class EstadosController extends Controller
 {
-    //Obtener datos de estados y municipio de los diferentes tablas (Problemas con registros en formato json)
+    // Ruta GET ../api/web/estados
     public function getEstados(){
+       //Obtener datos de estados y municipio de los diferentes tablas (Problemas con registros en formato json)
     	$estados = Estado::get();
+        // retornamos una respuesta json con los estados de la bd
     	return response()->json(["estados"=>$estados],201);
     }
 
     // Obtener los municipios del estado obtenido
+    // Ruta GET ../api/web/estados/{estado_id}/municipios
     public function getMunicipios($estado_id)
     {
     	
@@ -36,6 +39,7 @@ class EstadosController extends Controller
 
     }
 
+    // Ruta GET ../api/web/show_municipios/{estado_id}
     public function showMunicipios($estado_id){
     	// Obtenemos el estado por id
 		$estado = Estado::find($estado_id);
@@ -51,8 +55,11 @@ class EstadosController extends Controller
 		}    
     }
 
+    // Rute GET ../api/web/municipios/{municipio}/localidades
     public function getLocalidades(Municipio $municipio){
+        // Obtemenos las localidades del municipio
         $localidades = $municipio->localidads;
+        // Retornamos una respuesta json con el resultado
         return response()->json(['localidades'=>$localidades],201);
     }
 

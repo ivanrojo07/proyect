@@ -8,11 +8,12 @@ use Illuminate\Http\Request;
 
 class IncidentesController extends Controller
 {
-    //
-
+    // Ruta GET ../api/web/incidentes/{categoria}
     public function getIncidentes(SubcategoriaIncidente $categoria)
     {
+    	// Obtenemos el catalogo de incidente para esa categoria
     	$incidentes = $categoria->catalogos;
-    	return response()->json(['incidentes'=>$incidentes]);
+    	// Retornamos un json con el resultado
+    	return response()->json(['incidentes'=>$incidentes],200);
     }
 }

@@ -17,25 +17,35 @@ class RegistroIncidenteController extends Controller
 	/**
 	 * Display a listing of the resource.
 	 *
+	 * Ruta GET ../incidente
+	 *
 	 * @return \Illuminate\Http\Response
 	 */
 	public function index(Request $request)
 	{
-		//
+		// Si existe el param de fecha
 		if ($request->fecha) {
+			// Validamos a que sea una fecha valida
 			$validate = Validator::make($request->all(),['fecha'=>'required|date|date_format:Y-m-d']);
+			// Si la validación falla
 			if ($validate->fails()) {
+				// Redirigimos al index de incidente
 				return redirect()->route('incidente.index');
 			}
 			else{ 
+				// Creamos la fecha
 				$date = Date($request->fecha);
 			}
 		}
 		else{
+			// Obtenemos la fecha de hoy
 			$date = Date('Y-m-d');
 		}
+		// obtenemos la institucion del usuario
 		$institucion = Auth::user()->institucion;
+		// Si la institucion existe
 		if ($institucion) {
+			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
 					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc')->paginate(7);
@@ -55,6 +65,7 @@ class RegistroIncidenteController extends Controller
 			$registro_incidentes = null;
 
 		}
+		// retornamos la vista con el registro de incidentes
 		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes,'fecha'=>$date,'institucion' => $institucion]);
 
 	}
@@ -66,11 +77,15 @@ class RegistroIncidenteController extends Controller
 	 */
 	public function create()
 	{
-		//
+		// Usuario registrado
 		$user = Auth::user();
+		// Obtener la institucion del usuario
 		$institucion = $user->institucion;
+		// Municipio id incializando el id del municipio
 		$municipios_id = null;
+		// Si institucion existe
 		if ($institucion) {
+			// obtenemos los estados de cada tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
 					$estados = Estado::orderBy('nombre','asc')->get();
@@ -85,12 +100,14 @@ class RegistroIncidenteController extends Controller
 					$estados = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->orderBy('nombre','asc')->get();
 					break;
 			}
+			// Obtenemos las subcategorias que tienen en la categoria incidente
 			$subcategorias = SubcategoriaIncidente::whereIn('categoria_id',$institucion->categorias_incidente()->pluck('categoria_incidente_id'))->orderBy('id','asc')->get();
 		}
 		else{
+			// Redirigimos al index
 			return redirect()->route('incidente.index');
 		}
-		// $subcategorias = SubcategoriaIncidente::get();
+		// Creamos un booleano para estatus (activo e inactivo)
 		$status = [
 			[
 				'value'=>1,
@@ -102,9 +119,11 @@ class RegistroIncidenteController extends Controller
 				'nombre'=>'Inactivo'
 			]
 		];
+		// obtenemos el tipo de impacto, seguimiento y la fecha en que se registrara el incidente
 		$tipo_impacto = TipoImpacto::get();
 		$tipo_seguimiento = TipoSeguimiento::get();
 		$date = Date('Y-m-d');
+		// Retornamos la vista con elformulario y las variables
 		return view('registro_incidente.create',[
 			'estados' => $estados,
 			'subcategorias' => $subcategorias,
@@ -120,12 +139,14 @@ class RegistroIncidenteController extends Controller
 	/**
 	 * Store a newly created resource in storage.
 	 *
+	 *	Ruta POST ../incidente/store
+	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @return \Illuminate\Http\Response
 	 */
 	public function store(Request $request)
 	{
-		//
+		// Reglas de validacion
 		$rules = [
 			'incidente' => 'numeric|required|exists:catalogo_incidentes,id',
 			'estado' => 'numeric|required|exists:estados,id',
@@ -155,7 +176,9 @@ class RegistroIncidenteController extends Controller
 			'medida_control' => 'required|string|max:200',
 
 		];
+		// Validamos el request con las reglas de validacion
 		$request->validate($rules);
+		// Obtenemos un nuevo modelo
 		$registro_incidente = new RegistroIncidente([
 			'descripcion' => $request->descripcion,
 			'locacion' => $request->locacion,
@@ -178,30 +201,39 @@ class RegistroIncidenteController extends Controller
 			'nombre_empleado' => $request->nombre,
 			'cargo_empleado' =>$request->cargo
 		]);
+		// Agregamos las relaciones correspondientes
 		$registro_incidente->catalogo_incidente_id = $request->incidente;
 		$registro_incidente->estado_id = $request->estado;
 		$registro_incidente->municipio_id = $request->municipio;
 		$registro_incidente->tipo_seguimiento_id = $request->tipo_seguimiento;
 		$registro_incidente->tipo_impacto_id = $request->nivel_impacto;
 		$registro_incidente->user_id = Auth::user()->id;
+		// Guardamos el modelo
 		$registro_incidente->save();
+		// Asociamos las localidades afectadaaaas
 		$registro_incidente->localidades()->attach($request->localidades_afectadas);
+		// Redirigimos al index
 		return redirect()->route('incidente.index');
 	}
 
 	/**
 	 * Display the specified resource.
 	 *
+	 * Ruta GET ../incidente/{incidente}
+	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function show(RegistroIncidente $incidente)
 	{
-		//
+		//Obtenemos el usuario
 		$user = Auth::user();
+		// Institucion del usuario
 		$institucion = $user->institucion;
+		// Bandera para mostrar el incidente
 		$mostrar = false;
 		if ($institucion) {
+			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
 					$mostrar = true;
@@ -220,10 +252,12 @@ class RegistroIncidenteController extends Controller
 			}
 			
 		}
-		// var_dump($institucion->tipo_institucion);
+		// Si se puede mostrar
 		if ($mostrar) {
+			// Separamos la llamada de la dependencia y los reportes
 			$dependencia = $incidente->dependencia_llamada;
 			$reportes = $incidente->dependencia_reportes;
+			// Retornamos la vista con los detalles del incidente
 			return view('registro_incidente.show',[
 				'incidente'=>$incidente,
 				'dependencia'=>$dependencia,
@@ -232,6 +266,7 @@ class RegistroIncidenteController extends Controller
 			]);
 		}
 		else{
+			// Redirigimos al index
 			return redirect()->route('incidente.index');
 		}
 	}
@@ -239,16 +274,21 @@ class RegistroIncidenteController extends Controller
 	/**
 	 * Show the form for editing the specified resource.
 	 *
+	 * Ruta GET ../incidente/{incidente}/edit
+	 *
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function edit(RegistroIncidente $incidente)
 	{
-		//
+		//obtenemos al usuario
 		$user = Auth::user();
+		// Su institucion
 		$institucion = $user->institucion;
+		// municipio nulo
 		$municipios_id = null;
 		if ($institucion) {
+			// Obtenemos los estados y municipios que pueden acceder por tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
 					$estados = Estado::orderBy('nombre','asc')->get();
@@ -263,11 +303,14 @@ class RegistroIncidenteController extends Controller
 					$estados = Estado::whereIn('id',$institucion->municipios()->pluck('estado_id'))->orderBy('nombre','asc')->get();
 					break;
 			}
+			// Obtenemos las subcategorias que puede obtener el usuario por su institucion
 			$subcategorias = SubcategoriaIncidente::whereIn('categoria_id',$institucion->categorias_incidente()->pluck('categoria_incidente_id'))->orderBy('id','asc')->get();
 		}
 		else{
+			// Si no tiene institucion redirigimos al index
 			return redirect()->route('incidente.index');
 		}
+		// Obtenemos los boleanos para status
 		$status = [
 			[
 				'value'=>true,
@@ -279,9 +322,10 @@ class RegistroIncidenteController extends Controller
 				'nombre'=>'Inactivo'
 			]
 		];
+		// Obtenemos los tipos de impacto y el seguimiento
 		$tipo_impacto = TipoImpacto::get();
 		$tipo_seguimiento = TipoSeguimiento::get();
-
+		// Retornamos una vista con el formulario
 		return view('registro_incidente.edit',[
 			'estados' => $estados,
 			'subcategorias' => $subcategorias,
@@ -297,13 +341,16 @@ class RegistroIncidenteController extends Controller
 	/**
 	 * Update the specified resource in storage.
 	 *
+	 * Ruta ../incidente/{incidente}/update
+	 *
 	 * @param  \Illuminate\Http\Request  $request
 	 * @param  int  $id
 	 * @return \Illuminate\Http\Response
 	 */
 	public function update(Request $request,RegistroIncidente $incidente)
 	{
-		// dd($request->all());
+
+		// Reglas de validacion
 		$rules = [
 			'descripcion' => 'required|string|max:560',
 			'locacion'  => 'required|string|max:250',
@@ -329,7 +376,9 @@ class RegistroIncidenteController extends Controller
 			'cargo' => 'required|string|max:200',
 			'medida_control' => 'required|string|max:200',
 		];
+		// Verificamos si son valida los parametros
 		$request->validate($rules);
+		// Creamos un modelo registro incidente
 		$nuevo_incidente = new RegistroIncidente([
 			'descripcion' => $request->descripcion,
 			'locacion' => $request->locacion,
@@ -352,6 +401,7 @@ class RegistroIncidenteController extends Controller
 			'nombre_empleado' => $request->nombre,
 			'cargo_empleado' =>$request->cargo
 		]);
+		// Agregamos las relaciones, incluyendo el incidente previo a esta actualizacion
 		$nuevo_incidente->catalogo_incidente_id = $incidente->catalogo_incidente->id;
 		$nuevo_incidente->estado_id = $incidente->estado->id;
 		$nuevo_incidente->municipio_id = $incidente->municipio->id;
@@ -359,8 +409,11 @@ class RegistroIncidenteController extends Controller
 		$nuevo_incidente->tipo_impacto_id = $request->nivel_impacto;
 		$nuevo_incidente->user_id = Auth::user()->id;
 		$nuevo_incidente->registro_incidente_id = $incidente->id;
+		// Se graba el modelo a la base de datos
 		$nuevo_incidente->save();
+		// Insertamos las localidades afectadas
 		$nuevo_incidente->localidades()->attach($request->localidades_afectadas);
+		// Redirigimos al index
 		return redirect()->route('incidente.index');
 	}
 

@@ -50,6 +50,11 @@ class Covid extends Model
     	'deleted_at'
     ];
 
+    /**
+     * Obtiene el usuario que registro este formulario
+     *
+     * @return \Illuminate\Database\Relations\BelongsTo
+     */
     public function user(){
     	return $this->belongsTo('App\User');
     }
