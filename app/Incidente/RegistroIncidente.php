@@ -4,11 +4,31 @@ namespace App\Incidente;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Facades\DB;
 
 class RegistroIncidente extends Model
 {
     //
     use SoftDeletes;
+
+    /**
+     * The "booted" method of the model.
+     *
+     * @return void
+     */
+    protected static function booted()
+    {
+        // Crea el id antes de que se grabe el registro en la base de datos por medio del handler create
+        static::creating(function ($registroIncidente) {
+            //ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
+            $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
+        });
+        // Crea el id antes de que se grabe el registro en la base de datos por medio del handler save
+        static::saving(function ($registroIncidente) {
+            // ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
+            $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
+        });
+    }
 
     protected $fillable=[
     	'descripcion',
