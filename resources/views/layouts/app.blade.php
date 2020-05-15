@@ -9,8 +9,6 @@
 
     <title>{{ config('app.name', 'Incidentes') }}</title>
 
-    <!-- Scripts -->
-    <script src="{{ asset('js/app.js') }}"></script>
 
     <!-- Fonts -->
     <link rel="dns-prefetch" href="//fonts.gstatic.com">
@@ -99,5 +97,14 @@
         </footer>
     </div>
 </body>
+<!-- Scripts -->
+<script src="{{ asset('js/app.js') }}"></script>
+
 @stack('scripts')
+
+<script>
+    Echo.channel('incidentes').listen('NewIncidente',(res)=>{
+        console.log(res.registro);
+    })
+</script>
 </html>

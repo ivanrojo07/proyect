@@ -75,7 +75,7 @@
 						</tbody>
 					</table>
 				</div>
-				<div class="card-footer text-white bg-dark d-flex justify-content-around">
+				<div class="card-footer text-white bg-dark d-flex justify-content-between">
 					{{$registro_incidentes->appends(['fecha'=>$fecha])->render()}}
 					@if ($registro_incidentes->isNotEmpty())
 						<form class="inline" target="_blank" action="{{ route('pdf.incidente.index') }}" method="GET">
