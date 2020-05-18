@@ -73,7 +73,7 @@
                 </div>
             </div>
         </nav>
-
+        <div id="alertas"></div>
         <main class="pb-5 py-4">
             @yield('content')
         </main>
@@ -101,10 +101,55 @@
 <script src="{{ asset('js/app.js') }}"></script>
 
 @stack('scripts')
+@auth
+    <script>
+        @switch(Auth::user()->institucion->tipo_institucion)
+            @case("Federal")
+                Echo.private("incidentes_federal").listen('NewIncidente',(res)=>{
+                    console.log(res.registro);
+                    var registro = res.registro
+                    var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
+                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>`;
+                    $("#alertas").append(html_input)
+                }); 
+                @break
+            @case("Estatal")
+                Echo.private("incidentes_estatal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
+                    console.log(res.registro);
+                    var registro = res.registro
+                     var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
+                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>`;
+                    $("#alertas").append(html_input)
+                }); 
+                @break
+            
+            @case("Municipal")
+                Echo.private("incidentes_municipal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
+                    console.log(res.registro);
+                    var registro = res.registro
+                    var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
+                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
+                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>`;
+                    $("#alertas").append(html_input)
+                }); 
+                @break
 
-<script>
-    Echo.channel('incidentes').listen('NewIncidente',(res)=>{
-        console.log(res.registro);
-    })
-</script>
+            @default
+                    
+        @endswitch
+        
+        
+    </script>
+@endauth
 </html>

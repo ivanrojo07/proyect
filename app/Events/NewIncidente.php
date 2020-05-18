@@ -21,10 +21,10 @@ class NewIncidente implements ShouldBroadcast
      *
      * @return void
      */
-    public function __construct($registro)
+    public function __construct(RegistroIncidente $registro)
     {
         //
-        $this->registro = $registro;
+        $this->registro = $registro->load(['catalogo_incidente','estado','municipio','impacto','seguimiento']);
     }
 
     /**
@@ -34,6 +34,19 @@ class NewIncidente implements ShouldBroadcast
      */
     public function broadcastOn()
     {
-        return new Channel('incidentes');
+        $channels = [];
+        // introducir channel para institucion federal
+        array_push($channels, new PrivateChannel('incidentes_federal'));
+        // introducir channels de las instituciones que tienen el mismo estado
+        foreach ($this->registro->estado->institucions as $institucion) {
+            // se crea los incidentes de la institucion
+            array_push($channels, new PrivateChannel('incidentes_estatal.'.$institucion->id));
+            
+        }
+        // Introducir channels de las instituciones que tienen  el mismo municipio
+        foreach ($this->registro->municipio->institucions as $institucion) {
+            array_push($channels, new PrivateChannel('incidentes_municipal.'.$institucion->id));
+        }
+        return $channels;
     }
 }
