@@ -18,7 +18,7 @@
             page-break-inside: avoid;
         }
     </style>
-    <link rel="stylesheet" type="text/css" href="{{ asset('css/bootstrap4.css') }}">
+    <link rel="stylesheet" type="text/css" href="{{ public_path('css/bootstrap4.css') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Sistema De Monitoreo y Control</title>
@@ -29,7 +29,7 @@
         <h3 class="align-self-center">
             Sistema De Monitoreo y Control
         </h3>
-        <img src="{{ $institucion ? asset('storage/'.$institucion->path_imagen_header) : asset('images/claro.png') }}" alt="" height="50px" width="250px">
+        <img src="{{ $institucion ? public_path('storage/'.$institucion->path_imagen_header) : public_path('images/claro.png') }}" alt="" height="50px" width="250px">
     </nav>
     <div style="top: 0px;bottom: 0px !important;">
         @yield('content')

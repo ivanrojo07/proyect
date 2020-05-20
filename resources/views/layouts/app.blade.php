@@ -73,9 +73,14 @@
                 </div>
             </div>
         </nav>
-        <div id="alertas"></div>
         <main class="pb-5 py-4">
-            @yield('content')
+            <div aria-live="polite" aria-atomic="true" style="position:relative;; min-height: 200px;">
+                {{-- Position it --}}
+                <div style="position: absolute;top: 0;right: 0;" id="alertas">
+                </div>
+                @yield('content')
+            </div>
+
         </main>
         <footer class="bg-dark text-white fixed-bottom">
             <div class="container d-flex justify-content-between text-center">
@@ -107,41 +112,23 @@
             @case("Federal")
                 Echo.private("incidentes_federal").listen('NewIncidente',(res)=>{
                     console.log(res.registro);
-                    var registro = res.registro
-                    var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
-                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>`;
-                    $("#alertas").append(html_input)
+                    var registro = res.registro;
+                    crearToast(registro)
                 }); 
                 @break
             @case("Estatal")
                 Echo.private("incidentes_estatal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
                     console.log(res.registro);
-                    var registro = res.registro
-                     var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
-                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>`;
-                    $("#alertas").append(html_input)
+                    var registro = res.registro;
+                    crearToast(registro)
                 }); 
                 @break
             
             @case("Municipal")
                 Echo.private("incidentes_municipal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
                     console.log(res.registro);
-                    var registro = res.registro
-                    var html_input = `<div class="alert  ${registro.impacto.nombre === "Alto" ? 'alert-danger' : (registro.impacto.nombre === "medio" ? 'alert-warning' : 'alert-success')} alert-dismissible fade show" role="alert">
-                                  <strong>Nuevo incidente!</strong> Existe un nuevo incidente en ${registro.municipio.nombre+", "+registro.estado.nombre}.
-                                  <button type="button" class="close" data-dismiss="alert" aria-label="Close">
-                                    <span aria-hidden="true">&times;</span>
-                                  </button>
-                                </div>`;
-                    $("#alertas").append(html_input)
+                    var registro = res.registro;
+                    crearToast(registro)
                 }); 
                 @break
 
@@ -149,7 +136,23 @@
                     
         @endswitch
         
+        function crearToast(incidente) {
+            var html_toast = `  <div class="toast"  data-autohide="false" id="incidente_${incidente.id}" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:1;position:relative;">
+                                  <div class="toast-header ${incidente.impacto.nombre === "Alto" ? 'bg-danger' : (incidente.impacto.nombre === "Medio" ? 'bg-warning' : 'bg-success')}">
+                                    <strong class="mr-auto"><a href="{{ url('incidente') }}/${incidente.id}">Nuevo incidente con folio #${incidente.id}!</a></strong>
+                                    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                      <span aria-hidden="true">&times;</span>
+                                    </button>
+                                  </div>
+                                  <div class="toast-body">
+                                    Existe un nuevo incidente en ${incidente.municipio.nombre+", "+incidente.estado.nombre}.
+                                  </div>
+                                </div>`;
+            $("#alertas").append(html_toast);
+            $('#incidente_'+incidente.id).toast('show');
+        }
         
     </script>
 @endauth
+
 </html>
