@@ -1,49 +1,61 @@
-@extends('layouts.app')
+@extends('layouts.layoutBase')
 
-@section('content')
-<div class="container-fluid d-md-flex d-block">
-    <div class="col-12 col-md-3 text-white">
-        <div class="card bg-secondary text-center mt-3">
-            <div class="card-header navbar-dark d-flex justify-content-between bg-dark">
-                <h4 class="align-self-center">{{Auth::user()->institucion ? Auth::user()->institucion->nombre : "CLARO 360"}}</h4>
-                <button class="btn d-md-none" type="button" data-toggle="collapse" data-target="#home-menu">
-                    <span class="navbar-light"><span class="navbar-toggler-icon"></span></span>
-                </button>
-            </div>
-            <div id="home-menu" class="collapse d-md-block">
-                <div class="card-body">
-                    <form id="changeFecha" class="row" method="GET" action="{{ route('incidente.index') }}" >
-                        <input class="form-control" type="date" name="fecha" id="fecha" value="{{Date('Y-m-d')}}" max="{{Date('Y-m-d')}}">
-                    </form>
-                </div>
-                <div class="card-footer bg-dark">
-                    <a href="{{ route('admin.institucion.index') }}" class="btn btn-block btn-info">Instituciones</a>
-                    <a href="{{ route('admin.usuarios.index') }}" class="btn btn-block btn-info">Usuarios</a>
-                    <a href="{{ route('incidente.index') }}" class="btn btn-block btn-info">Incidentes</a>
-                    <a href="{{ route('covid.index') }}" class="btn btn-block btn-info">Covid-19</a>
-                </div>
-            </div>
-        </div>
+{{-- titulo de la pestaña --}}
+@section('titulo')
+    Bienvenido {{Auth::user()->full_name}}
+@endsection
+
+{{-- estilos para el index --}}
+@section('estilos')
+  <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css') }}">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.5.0/css/font-awesome.min.css">
+  <style type="text/css">
+    .ocultar{
+      display:none;
+    }
+    body{
+      color: white;
+    }
+</style>
+@endsection
+
+{{-- Menú de navegacion --}}
+@section('botonera')
+    <a href="{{ route('home') }}"><span role="button" class="glbl glbl-home"  title="Inicio"></span></a>
+@endsection
+
+{{-- titulo del sidebar --}}
+@section('titulopanel')
+    <div  class="titulolateral">
+        <h5>Expediente de Incidencias 
+            <a>
+                <span class="glbl2 glbl glbl-down"></span>
+            </a>
+        </h5>
+        
     </div>
-    <div class="col-12 col-md-9 mt-3">
-        <div class="card">
-            <div class="card-header ">
-                Bienvenido
-            </div>
+@endsection
 
-            <div class="card-body">
-                @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
-                @endif
-
-                <p>{{Auth::user()->full_name}}</p>
-                <p>{{Auth::user()->institucion->nombre}}</p>
-            </div>
-        </div>
-    </div>
-</div>
+{{-- contenido del sidebar --}}
+@section('panellateral')
+    <ul class="list-group">
+        <a href="{{ route('incidente.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
+            <span>Incidentes</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+        </a>
+        <a href="{{ route('admin.usuarios.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
+            <span>Usuarios</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+        </a>
+        <a href="{{ route('admin.institucion.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
+            <span>Instituciones</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+        </a>
+        <a href="{{ route('covid.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
+            <span>Covid-19</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+        </a>
+    </ul>
+@endsection
+@section('contenido')
+    {{-- EMPTY --}}
 @endsection
 @push('scripts')
     <script type="text/javascript">

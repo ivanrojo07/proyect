@@ -1,0 +1,198 @@
+#cont-superior {
+
+}
+#cont-inferior {
+	margin-top: 1%;
+}
+#form-tienda,
+#form-usuario{
+
+  border-radius: 1px;
+  color: #E6E6E6;
+  font-size: 18px;
+  font-weight: normal;
+  padding: 1% 2%;
+}
+#form-tienda button,
+#form-usuario button,
+#form-camara button,
+#form-equipo button{
+	background-color: #E2231A;
+	border-color: #E2231A;
+}
+.nav-pills .nav-link{
+	color: #eaeaea;
+	background-color: #b3b3b3;
+	margin: 12px;
+}
+.nav-pills .nav-link.active{
+	background-color: #E2231A;
+}
+.form-group {
+	margin-bottom: 0.4rem;
+}
+/**
+* Mensajes de alerta en formularios de
+* tienda y Usuario
+**/
+.alerta-msj{
+	margin-top: .3rem;
+	margin-bottom: -6px;
+	font-size: 11px;
+}
+.alerta-msj>button{
+	background-color: inherit !important;
+	border-color: inherit !important;
+	color: #000 !important;
+}
+/******** Tablas ***********************/
+.card {
+	border: none;
+}
+.card-header {
+	/*background-image: url("/images/textura.png");*/
+	/*background-color: #f5f5f5;*/
+	color: #E6E6E6;
+}
+.card-body {
+/*background-image: url("/images/fondo.png");*/
+	background-color: #525657;
+	color: white;
+	padding: 0.7rem;
+}
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: white;
+}
+#tablaTiendas,
+#tablaUsuarios {
+	color: white;
+}
+#tablaTiendas th,
+#tablaUsuarios th,
+#tablaTemporal th,
+#tablaTemporal-2 th {
+	border: 1px solid #6d6d6d;
+	background-color: #333439;
+	color: #f08a1e;
+	font-weight: bold;
+}
+.dataTables_scroll > .dataTables_scrollHead > .dataTables_scrollHeadInner th{
+	border: 1px solid #6d6d6d;
+	background-color: #333439;
+  color: #f08a1e;
+  font-weight: bold;
+}
+#tablaTiendas td,
+#tablaUsuarios td,
+#tablaTemporal td,
+#tablaTemporal-2 td{
+	border: 1px solid #6d6d6d;
+}
+#tablaTiendas .odd,
+#tablaUsuarios .odd,
+#tablaTemporal .odd,
+#tablaTemporal-2 .odd{
+	background-color: transparent;
+}
+#tablaTiendas .odd .sorting_1,
+#tablaUsuarios .odd .sorting_1,
+#tablaTemporal .odd .sorting_1,
+#tablaTemporal-2 .odd .sorting_1{
+	background-color: transparent;
+}
+#tablaTiendas .even,
+#tablaUsuarios .even,
+#tablaTemporal .even,
+#tablaTemporal-2 .even{
+	background-color: #333439;
+}
+#tablaTiendas .even .sorting_1,
+#tablaUsuarios .even .sorting_1,
+#tablaTemporal .even .sorting_1,
+#tablaTemporal-2 .even .sorting_1{
+	background-color: #333439;
+}
+table.dataTable tbody tr {
+    background-color: transparent;
+}
+table.dataTable.stripe tbody tr.odd,
+table.dataTable.display tbody tr.odd {
+    background-color: transparent;
+}
+table.dataTable.hover tbody tr:hover,
+table.dataTable.display tbody tr:hover {
+    background-color: #6f6f6f;
+}
+/* Botonera tabla */
+.dataTables_wrapper .dataTables_length,
+.dataTables_wrapper .dataTables_filter,
+.dataTables_wrapper .dataTables_info,
+.dataTables_wrapper .dataTables_processing,
+.dataTables_wrapper .dataTables_paginate {
+    color: white;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.current,
+.dataTables_wrapper .dataTables_paginate .paginate_button.current:hover {
+    color: #333 !important;
+    border: 1px solid #979797;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,red), color-stop(100%, red));
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:hover,
+.dataTables_wrapper .dataTables_paginate .paginate_button.disabled:active {
+    cursor: default;
+    color: #666 !important;
+    border: 1px solid #979797;
+    background: transparent;
+    box-shadow: none;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button {
+    color: white !important;
+    border: 1px solid #979797;
+}
+.dataTables_wrapper .dataTables_paginate .paginate_button:hover {
+    color: white !important;
+    border: 1px solid #111;
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #919191), color-stop(100%, #919191));
+}
+button, input, optgroup, select, textarea {
+    color: black;
+}
+button,
+input,
+optgroup,
+select,
+textarea {
+    color: black;
+}
+/**
+ * Diseño Responsivo.
+ *
+/* (xs) Extra small devices (portrait phones, less than 576px)*/
+@media (max-width: 575.98px) {
+
+}
+
+/* (sm) Small devices (landscape phones, 576px and up) */
+@media (min-width: 576px) and (max-width: 767.98px) {
+
+}
+
+/* (md) Medium devices (tablets, 768px and up) */
+@media (min-width: 768px) and (max-width: 991.98px) {
+
+}
+
+/* (lg) Large devices (desktops, 992px and up) */
+@media (min-width: 992px) and (max-width: 1199.98px) {
+
+}
+
+/* (xl) Extra large devices (large desktops, 1200px and up) */
+@media (min-width: 1200px) {
+
+}

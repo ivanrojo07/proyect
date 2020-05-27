@@ -21,7 +21,7 @@ class InstitucionController extends Controller
     public function index()
     {
         //
-        $instituciones = Institucion::orderBy('nombre','asc')->paginate(7);
+        $instituciones = Institucion::orderBy('nombre','asc')->get();
         return view('admin.institucion.index',['instituciones'=>$instituciones]);
     }
 
