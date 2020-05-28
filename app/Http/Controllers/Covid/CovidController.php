@@ -28,7 +28,7 @@ class CovidController extends Controller
         } else {
             $date = Date('Y-m-d');
         }
-        $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->paginate(15);
+        $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->get();
         return view('covid.index',[
             'registros' => $registros_covid,
             'fecha' => $date
