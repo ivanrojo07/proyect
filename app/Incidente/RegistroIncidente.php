@@ -167,4 +167,10 @@ class RegistroIncidente extends Model
     {
         return $this->hasMany('App\Dependencia\ReporteDependencia','registro_incidente_id','id');
     }
+
+    // Accesor para estatus
+    public function getEstatusAttribute($value)
+    {
+        return ($value == true ? 'Activo' : 'Inactivo');
+    }
 }

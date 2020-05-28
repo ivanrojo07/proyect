@@ -1,0 +1,94 @@
+@font-face{
+	font-family: 'Icons';
+	src: url('../fonts/icons-global/Myfont-Regular.ttf') format('truetype'), 
+	url(../fonts/icons-global/Myfont-Regular.otf) format('opentype'), 
+	url('../fonts/icons-global/IconsFont-svg.svg') format('svg');
+	
+
+}
+.glbl {
+	position: relative;
+	top: 1px;
+	display: inline-block;
+	speak:none;
+	font-family: 'Icons';
+	font-style: normal;
+	font-weight: normal;
+	line-height: 1;
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	background: #40474f;
+	color: #fff;
+	    padding-left: 0%;
+	    margin-top: 12px;
+	    border: 6px solid #40474f;
+	    font-size: 22px;
+	    margin-left: 4px;
+}
+
+	.glbl-home:before{
+		content: 'A';
+	}
+	.glbl-search:before{
+		content: 'B';
+	}
+	.glbl-more:before{
+		content: 'C';
+	}
+	.glbl-new:before{
+		content: 'D';
+	}
+	.glbl-up:before{
+		content: 'E';
+	}
+	.glbl-down:before{
+		content: 'F';
+	}
+	.glbl-left:before{
+		content: 'G';
+	}
+	.glbl-right:before{
+		content: 'H';
+	}
+	.glbl-close:before{
+		content: 'I';
+	}
+	.glbl-menu:before{
+		content: 'J';
+	}
+	.glbl-mosaico:before{
+		content: 'K';
+	}
+	.glbl-ubicacion:before{
+		content: 'L';
+	}
+	.glbl-notificacion:before{
+		content: 'M';
+	}
+	.glbl-video:before{
+		content: 'N';
+	}
+	.glbl-graficaBarras:before{
+		content: 'O';
+	}
+	.glbl-graficaLineas:before{
+		content: 'P';
+	}
+	.glbl-llamada:before{
+		content: 'Q';
+	}
+	.glbl-send:before{
+		content: 'R';
+	}
+	.glbl-chat:before{
+		content: 'S';
+	}
+	.glbl-novideo:before{
+		content: 'T';
+	}
+	.glbl-noaudio:before{
+		content: 'U';
+	}
+	.glbl-controles:before{
+		content: 'V';
+	}

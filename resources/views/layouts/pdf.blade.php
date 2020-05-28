@@ -17,6 +17,18 @@
             page-break-after: always;
             page-break-inside: avoid;
         }
+        .Bajo{
+            border-left: 5px solid green !important;
+            padding: 1px 38px !important;
+        }
+        .Medio{
+            border-left: solid 5px #ffc300 !important;
+            padding: 1px 38px !important;
+        }
+        .Alto{
+            border-left: solid 5px #b3282d !important;
+            padding: 1px 38px !important;
+        }
     </style>
     <link rel="stylesheet" type="text/css" href="{{ public_path('css/bootstrap4.css') }}">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8"/>

@@ -38,11 +38,8 @@
 					<tbody>
 						@forelse ($incidentes as $key=>$incidente)
 							<tr>
-								<th scope="row">
-									<span class="badge {{ 
-				$incidente->impacto->nombre == 'Alto' ? 'bg-danger text-white' : (
-					$incidente->impacto->nombre == 'Medio' ? 'bg-warning text-dark' :
-						'bg-success text-white')}}">
+								<th scope="row" class="{{$incidente->impacto->nombre}}">
+									<span class="badge">
 										{{$incidente->id}}
 									</span>
 								</th>

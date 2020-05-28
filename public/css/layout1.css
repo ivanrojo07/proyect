@@ -1,0 +1,158 @@
+html,body,*{
+    font-family: 'arial',Arial,sans-serif,Helvetica;
+    font-size: 12.5px;
+
+}
+body{
+     background-image: url(../images/fondosistema.jpg);
+    /*background-repeat: no-repeat;
+    background-position:center;
+    background-attachment: fixed;
+    color: white;
+    background-size: cover;*/
+}
+
+/*************** Cabecera ************/
+.cabecera{
+  /*background-image: url("../images/banner.png");*/
+      background-color: #f5f5f5;
+
+    border-bottom: 5px solid #e2231a;
+    color: #202327;
+    width: 100%;
+    height: 60px;
+    padding-left: 0px;
+    padding-right: 0px;
+}
+.cabecera img{
+  margin-top: 10px;
+  margin-bottom: 10px;
+    /*margin-left: 15px;
+
+    width: 105px;*/
+    width: 150px;
+    height: 30px;
+}
+.cabecera div{
+    vertical-align: top;
+}
+.cabecera .row{
+    margin-left: 0;
+    margin-right: 0;
+}
+.cabecera div .dropdown{
+    margin-top: 0em;
+}
+.cabecera div .dropdown a{
+    color: black;
+    font-size: 1.16em;
+}
+/*****/
+.cabecera div .dropdown .dropdown-menu{
+
+    position: absolute;
+    transform: translate3d(-32px, 30px, 10px);
+    left: 30%;
+    will-change: transform;
+    border-radius: 10px;
+
+}
+.cabecera .logo-claro img{
+
+    height: 45px;
+    width: 250px;
+}
+.cabecera .logo-estado img{
+
+    height: 55px;
+    width: 170px;
+
+}
+/***** Contenido *******/
+.contenido{
+/*    overflow: auto;*/
+    padding-top: 0.6em;
+
+}
+.contenido::-webkit-scrollbar{
+  width: 0px;
+}
+/*++++ Estilos para los modales en general++++++***/
+.modal-open .modal{
+    overflow-y: hidden;
+    padding-right: 0px;
+    padding-left: 0px;
+    padding-top: 0px;
+    padding-bottom: 0px;
+    background-color: #231f20;
+}
+.modal>.modal-dialog{
+    margin:19% auto;
+}
+.modal>.modal-dialog>.modal-content>.modal-header{
+    background-color: #919191;
+    color: #000;
+    padding: 5px 15px;
+    border-bottom: 4px solid #e2231a;
+}
+.modal>.modal-dialog>.modal-content>.modal-header>.close{
+    text-shadow: none;
+    opacity: 1;
+    font-weight: normal;
+}
+.modal>.modal-dialog>.modal-content>.modal-header>.close>span{
+    font-size: 25px;
+}
+.modal>.modal-dialog>.modal-content>.modal-body{
+    background-color: #3f444b;
+    color: #f58220;
+}
+.modal>.modal-dialog>.modal-content>.modal-footer{
+    background-color: #3f444b;
+    color: #f58220;
+}
+.modal>.modal-dialog>.modal-content>.modal-footer>.btn{
+    padding: 2px 25px;
+    border-radius: 0px;
+}
+.modal>.modal-dialog>.modal-content>.modal-footer>.btn-danger{
+    background-color: #e2231a;
+}
+.modal>.modal-dialog>.modal-content>.modal-footer>.btn-default{
+    color: #fff;
+    background-color: #919191;
+    border-color: #919191;
+}
+
+/**** Modal de Mensajes ******/
+#modalMensajes>.modal-dialog>.modal-content>.modal-body{
+    text-align: center;
+    color: #fff;
+}
+#modalMensajes>.modal-dialog>.modal-content>.modal-body span{
+    font-size: 6em;
+}
+
+#page {
+  display: grid;
+  width: 100%;
+  height: 100vh;
+
+    grid-template-areas: "head "
+                          "main"
+                        ;
+
+   grid-template-rows: 60px calc(100vh - 60px);
+
+    grid-template-columns: 100%;
+  }
+#page > header {
+  grid-area: head ;
+
+}
+#page > main {
+  grid-area: main;
+
+ overflow: auto;
+
+}

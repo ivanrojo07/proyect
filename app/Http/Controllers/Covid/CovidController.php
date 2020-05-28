@@ -35,9 +35,7 @@ class CovidController extends Controller
             // Si no existe la fecha la creamos con la fecha actual
             $date = Date('Y-m-d');
         }
-        // Obtenemos los registros de covid de esa fecha paginado cada 15 registro
-        $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->paginate(15);
-        // retornamos la vista con los registros y la fecha
+        $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->get();
         return view('covid.index',[
             'registros' => $registros_covid,
             'fecha' => $date

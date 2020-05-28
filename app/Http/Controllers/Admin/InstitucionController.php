@@ -20,9 +20,9 @@ class InstitucionController extends Controller
      */
     public function index()
     {
-        //Obtenemos las instituciones y la guardamos en una variable
-        $instituciones = Institucion::orderBy('nombre','asc')->paginate(7);
-        // Retornamos la vista inyectando las instituciones
+
+        //
+        $instituciones = Institucion::orderBy('nombre','asc')->get();
         return view('admin.institucion.index',['instituciones'=>$instituciones]);
     }
 

@@ -1,0 +1,204 @@
+/**************** Formulario-index ******************/
+@media (min-width: 1201px) and (max-width:3000px) {
+  .formulario{
+      display: block;
+      margin-left: 33%;
+      margin-top: 6%;
+      width: 34%;
+      position: relative;
+      box-shadow: 10px 10px 20px #000;
+
+  }
+  .formulario h2{
+    /*background-image: url("../images/index1.png");*/
+    background-color: #f5f5f5;
+
+      color: #242935;
+      font-size: 16px;
+      font-weight:normal;
+      height: 55px;
+      padding-left: 3%;
+      padding-top: 3%;
+      text-align: left;
+      vertical-align: middle;
+      margin-bottom: 0%;
+      border-radius: 10px 10px 0px 0px;
+
+  }
+
+}
+
+
+@media (min-width:900px) and (max-width:1200px) {
+  .formulario{
+    display: block;
+    margin-left:25%;
+    margin-top: 6%;
+    width: 50%;
+    position: relative;
+    box-shadow: 10px 10px 20px #000;
+  }
+  .formulario h2{
+    /*background-image: url("../images/index1.png");*/
+    background-color: #f5f5f5;
+      color: #242935;
+      font-size: 18px;
+      font-weight:normal;
+      height: 55px;
+      padding-left: 3%;
+      padding-top: 3%;
+      text-align: left;
+      vertical-align: middle;
+      margin-bottom: 0%;
+      border-radius: 10px 10px 0px 0px;
+  }
+}
+@media (min-width:768px) and (max-width:899px) {
+
+  .formulario{
+    display: block;
+    margin-left: 20%;
+    margin-top: 6%;
+    width:60%;
+    position: relative;
+    box-shadow: 10px 10px 20px #000;
+  }
+  .formulario h2{
+    /*background-image: url("../images/index1.png");*/
+    background-color: #f5f5f5;
+      color: #242935;
+      font-size: 18px;
+      font-weight:normal;
+      height: 55px;
+      padding-left: 3%;
+      padding-top: 3%;
+      text-align: left;
+      vertical-align: middle;
+      margin-bottom: 0%;
+      border-radius: 10px 10px 0px 0px;
+  }
+  
+}
+
+@media (min-width:500px) and (max-width:767px) {
+
+  .formulario{
+    display: block;
+    margin-left: 15%;
+    margin-top: 6%;
+    width: 70%;
+    position: relative;
+    box-shadow: 10px 10px 20px #000;
+  }
+  .formulario h2{
+    /*background-image: url("../images/index1.png");*/
+    background-color: #f5f5f5;
+      color: #242935;
+      font-size: 18px;
+      font-weight:normal;
+      height: 50px;
+      padding-left: 3%;
+      padding-top: 3%;
+      text-align: left;
+      vertical-align: middle;
+      margin-bottom: 0%;
+      border-radius: 10px 10px 0px 0px;
+  }
+  
+}
+@media (min-width:0px) and (max-width:499px) {
+
+  .formulario{
+    display: block;
+    margin-left: 2%;
+    margin-top: 6%;
+    margin-right:2%;
+    /*margin-left: 20%;
+    margin-top: 6%;
+    width:60%;
+    position: relative;
+    box-shadow: 10px 10px 20px #000;
+    */
+  }
+  .formulario h2{
+    /*background-image: url("../images/index1.png");*/
+    background-color: #f5f5f5;
+    color: #242935;
+    font-size: 17px;
+    font-weight:normal;
+    height: 40px;
+    padding-left: 3%;
+    padding-top: 3%;
+    text-align: left;
+    vertical-align: middle;
+    margin-bottom: 0%;
+    border-radius: 10px 10px 0px 0px;
+
+  }
+}
+
+  .formulario form{
+    /*background-image: url("/images/fondo.png");*/
+      background-color: #40474f;
+    border-radius: 1px;
+    color: #f5f5f5;
+    font-size: 12px;
+    font-weight: normal;
+    border-radius: 0px 0px 10px 10px;
+    padding-bottom: 4%;
+    padding-top: 5%;
+  }
+   .formulario label{
+    margin-left:1%;
+    margin-right: 1%;
+    margin-top: 10px;
+    font-size: 15px;
+    padding-top: 10px;
+
+   }
+   .formulario input{
+    width:200px;
+    height: 30px;
+    border-radius: 15px;
+  }
+  .formulario button{
+      /*display: block;*/
+    background-color: #da291c;
+    background-clip: padding-box;
+    color: white;
+    cursor: pointer;
+    font-size: 15px;
+    /*margin-left: 23%;*/
+    margin-top: 6%;
+    margin-bottom: 6%;
+    border-radius: 16px;
+    width: 150px;
+    height: 30px;
+     
+  }
+
+    
+  .formulario  span{
+      margin-bottom: 30px;
+      font-size: 13px;
+  }
+  .alert1{
+    position: relative;
+    padding: 2px 1px;
+    margin-bottom: 1rem;
+   /* border: 1px solid transparent;*/
+    /*border-radius: 0.25rem;*/
+    height: 42px;
+    margin-top: -13px;
+    border-radius: 0px 0px 10px 10px;
+    
+  }
+
+  .container-fluid{
+    text-align: center;
+    padding-right: 0px;
+    padding-left: 0px;
+  }
+ 
+
+

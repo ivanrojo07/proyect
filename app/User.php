@@ -43,6 +43,18 @@ class User extends Authenticatable
     ];
 
     /**
+     *  Mutador para que el nombre sea en mayuscula
+     *
+     *  @param  string  $value
+     *
+     *  @return string 
+     */
+    public function getNombreAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    /**
      * Crea un atributo con el nombre completo del usuario
      *
      */
