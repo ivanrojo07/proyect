@@ -238,7 +238,12 @@
            @else
            @endguest
          <div class="container-fluid contenido">
-             @yield('contenido')
+            <div aria-live="polite" aria-atomic="true" style="position:relative;; min-height: 200px;">
+                {{-- Position it --}}
+                <div style="position: absolute;top: 0;right: 0;" id="alertas">
+                </div>
+                @yield('contenido')
+            </div>
          </div>
 
 
@@ -296,11 +301,7 @@
     <link rel="stylesheet" href="//code.jquery.com/ui/1.12.1/themes/base/jquery-ui.css">
     <script src="https://code.jquery.com/ui/1.12.1/jquery-ui.js"></script> --}}
     {{-- Apartado Js locales --}}
-    <script type="text/javascript" src="{{ asset('js/vendor/jquery-3.2.1.slim.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/vendor/popper-1.12.9.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap4.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/bootstrap.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/controlmodal.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/togglefect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
@@ -339,6 +340,55 @@
        };
        $.datepicker.setDefaults($.datepicker.regional['es']);
     </script>
+
+    @auth
+        <script>
+            @switch(Auth::user()->institucion->tipo_institucion)
+                @case("Federal")
+                    Echo.private("incidentes_federal").listen('NewIncidente',(res)=>{
+                        console.log(res.registro);
+                        var registro = res.registro;
+                        crearToast(registro)
+                    }); 
+                    @break
+                @case("Estatal")
+                    Echo.private("incidentes_estatal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
+                        console.log(res.registro);
+                        var registro = res.registro;
+                        crearToast(registro)
+                    }); 
+                    @break
+                
+                @case("Municipal")
+                    Echo.private("incidentes_municipal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
+                        console.log(res.registro);
+                        var registro = res.registro;
+                        crearToast(registro)
+                    }); 
+                    @break
+
+                @default
+                        
+            @endswitch
+            
+            function crearToast(incidente) {
+                var html_toast = `  <div class="toast"  data-autohide="false" id="incidente_${incidente.id}" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:1;position:relative;">
+                                      <div class="toast-header ${incidente.impacto.nombre === "Alto" ? 'bg-danger' : (incidente.impacto.nombre === "Medio" ? 'bg-warning' : 'bg-success')}">
+                                        <strong class="mr-auto"><a href="{{ url('incidente') }}/${incidente.id}">Nuevo incidente con folio #${incidente.id}!</a></strong>
+                                        <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                          <span aria-hidden="true">&times;</span>
+                                        </button>
+                                      </div>
+                                      <div class="toast-body bg-secondary">
+                                        Existe un nuevo incidente en ${incidente.municipio.nombre+", "+incidente.estado.nombre}.
+                                      </div>
+                                    </div>`;
+                $("#alertas").append(html_toast);
+                $('#incidente_'+incidente.id).toast('show');
+            }
+            
+        </script>
+    @endauth
 
     @yield('scripts')
   </body>

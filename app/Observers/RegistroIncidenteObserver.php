@@ -4,6 +4,8 @@ namespace App\Observers;
 
 use App\Events\NewIncidente;
 use App\Incidente\RegistroIncidente;
+use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Support\Facades\Log;
 
 class RegistroIncidenteObserver
 {
@@ -16,7 +18,12 @@ class RegistroIncidenteObserver
     public function created(RegistroIncidente $registroIncidente)
     {
         //
-        event(new NewIncidente($registroIncidente));
+        try {
+            event(new NewIncidente($registroIncidente));
+            
+        } catch (BroadcastException $e) {
+            Log::warning("Pusher Broadcast Exception, $e");
+        }
     }
 
     /**

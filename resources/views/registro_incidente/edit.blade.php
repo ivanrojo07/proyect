@@ -598,23 +598,33 @@
 	          	}
 	      	});
 	      	
-	      google.maps.event.addListener(map, 'click', function(event) {
-	          marker.setPosition( event.latLng );
-	          map.panTo( event.latLng );
-	          var geocoder = geocoder = new google.maps.Geocoder();
-	          geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
-	      		infowindow.close();
-	          	console.log(results);
-	              if (status == google.maps.GeocoderStatus.OK) {
-	                  if (results[0]) {
-	                  	console.log(marker.position.lat());
-	                      document.getElementById('latitud').value = marker.position.lat();
-	                      document.getElementById('longitud').value = marker.position.lng();
-	                      document.getElementById('locacion').value = results[0].formatted_address;
-	                  }
-	              }
-	          });
-	      });
+	       	google.maps.event.addListener(map, 'click', function(event) {
+          
+		          map.panTo( event.latLng );
+		          var geocoder = geocoder = new google.maps.Geocoder();
+		          geocoder.geocode({ 'latLng': event.latLng }, function (results, status) {
+		            console.log("results",results);
+		              if (status == google.maps.GeocoderStatus.OK) {
+		                  if (results[0]) {
+		                      var sitio_disponible = false;
+		                      results[0].address_components.forEach(address=>{
+		                        let municipio_name = "{{$incidente->estado->nombre}}";
+		                        if (municipio_name == address.long_name) {
+		                          sitio_disponible = true
+		                        } 
+		                      });
+		                      if (sitio_disponible) {
+		                        marker.setPosition( event.latLng );
+		                        document.getElementById('latitud').value = marker.position.lat();
+		                        document.getElementById('longitud').value = marker.position.lng();
+		                        document.getElementById('locacion').value = results[0].formatted_address;
+		                      } else {
+		                        alert('El indicador esta fuera de la zona permitida');
+		                      }
+		                  }
+		              }
+		          });
+	      	});
 	      var types = document.getElementById('type-selector');
 	      map.controls[google.maps.ControlPosition.TOP_LEFT].push(input);
 	      map.controls[google.maps.ControlPosition.TOP_LEFT].push(types);
@@ -628,46 +638,57 @@
 	      else {
 	          browserSupportFlag = false;
 	      }
-	      autocomplete.addListener('place_changed', function() {
-	          infowindow.close();
-	          marker.setVisible(false);
-	          var place = autocomplete.getPlace();
-	          if (!place.geometry) {
-	              window.alert("Error");
-	              return;
-	          }
-	          // If the place has a geometry, then present it on a map.
-	          if (place.geometry.viewport) {
-	              map.fitBounds(place.geometry.viewport);
-	          } else {
-	              map.setCenter(place.geometry.location);
-	              map.setZoom(17);  // Why 17? Because it looks good.
-	          }
-	          marker.setIcon(/** @type {google.maps.Icon} */({
-	              url: place.icon,
-	              size: new google.maps.Size(50, 71),
-	              origin: new google.maps.Point(0, 0),
-	              anchor: new google.maps.Point(17, 34),
-	              scaledSize: new google.maps.Size(35, 35)
-	          }));
-	          marker.setPosition(place.geometry.location);
-	          console.log(place.geometry.location);
-	          marker.setVisible(true);
-	          var address = '';
-	          if (place.address_components) {
-	              address = [
-	                  (place.address_components[0] && place.address_components[0].short_name || ''),
-	                  (place.address_components[1] && place.address_components[1].short_name || ''),
-	                  (place.address_components[2] && place.address_components[2].short_name || '')
-	              ].join(' ');
-	          }
-	          document.getElementById('locacion').value = address;
-	          infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
-	          infowindow.open(map, marker);
-	          document.getElementById('latitud').value = marker.position.lat();
-	          document.getElementById('longitud').value = marker.position.lng();
-	          document.getElementById('locacion').value = address;
-	      });
+		    autocomplete.addListener('place_changed', function() {
+		          var place = autocomplete.getPlace();
+		          var sitio_disponible = false;
+		          place.address_components.forEach(address=>{
+		            let municipio_name = "{{$incidente->estado->nombre}}";
+		            if (municipio_name == address.long_name) {
+		              sitio_disponible = true
+		            } 
+		          });
+		          console.log('places',place);
+		          if (sitio_disponible) {
+		            infowindow.close();
+		            marker.setVisible(false);
+		            if (!place.geometry) {
+		              window.alert("Error");
+		              return;
+		            }
+		            if (place.geometry.viewport) {
+		                map.fitBounds(place.geometry.viewport);
+		            } else {
+		                map.setCenter(place.geometry.location);
+		                map.setZoom(17);  
+		            }
+		            marker.setIcon(/** @type {google.maps.Icon} */({
+		                url: place.icon,
+		                size: new google.maps.Size(50, 71),
+		                origin: new google.maps.Point(0, 0),
+		                anchor: new google.maps.Point(17, 34),
+		                scaledSize: new google.maps.Size(35, 35)
+		            }));
+		            marker.setPosition(place.geometry.location);
+		            marker.setVisible(true);
+		            var address = '';
+		            if (place.address_components) {
+		                address = [
+		                    (place.address_components[0] && place.address_components[0].short_name || ''),
+		                    (place.address_components[1] && place.address_components[1].short_name || ''),
+		                    (place.address_components[2] && place.address_components[2].short_name || '')
+		                ].join(' ');
+		            }
+		            document.getElementById('locacion').value = address;
+		            infowindow.setContent('<div><strong>' + place.name + '</strong><br>' + address);
+		            infowindow.open(map, marker);
+		            document.getElementById('latitud').value = marker.position.lat();
+		            document.getElementById('longitud').value = marker.position.lng();
+		            document.getElementById('locacion').value = address;
+		          } else {
+		            alert('No es un lugar disponible');
+		          }
+		          
+		    });
 	    }
 
 	    $(document).ready(function(){

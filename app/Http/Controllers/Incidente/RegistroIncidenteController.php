@@ -121,7 +121,7 @@ class RegistroIncidenteController extends Controller
 		];
 		// obtenemos el tipo de impacto, seguimiento y la fecha en que se registrara el incidente
 		$tipo_impacto = TipoImpacto::get();
-		$tipo_seguimiento = TipoSeguimiento::get();
+		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['inicial','único'])->get();
 		$date = Date('Y-m-d');
 		// Retornamos la vista con elformulario y las variables
 		return view('registro_incidente.create',[
@@ -147,6 +147,7 @@ class RegistroIncidenteController extends Controller
 	public function store(Request $request)
 	{
 		// Reglas de validacion
+		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['inicial','único'])->get()->implode('id', ',');
 		$rules = [
 			'incidente' => 'numeric|required|exists:catalogo_incidentes,id',
 			'estado' => 'numeric|required|exists:estados,id',
@@ -167,7 +168,8 @@ class RegistroIncidenteController extends Controller
 			'personas_fallecidas' => 'required|numeric|min:0',
 			'estatus_incidente' => 'required|boolean',
 			'personas_desaparecidas' => 'required|numeric|min:0',
-			'tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+			// 'tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+			'tipo_seguimiento'  => 'required|numeric|in:'.$tipo_seguimiento,
 			'personas_evacuadas' => 'required|numeric|min:0',
 			'nivel_impacto' => 'required|numeric|exists:tipo_impactos,id',
 			'dependencia'   => 'required|string|max:200',
@@ -324,7 +326,7 @@ class RegistroIncidenteController extends Controller
 		];
 		// Obtenemos los tipos de impacto y el seguimiento
 		$tipo_impacto = TipoImpacto::get();
-		$tipo_seguimiento = TipoSeguimiento::get();
+		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['seguimiento','final'])->get();
 		// Retornamos una vista con el formulario
 		return view('registro_incidente.edit',[
 			'estados' => $estados,
@@ -351,6 +353,7 @@ class RegistroIncidenteController extends Controller
 	{
 
 		// Reglas de validacion
+		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['seguimiento','final'])->get()->implode('id', ',');
 		$rules = [
 			'descripcion' => 'required|string|max:560',
 			'locacion'  => 'required|string|max:250',
@@ -368,7 +371,8 @@ class RegistroIncidenteController extends Controller
 			'personas_fallecidas' => 'required|numeric|min:0',
 			'estatus_incidente' => 'required|boolean',
 			'personas_desaparecidas' => 'required|numeric|min:0',
-			'tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+			// 'tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+			'tipo_seguimiento'  => 'required|numeric|in:'.$tipo_seguimiento,
 			'personas_evacuadas' => 'required|numeric|min:0',
 			'nivel_impacto' => 'required|numeric|exists:tipo_impactos,id',
 			'dependencia'   => 'required|string|max:200',
