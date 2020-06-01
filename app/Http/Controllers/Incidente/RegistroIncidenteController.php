@@ -48,15 +48,15 @@ class RegistroIncidenteController extends Controller
 			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc');
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date);
 					break;
 
 				case "Estatal":
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('hora_ocurrencia','asc');
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'));
 					break;
 				
 				default:
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('hora_ocurrencia','asc');
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('municipio_id',$institucion->municipios->pluck('id'));
 					break;
 			}
 
@@ -75,7 +75,7 @@ class RegistroIncidenteController extends Controller
 		}
 		$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 		// retornamos la vista con el registro de incidentes
-		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes->get(),'fecha'=>$date,'institucion' => $institucion, 'tipo_seguimientos' => $tipo_seguimientos]);
+		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes->orderBy('hora_ocurrencia','DESC')->get(),'fecha'=>$date,'institucion' => $institucion, 'tipo_seguimientos' => $tipo_seguimientos]);
 
 	}
 
@@ -226,7 +226,7 @@ class RegistroIncidenteController extends Controller
 		// Asociamos las localidades afectadaaaas
 		$registro_incidente->localidades()->attach($request->localidades_afectadas);
 		// Redirigimos al index
-		return redirect()->route('incidente.index');
+		return redirect()->route('incidente.index')->with('mensaje','Se creo un registro de incidente');
 	}
 
 	/**
@@ -433,7 +433,7 @@ class RegistroIncidenteController extends Controller
 		// Insertamos las localidades afectadas
 		$nuevo_incidente->localidades()->attach($request->localidades_afectadas);
 		// Redirigimos al index
-		return redirect()->route('incidente.index');
+		return redirect()->route('incidente.index')->with('mensaje',"Se actualizo el registro de incidente");
 	}
 
 	/**

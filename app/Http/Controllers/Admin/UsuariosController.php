@@ -77,7 +77,7 @@ class UsuariosController extends Controller
         // Grabamos el modelo en la bd
         $user->save();
         // Redirigimos al index
-        return redirect()->route('admin.usuarios.index');
+        return redirect()->route('admin.usuarios.index')->with('mensaje',"Se creo un usuario");
     }
 
     /**
@@ -146,7 +146,7 @@ class UsuariosController extends Controller
         // Guardamos estos cambios
         $usuario->save();
         // Redirigimos al index
-        return redirect()->route('admin.usuarios.index');
+        return redirect()->route('admin.usuarios.index')->with('mensaje','Se actualizo un usuario');
 
 
         
@@ -163,6 +163,6 @@ class UsuariosController extends Controller
         // Eliminamos al usuario
         $usuario->delete();
         // Redirigimos al index 
-        return redirect()->route('admin.usuarios.index');
+        return redirect()->route('admin.usuarios.index')->with('mensaje',"Se elimino el usuario correctamente");
     }
 }

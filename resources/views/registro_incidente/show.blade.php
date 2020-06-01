@@ -190,7 +190,7 @@
 					Municipio
 				</p>
 				<p class="info">
-					{{$incidente->municipio->nombre}}
+					{{$incidente->municipio ? $incidente->municipio->nombre : "N/A"}}
 				</p>
 			</div>
 			<div class="col-12 col-md-4 mt-3">

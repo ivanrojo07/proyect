@@ -57,10 +57,10 @@
 									{{$incidente->seguimiento->nombre}}
 								</td>
 								<td>
-									{{$incidente->user->nombre}}
+									{{$incidente->user->full_name}}
 								</td>
 								<td>
-									{{$incidente->user->nombre}}
+									{{$incidente->user->institucion ? $incidente->user->institucion->nombre : "N/A"}}
 								</td>
 							</tr>
 						@empty

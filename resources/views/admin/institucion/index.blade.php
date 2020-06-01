@@ -59,16 +59,36 @@
 										{{$institucion->tipo_institucion}}
 									</td>
 									<td>
-										<img src="{{asset('storage/'.$institucion->path_imagen_header)}}" width="80">
+										@if ($institucion->path_imagen_header)
+											{{-- expr --}}
+											<img src="{{asset('storage/'.$institucion->path_imagen_header)}}" width="80">
+										@else
+											N/A
+										@endif
 									</td>
 									<td>
-										<img src="{{ asset('storage/'.$institucion->path_imagen_header2) }}" width="80">
+										@if ($institucion->path_imagen_header2)
+											{{-- expr --}}
+											<img src="{{ asset('storage/'.$institucion->path_imagen_header2) }}" width="80">
+										@else
+											N/A
+										@endif
 									</td>
 									<td>
-										<img src="{{ asset('storage/'.$institucion->path_imagen_favicon) }}" width="80">
+										@if ($institucion->path_imagen_favicon)
+											{{-- expr --}}
+											<img src="{{ asset('storage/'.$institucion->path_imagen_favicon) }}" width="80">
+										@else
+											N/A
+										@endif
 									</td>
 									<td>
-										<img src="{{ asset('storage/'.$institucion->path_imagen_footer) }}" width="80">
+										@if ($institucion->path_imagen_footer)
+											{{-- expr --}}
+											<img src="{{ asset('storage/'.$institucion->path_imagen_footer) }}" width="80">
+										@else
+											N/A
+										@endif
 									</td>
 									<td>
 										<div class="accordion" id="regiones_{{$institucion->id}}">

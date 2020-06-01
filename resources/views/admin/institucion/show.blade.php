@@ -34,7 +34,7 @@
 				          </div>
 				          <div class="modal-footer bg-secondary">
 				            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-				            <button type="submit" class="btn btn-danger">Registrar</button>
+				            <button type="submit" class="btn btn-danger">Eliminar</button>
 				          </div>
 				        </div>
 				      </div>
@@ -59,13 +59,21 @@
 			<div class="col-12 col-md-4">
 				<label for="header_1" class="label">Imagen principal</label>
 				<p>
-					<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_header) }}">
+					@if ($institucion->path_imagen_header)
+						<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_header) }}">
+					@else
+						N/A
+					@endif
 				</p>
 			</div>
 			<div class="col-12 col-md-4">
 				<label for="header_2" class="label">Imagen secundaría</label>
 				<p>
-					<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_header2) }}">
+					@if ($institucion->path_imagen_header2)
+						<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_header2) }}">
+					@else
+						N/A
+					@endif
 				</p>
 			</div>
 		</div>
@@ -73,13 +81,21 @@
 			<div class="col-12 offset-md-2 col-md-4">
 				<label for="favicon" class="label">Imagen favicon</label>
 				<p>
-					<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_favicon) }}">
+					@if ($institucion->path_imagen_favicon)
+						<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_favicon) }}">
+					@else
+						N/A
+					@endif
 				</p>
 			</div>
 			<div class="col-12 col-md-4">
 				<label for="footer" class="label">Imagen footer</label>
 				<p>
-					<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_footer) }}">
+					@if ($institucion->path_imagen_footer)
+						<img width="90" src="{{ asset('storage/'.$institucion->path_imagen_footer) }}">
+					@else
+						N/A
+					@endif
 				</p>
 			</div>
 		</div>

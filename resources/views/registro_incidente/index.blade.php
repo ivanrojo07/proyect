@@ -118,8 +118,6 @@
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script>
-	
-
         $("#datepicker").datepicker({
           onSelect: function(e) {
 	    var diafecha=e;

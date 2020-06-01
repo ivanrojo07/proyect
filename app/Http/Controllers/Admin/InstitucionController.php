@@ -75,7 +75,7 @@ class InstitucionController extends Controller
             $path_imagen_header = $this->uploadImage($request->file("header_1"));
         } else {
             // retornamos al formulario
-            return redirect()->route('admin.institucion.create');
+            return redirect()->route('admin.institucion.create')->with('mensaje','Se necesita una imagen de la institución');
         }
 
         // verificamos si header_2 es archivo valido
@@ -139,7 +139,7 @@ class InstitucionController extends Controller
             
         }
         // redirecciona al index
-        return redirect()->route('admin.institucion.index');
+        return redirect()->route('admin.institucion.index')->with('mensaje','Se creo la institución '.$institucion->nombre);
 
     }
 
@@ -287,7 +287,7 @@ class InstitucionController extends Controller
         // Atamos las relaciones de las categorias
         $institucion->categorias_incidente()->attach($request->categorias);
         // Redireccionamos al index
-        return redirect()->route('admin.institucion.index');
+        return redirect()->route('admin.institucion.index')->with('mensaje','Se actualizo  la institución '.$institucion->nombre);
 
 
 
@@ -304,7 +304,7 @@ class InstitucionController extends Controller
         // Eliminamos la institucion 
         $institucion->delete();
         // Redirigimos al index
-        return redirect()->route('admin.institucion.index');
+        return redirect()->route('admin.institucion.index')->with("mensaje",'Se elimino la institución '.$institucion->nombre);
     }
 
 

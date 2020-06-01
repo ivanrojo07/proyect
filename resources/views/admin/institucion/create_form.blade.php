@@ -153,7 +153,7 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="submit" class="btn btn-danger">Registrar</button>
+	            <button type="submit" class="btn btn-danger">Guardar</button>
 	          </div>
 	        </div>
 	      </div>

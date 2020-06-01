@@ -246,6 +246,30 @@
                 @yield('contenido')
                 {{-- Para secciones de modal --}}
                 @yield('modal')
+
+                {{-- Modal de acciones --}}
+                @if (Session::has("mensaje"))
+                  {{-- modal confirmar guardado/editar usuario --}}
+                  <!-- Modal -->
+                  <div class="modal fade" id="actionServer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                    <div class="modal-dialog modal-dialog-centered" role="document">
+                      <div class="modal-content">
+                        <div class="modal-header bg-dark">
+                          <h5 class="modal-title" id="exampleModalLongTitle">Acción</h5>
+                          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                            <span aria-hidden="true">&times;</span>
+                          </button>
+                        </div>
+                        <div class="modal-body bg-secondary">
+                          {{Session::get('mensaje')}}
+                        </div>
+                        <div class="modal-footer bg-secondary">
+                          <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                @endif
             </div>
          </div>
     </div>
@@ -291,6 +315,11 @@
       * Configuracion de script date piker en español
       * Configuracion de la ruta de la aplicacion --}}
     <script type="text/javascript">
+      
+      @if (Session::has("mensaje"))
+        $('#actionServer').modal("show");
+      @endif
+
       var rutaApp = '{!! url('/') !!}' + '/';
       $.datepicker.regional['es'] = {
         closeText: 'Cerrar',

@@ -10,7 +10,7 @@
 		<div class="collapse" id="collapseReporteDependencia" aria-labelledby="reportesDependencia" data-parent="#accordion">
 			<div class="card-body">
 				@foreach ($reportes as $index=>$reporte)
-					<div class="text-center">
+					<div class="text-center mt-5">
 						<h5>Reporte {{$index+1}}</h5>
 					</div>
 					<div class="for-group row">
@@ -105,7 +105,6 @@
 							<input class="form-control" readonly="" value="{{$reporte->folio}}">
 						</div>
 					</div>
-					<hr>
 				@endforeach
 			</div>
 		</div>
