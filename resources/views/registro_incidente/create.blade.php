@@ -1,5 +1,6 @@
 @extends('layouts.layoutBase')
 
+{{-- Menu parte lateral izquierda, con menu de navegación y calendario (se requiere el titulo de la pestaña y fecha donde redirigirse) --}}
 @include('registro_incidente.menu', ['titulo' => 'Nuevo incidente', 'fecha'=>Date('Y-m-d')])
 
 {{-- Contenido --}}
@@ -15,7 +16,7 @@
   			</label>
   			<div class="align-self-center">
   				<a href="{{ url('/incidente')}}?fecha={{ Date('Y-m-d') }}" class="btn boton1 m-2" style="background-color: #f5f5f5 !important; color: #231f20;">Cancelar</a>
-  				<button class="btn boton1 m-2" type="submit" style="background-color: #da291c !important; color: #f5f5f5;">Registrar</a>
+  				<button class="btn boton1 m-2" type="button" data-toggle="modal" data-target="#confirmSubmit" style="background-color: #da291c !important; color: #f5f5f5;">Registrar</a>
   			</div>
   		</div>
   		<ul class="nav nav-tabs"  >
@@ -244,7 +245,29 @@
   			</div>
   		</div>
   	</div>
+    {{-- modal confirmar incidente --}}
+    <!-- Modal -->
+    <div class="modal fade" id="confirmSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title" id="exampleModalLongTitle">Confirmación</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body bg-secondary">
+            ¿Estás seguro que deseas guardar estos cambios?
+          </div>
+          <div class="modal-footer bg-secondary">
+            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
+            <button type="submit" class="btn btn-danger">Registrar</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </form>
+
 @endsection
 
 {{-- Scripts --}}
@@ -308,7 +331,6 @@
         e.preventDefault();
         var lat = parseFloat($('#municipio option:selected').attr('data-lat'));
         var lng = parseFloat($('#municipio option:selected').attr('data-lng'));
-        $("#pac-input").val($("#pac-input").val()+", "+$('#municipio option:selected').attr('data-mun')+", "+$('#estado option:selected').attr('data-edo'));
         var latlng = new google.maps.LatLng( lat,lng);
         marker.setPosition(latlng);
         map.panTo(latlng);

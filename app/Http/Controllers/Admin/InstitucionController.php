@@ -18,11 +18,14 @@ class InstitucionController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
 
         //
-        $instituciones = Institucion::orderBy('nombre','asc')->get();
+        $search = strtolower($request->search);
+        $instituciones = $search ?
+                         Institucion::where("nombre","LIKE", "%$search%")->get()
+                          : Institucion::orderBy('nombre','asc')->get();
         return view('admin.institucion.index',['instituciones'=>$instituciones]);
     }
 

@@ -20,6 +20,30 @@ class Institucion extends Model
     protected $hidden = ['pivot'];
 
     /**
+     * Set the institucion's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNombreAttribute($value)
+    {
+        $this->attributes['nombre'] = strtolower($value);
+    }
+
+    /**
+     *  Mutador para que el nombre sea en mayuscula
+     *
+     *  @param  string  $value
+     *
+     *  @return string 
+     */
+    public function getNombreAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+
+    /**
      * Obtener los usuarios que pertenecen esta institucion
      *
      * @return \Illuminate\Database\Relations\HasMany

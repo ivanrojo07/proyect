@@ -55,12 +55,69 @@ class User extends Authenticatable
     }
 
     /**
+     *  Mutador para que el nombre sea en mayuscula
+     *
+     *  @param  string  $value
+     *
+     *  @return string 
+     */
+    public function getApellidoPaternoAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    /**
+     *  Mutador para que el nombre sea en mayuscula
+     *
+     *  @param  string  $value
+     *
+     *  @return string 
+     */
+    public function getApellidoMaternoAttribute($value)
+    {
+        return ucwords($value);
+    }
+
+    /**
+     * Set the user's first name.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setNombreAttribute($value)
+    {
+        $this->attributes['nombre'] = strtolower($value);
+    }
+
+    /**
+     * Set the user's apellido paterno.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setApellidoPaternoAttribute($value)
+    {
+        $this->attributes['apellido_paterno'] = strtolower($value);
+    }
+
+    /**
+     * Set the user's apellido materno.
+     *
+     * @param  string  $value
+     * @return void
+     */
+    public function setApellidoMaternoAttribute($value)
+    {
+        $this->attributes['apellido_materno'] = strtolower($value);
+    }
+
+    /**
      * Crea un atributo con el nombre completo del usuario
      *
      */
     public function getFullNameAttribute()
     {
-        return ucfirst($this->nombre)." ".ucfirst($this->apellido_paterno)." ".ucfirst($this->apellido_materno);
+        return ucwords($this->nombre)." ".ucwords($this->apellido_paterno)." ".ucwords($this->apellido_materno);
     }
 
     /**

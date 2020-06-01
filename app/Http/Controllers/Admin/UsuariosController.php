@@ -15,10 +15,16 @@ class UsuariosController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        // Obtenemos todos los usuarios paginados a 7 usuarios por pagina
-        $usuarios = User::orderBy('id','asc')->paginate(7);
+        $search = strtolower($request->search);
+        // Obtenemos todos los usuarios con o sin request de search
+        $usuarios = $search ? User::where("nombre","LIKE","%$search%")
+                                    ->orWhere("apellido_paterno","LIKE","%$search%")
+                                    ->orWhere("apellido_materno","LIKE","%$search%")
+                                    ->orWhere("email","LIKE","%$search%")
+                                    ->get()
+                            : User::orderBy('id','asc')->get();
         // Retornamos la vista index
         return view('admin.usuario.index',['usuarios'=>$usuarios]);
     }

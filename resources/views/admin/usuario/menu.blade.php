@@ -1,4 +1,4 @@
-{{-- Titulo de la pestaña --}}
+{{-- titulo de la pestaña --}}
 @section('titulo')
 	{{$titulo}}
 @endsection
@@ -8,21 +8,8 @@
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/jquery.flexdatalist.min.css') }}">
 	<link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css') }}">
   	<style type="text/css">
-  		#map{
-		    width: 100% !important;
-		    height: 36vh !important;
-		    position: relative !important;
-		    overflow: hidden !important;
-		}
   		table, th, td {
           /*border: 2px solid #48484b;*/
-      }
-      .info{
-		font-size: 15px;
-      }
-      .label{
-      	color: #FFA500;
-      	font-size: 15px;
       }
       th {}
          /* background-color: #3f444b;
@@ -49,38 +36,24 @@
           padding: 1px 38px;
       }
       /* Vista formulario editar  */
+      .info{
+        font-size: 15px;
+      }
+      .label{
+        color: #FFA500;
+        font-size: 15px;
+      }
       .Bajo{
         border-left: 5px solid green;
-        padding: 1px 15px;
+        padding: 1px 38px;
       }
       .Medio{
         border-left: solid 5px #ffc300;
-        padding: 1px 15px;
+        padding: 1px 38px;
       }
       .Alto{
         border-left: solid 5px #b3282d;
-        padding: 1px 15px;
-      }
-      .span-Bajo{
-      	width: 35px;
-      	height: 35px;
-    	border-radius: 16px;
-    	margin: 5px;
-    	background-color: #15a746;
-      }
-      .span-Medio{
-      	width: 35px;
-      	height: 35px;
-    	border-radius: 16px;
-    	margin: 5px;
-    	background-color: #ff8200;
-      }
-      .span-Alto{
-      	width: 35px;
-      	height: 35px;
-    	border-radius: 16px;
-    	margin: 5px;
-    	background-color: #b3282d;
+        padding: 1px 38px;
       }
       .panel {
             border: none;
@@ -203,9 +176,6 @@
 	    }
 	    .collapse.show {
 	    }
-	    label{
-	    	font-size: 15px;
-	    }
   	</style>
   	<!-- FUNCIONAL PARA LOS  DATE  PIKER -->
 	<script src="http://code.jquery.com/jquery-1.9.1.js"></script>
@@ -238,14 +208,14 @@
 {{-- Menu de navegacion --}}
 @section('botonera')
 	<a href="{{ route('home') }}"><span role="button" class="glbl glbl-home"  title="Inicio"></span></a>
+	<a href="{{ route('admin.usuarios.create') }}"><span role="button" class="glbl glbl-more"  title="Registrar"></span></a>
   <a href="#"  data-toggle="modal" data-target="#searchUser"><span role="button" class="glbl glbl-search"  title="Buscar"></span></a>
-	<a href="{{ route('incidente.create') }}"><span role="button" class="glbl glbl-more"  title="Registrar"></span></a>
 @endsection
 
 {{-- Titulo de sidebar --}}
 @section('titulopanel')
 	<div  class="titulolateral">
-        <h5>Incidentes 
+        <h5>Administración de usuarios 
             <a>
                 <span class="glbl2 glbl glbl-down"></span>
             </a>
@@ -257,14 +227,12 @@
 {{-- Contenido del sidebar --}}
 @section('panellateral')
 	<div>
-    <ul class="list-group">
-      <a href="{{ route('home') }}" class="list-group-item list-group-item-action list-group-item-secondary fas fa-globe"><span>Home</span></a>
-      <a href="{{ url('/incidente')}}?fecha{{ $fecha }}" class="list-group-item list-group-item-action list-group-item-secondary far fa-file-alt"><span>Incidentes</span></a>
-      <!--INFOMACION DEL DATEPIKER -->
-      <div class="input-append date" id="datepicker"></div>
+	    <ul class="list-group">
+	      <a href="{{ route('home') }}" class="list-group-item list-group-item-action list-group-item-secondary fas fa-globe"><span>Home</span></a>
+	      <a href="{{ route('admin.usuarios.index') }}" class="list-group-item list-group-item-action list-group-item-secondary far fa-file-alt"><span>Usuarios</span></a>
 
-    </ul>
-  </div>
+	    </ul>
+  	</div>
 @endsection
 
 @section('modal')
@@ -275,51 +243,25 @@
       
         <!-- Modal Header -->
         <div class="modal-header">
-          <h4 class="modal-title text-dark">Buscar Incidentes</h4>
+          <h4 class="modal-title text-dark">Buscar Usuario</h4>
           <button type="button" class="close" data-dismiss="modal">&times;</button>
         </div>
-        <ul class="nav nav-pills" id="pills-tab" role="tablist">
-          <li class="nav-item">
-            <a onclick="cambiarFormulario('tipo')" class="nav-link active" id="pills-tipo-tab" data-toggle="pill" href="#pills-tipo" role="tab" aria-controls="pills-tipo" aria-selected="true">Tipo de Seguimiento</a>
-          </li>
-          <li class="nav-item">
-            <a onclick="cambiarFormulario('serie')" class="nav-link" id="pills-serie-tab" data-toggle="pill" href="#pills-serie" role="tab" aria-controls="pills-serie" aria-selected="false">Número de serie</a>
-          </li>
-        </ul>
 
         {{-- formulario search --}}
-        <form action="{{ route('incidente.index') }}" method="GET">
+        <form action="{{ route('admin.usuarios.index') }}" method="GET">
           
           <!-- Modal body -->
           <div class="modal-body bg-secondary text-white">
-            <div class="tab-content m-3" id="pills-tabContent">
-              <div class="tab-pane fade show active bg-secondary" id="pills-tipo" role="tabpanel" aria-labelledby="pills-tipo-tab">
-                <div class="col-12 offset-md-3 col-md-6">
-                  <label for="tipo" class="label">
-                    Tipo de Seguimiento
-                  </label>
-                  <select name="tipo" id="tipo" class="form-control">
-                    <option value="">Seleccione una opción</option>
-                    @foreach ($tipo_seguimientos as $seguimiento)
-                      <option value="{{$seguimiento->id}}">{{$seguimiento->nombre}}</option>
-                    @endforeach
-                  </select>
-                </div>
-              </div>
-              <div class="tab-pane fade bg-secondary" id="pills-serie" role="tabpanel" aria-labelledby="pills-serie-tab">
-                <div class="col-12 offset-md-3 col-md-6">
-                  <label for="serie" class="label">
-                    Número de Serie
-                  </label>
-                  <input type="text" name="serie" id="serie" class="form-control">
-                </div>
-              </div>
+            <div class="col-12 offset-md-3 col-md-6">
+              <label class="label">
+                Buscar
+              </label>
+              <input class="form-control" name="search" id="search"></input>
             </div>
           </div>
           
           <!-- Modal footer -->
           <div class="modal-footer bg-secondary text-white d-flex justify-content-around">
-            <input type="hidden" name="fecha" id="fecha" value="{{$fecha}}">
             <button type="submit" class="btn btn-success">Buscar</button>
             <button type="button" class="btn btn-danger" data-dismiss="modal">Cancelar</button>
           </div>

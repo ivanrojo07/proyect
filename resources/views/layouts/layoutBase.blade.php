@@ -242,41 +242,12 @@
                 {{-- Position it --}}
                 <div style="position: absolute;top: 0;right: 0;" id="alertas">
                 </div>
+                {{-- Para seccione de vista --}}
                 @yield('contenido')
+                {{-- Para secciones de modal --}}
+                @yield('modal')
             </div>
          </div>
-
-
-
-       <!-- /.modal de Mensajes -->
-       <div class="modal fade" id="modalMensajes" tabindex="-1" role="dialog" aria-labelledby="myModalLabel">
-         <div class="modal-dialog" role="document">
-           <div class="modal-content">
-             <div class="modal-header">
-               <h5 class="modal-title">Mensaje:</h5>
-               <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                   |<span aria-hidden="true">&times;</span>
-               </button>
-             </div><!-- /.modal-header -->
-
-             <div class="modal-body">
-               <div class="row">
-                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                   <span aria-hidden="true"></span>
-                 </div>
-                 <div class="col-sm-12 col-md-12 col-lg-12 col-xl-12">
-                    <h4 id="mensaje"></h4>
-                 </div>
-               </div>
-             </div><!-- /.modal-body -->
-
-             <div class="modal-footer">
-                 <button type="button" class="btn btn-primary" id="bttn-modal-a">Aceptar</button>
-                 <button type="button" class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
-            </div><!-- /.modal-footer -->
-          </div><!-- /.modal-content -->
-        </div><!-- /.modal-dialog -->
-      </div><!-- /.modal -->
     </div>
       </main>
       <footer >

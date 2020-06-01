@@ -48,16 +48,24 @@ class RegistroIncidenteController extends Controller
 			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc')->get();
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->orderBy('hora_ocurrencia','asc');
 					break;
 
 				case "Estatal":
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('hora_ocurrencia','asc')->get();
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('hora_ocurrencia','asc');
 					break;
 				
 				default:
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('hora_ocurrencia','asc')->get();
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('hora_ocurrencia','asc');
 					break;
+			}
+
+			// formulario de busqueda extra
+			if ($request->tipo) {
+				$registro_incidentes->where('tipo_seguimiento_id',$request->tipo);
+			}
+			elseif ($request->serie) {
+				$registro_incidentes->where('id',"LIKE","%$request->serie%");
 			}
 
 		}
@@ -65,8 +73,9 @@ class RegistroIncidenteController extends Controller
 			$registro_incidentes = null;
 
 		}
+		$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 		// retornamos la vista con el registro de incidentes
-		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes,'fecha'=>$date,'institucion' => $institucion]);
+		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes->get(),'fecha'=>$date,'institucion' => $institucion, 'tipo_seguimientos' => $tipo_seguimientos]);
 
 	}
 
@@ -122,6 +131,7 @@ class RegistroIncidenteController extends Controller
 		// obtenemos el tipo de impacto, seguimiento y la fecha en que se registrara el incidente
 		$tipo_impacto = TipoImpacto::get();
 		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['inicial','único'])->get();
+		$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 		$date = Date('Y-m-d');
 		// Retornamos la vista con elformulario y las variables
 		return view('registro_incidente.create',[
@@ -131,6 +141,7 @@ class RegistroIncidenteController extends Controller
 			'estatus' => $status,
 			'tipo_impacto' => $tipo_impacto,
 			'tipo_seguimiento' => $tipo_seguimiento,
+			'tipo_seguimientos'=>$tipo_seguimientos,
 			'institucion' => $institucion,
 			'fecha' => $date
 		]);
@@ -260,11 +271,13 @@ class RegistroIncidenteController extends Controller
 			$dependencia = $incidente->dependencia_llamada;
 			$reportes = $incidente->dependencia_reportes;
 			// Retornamos la vista con los detalles del incidente
+			$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 			return view('registro_incidente.show',[
 				'incidente'=>$incidente,
 				'dependencia'=>$dependencia,
 				'reportes'=>$reportes,
-				'institucion' => $institucion
+				'institucion' => $institucion,
+				'tipo_seguimientos' => $tipo_seguimientos
 			]);
 		}
 		else{
@@ -327,6 +340,7 @@ class RegistroIncidenteController extends Controller
 		// Obtenemos los tipos de impacto y el seguimiento
 		$tipo_impacto = TipoImpacto::get();
 		$tipo_seguimiento = TipoSeguimiento::whereIn('nombre',['seguimiento','final'])->get();
+		$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 		// Retornamos una vista con el formulario
 		return view('registro_incidente.edit',[
 			'estados' => $estados,
@@ -336,7 +350,8 @@ class RegistroIncidenteController extends Controller
 			'tipo_impacto' => $tipo_impacto,
 			'tipo_seguimiento' => $tipo_seguimiento,
 			'incidente' => $incidente,
-			'institucion' => $institucion
+			'institucion' => $institucion,
+			'tipo_seguimientos' => $tipo_seguimientos
 		]);
 	}
 
