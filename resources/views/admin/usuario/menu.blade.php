@@ -208,8 +208,8 @@
 {{-- Menu de navegacion --}}
 @section('botonera')
 	<a href="{{ route('home') }}"><span role="button" class="glbl glbl-home"  title="Inicio"></span></a>
-	<a href="{{ route('admin.usuarios.create') }}"><span role="button" class="glbl glbl-more"  title="Registrar"></span></a>
   <a href="#"  data-toggle="modal" data-target="#searchUser"><span role="button" class="glbl glbl-search"  title="Buscar"></span></a>
+	<a href="{{ route('admin.usuarios.create') }}"><span role="button" class="glbl glbl-more"  title="Registrar"></span></a>
 @endsection
 
 {{-- Titulo de sidebar --}}
