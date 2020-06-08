@@ -13,7 +13,7 @@ class EstadosController extends Controller
     // Ruta GET ../api/web/estados
     public function getEstados(){
        //Obtener datos de estados y municipio de los diferentes tablas (Problemas con registros en formato json)
-    	$estados = Estado::get();
+    	$estados = Estado::orderBy('nombre','asc')->get();
         // retornamos una respuesta json con los estados de la bd
     	return response()->json(["estados"=>$estados],201);
     }
@@ -28,7 +28,7 @@ class EstadosController extends Controller
     		// Verificamos si existe el registro
     		if (!empty($estado)) {
     			// Creamos una tabla con los diferentes municipios de este estado
-    			$municipios = $estado->municipios;
+    			$municipios = $estado->municipios()->orderBy('nombre','asc')->get();
     			// Retornamos la list
     			return response()->json(['municipios'=>$municipios],201);
 
@@ -46,7 +46,7 @@ class EstadosController extends Controller
 		// Verificamos si existe el registro
 		if (!empty($estado)) {
     		// Creamos una tabla con los diferentes municipios de este estado
-			$municipios = $estado->municipios;
+			$municipios = $estado->municipios()->orderBy('nombre','asc')->get();
 			// Retornamos la list
 			return response()->json(["municipios"=>$municipios],201);
 		}
@@ -58,7 +58,7 @@ class EstadosController extends Controller
     // Rute GET ../api/web/municipios/{municipio}/localidades
     public function getLocalidades(Municipio $municipio){
         // Obtemenos las localidades del municipio
-        $localidades = $municipio->localidads;
+        $localidades = $municipio->localidads()->orderBy('nombre','asc')->get();
         // Retornamos una respuesta json con el resultado
         return response()->json(['localidades'=>$localidades],201);
     }

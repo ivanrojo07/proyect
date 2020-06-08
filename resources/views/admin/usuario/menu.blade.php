@@ -215,24 +215,22 @@
 {{-- Titulo de sidebar --}}
 @section('titulopanel')
 	<div  class="titulolateral">
-        <h5>Administración de usuarios 
-            <a>
-                <span class="glbl2 glbl glbl-down"></span>
-            </a>
-        </h5>
-        
-    </div>
+    <h5>Administración de usuarios 
+      <a>
+        <span class="glbl2 glbl glbl-down"></span>
+      </a>
+    </h5>
+  </div>
 @endsection
 
 {{-- Contenido del sidebar --}}
 @section('panellateral')
 	<div>
-	    <ul class="list-group">
-	      <a href="{{ route('home') }}" class="list-group-item list-group-item-action list-group-item-secondary fas fa-globe"><span>Home</span></a>
-	      <a href="{{ route('admin.usuarios.index') }}" class="list-group-item list-group-item-action list-group-item-secondary far fa-file-alt"><span>Usuarios</span></a>
-
-	    </ul>
-  	</div>
+    <ul class="list-group">
+      <a href="{{ route('home') }}" class="list-group-item list-group-item-action list-group-item-secondary fas fa-globe"><span>Home</span></a>
+      <a href="{{ route('admin.usuarios.index') }}" class="list-group-item list-group-item-action list-group-item-secondary far fa-file-alt"><span>Usuarios</span></a>
+    </ul>
+	</div>
 @endsection
 
 @section('modal')

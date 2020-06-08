@@ -12,7 +12,7 @@ class IncidentesController extends Controller
     public function getIncidentes(SubcategoriaIncidente $categoria)
     {
     	// Obtenemos el catalogo de incidente para esa categoria
-    	$incidentes = $categoria->catalogos;
+    	$incidentes = $categoria->catalogos()->orderBy('nombre','asc')->get();
     	// Retornamos un json con el resultado
     	return response()->json(['incidentes'=>$incidentes],200);
     }

@@ -82,13 +82,19 @@
 						Localidades afectadas
 					</label>
 					<ul class="list-group">
-						@forelse ($incidente->localidades as $localidad)
-							<li class="list-group-item">
-								{{$localidad->nombre}}
-							</li>
-						@empty
-							<li class="list-group-item">Sin Localidades</li>
-						@endforelse
+						<li class="list-group-item">
+							@forelse ($incidente->localidades as $localidad)
+								@if ($loop->first)
+							        {{$localidad->nombre}}
+							    @elseif($loop->last)
+							    	y {{$localidad->nombre}}.
+							    @else
+									, {{$localidad->nombre}}
+							    @endif
+							@empty
+								Sin Localidades
+							@endforelse
+						</li>
 					</ul>
 				</div>
 				<div class="col-6">

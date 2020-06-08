@@ -26,6 +26,9 @@ Route::middleware('auth:api')
 	->name('incindentes.')
 	->group(function(){
 
+		Route::get('/select/{fechas}','RegistroIncidenteController@select')->name('select')->where(array('fechas'=>'[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}-[0-9]{2}-[0-9]{2}+'));
+		Route::post('/serie','RegistroIncidenteController@serieIncidente');
+
 		Route::get('/','RegistroIncidenteController@index')->name('index');
 		Route::get('/today','RegistroIncidenteController@incidentesHoy')->name('today');
 		Route::get('/show/{incidente}','RegistroIncidenteController@showIncidente')->name('show');

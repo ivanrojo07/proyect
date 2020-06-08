@@ -67,6 +67,7 @@ class RegistroIncidenteController extends Controller
 			elseif ($request->serie) {
 				$registro_incidentes->where('id',"LIKE","%$request->serie%");
 			}
+			$registro_incidentes = $registro_incidentes->orderBy('created_at','desc')->get();
 
 		}
 		else{
@@ -75,7 +76,7 @@ class RegistroIncidenteController extends Controller
 		}
 		$tipo_seguimientos = TipoSeguimiento::orderBy('id','asc')->get();
 		// retornamos la vista con el registro de incidentes
-		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes->orderBy('hora_ocurrencia','DESC')->get(),'fecha'=>$date,'institucion' => $institucion, 'tipo_seguimientos' => $tipo_seguimientos]);
+		return view('registro_incidente.index',['registro_incidentes' => $registro_incidentes,'fecha'=>$date,'institucion' => $institucion, 'tipo_seguimientos' => $tipo_seguimientos]);
 
 	}
 

@@ -5,11 +5,65 @@ namespace App\Http\Controllers\Api\Incidente;
 use App\Dependencia\Dependencia;
 use App\Dependencia\ReporteDependencia;
 use App\Http\Controllers\Controller;
+use App\Http\Resources\RegistroIncidenteCollection;
+use App\Http\Resources\RegistroIncidente as RegistroIncidenteResource;
 use App\Incidente\RegistroIncidente;
 use Illuminate\Http\Request;
 
 class RegistroIncidenteController extends Controller
 {
+
+    /**
+     * Api de la versión anteriro, regresa incidentes en formato geojson
+     * registrados entre un rango de fechas.
+     * 
+     * Ruta GET ../api/incidentes
+     *
+     * @return \Illuminate\Http\Response
+     */
+    public function select($fechas, Request $request){
+        $req_fechas = explode("_",$fechas);
+        $fecha1 = $req_fechas[0];
+        $fecha2 = $req_fechas[1];
+        if ( \DateTime::createFromFormat('Y-m-d', $fecha1) && \DateTime::createFromFormat('Y-m-d', $fecha1)->format('Y-m-d') == $fecha1  && \DateTime::createFromFormat('Y-m-d', $fecha2) && \DateTime::createFromFormat('Y-m-d', $fecha2)->format('Y-m-d') == $fecha2 & strtotime($fecha1) < strtotime($fecha2) ) {
+
+            $user =$request->user();
+            $institucion = $user->institucion;
+            if ($institucion) {
+                switch ($institucion->tipo_institucion) {
+                    case "Federal":
+                        // Incidentes entre esas fechas
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+
+                    case "Estatal":
+                        // Incidentes entre esas fechas y los estados de esta institucion
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                    
+                    default:
+                        // Incidentes entre esas fechas y los municipios de esta institucion
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        break;
+                }
+                $incidentes_collection = new RegistroIncidenteCollection($incidentes);
+                // Retornamos la respuesta json con estos incidentes
+                return response()->json(['data'=>$incidentes_collection],200);
+            }
+            else{
+                // Retornamos null
+                return $response()->json(["data"=>null],200);
+
+            }
+            // it's a date
+            // $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+            // return response()->json(['incidentes'=>$incidentes],200);
+        }else{
+            return response()->json(['error'=>'formato de fecha incorrecto'],422);
+        }
+        
+    }
+
     /**
      * Display a listing of the resource.
      * 
@@ -43,12 +97,13 @@ class RegistroIncidenteController extends Controller
                     $incidentes = RegistroIncidente::whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                     break;
             }
+            $incidentes_collection = new RegistroIncidenteCollection($incidentes);
             // Retornamos la respuesta json con los incidentes
-            return response()->json(['incidentes'=>$incidentes],200);
+            return response()->json(['data'=>$incidentes_collection],200);
         }
         else{
             // Retornamos nulo
-            return $response()->json(['incidentes'=>null],200);
+            return $response()->json(['data'=>null],200);
 
         }
     }
@@ -87,12 +142,14 @@ class RegistroIncidenteController extends Controller
                     $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                     break;
             }
+
+            $incidentes_collection = new RegistroIncidenteCollection($incidentes);
             // retornamos una respuesta json con los incidentes
-            return response()->json(['incidentes'=>$incidentes],200);
+            return response()->json(['data'=>$incidentes_collection],200);
         }
         else{
             // retornamos null
-            return $response()->json(['incidentes'=>null],200);
+            return $response()->json(['data'=>null],200);
 
         }
     }
@@ -129,12 +186,13 @@ class RegistroIncidenteController extends Controller
                         $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                         break;
                 }
+                $incidentes_collection = new RegistroIncidenteCollection($incidentes);
                 // Retornamos una respuesta json con los incidentes
-                return response()->json(['incidentes'=>$incidentes],200);
+                return response()->json(['data'=>$incidentes_collection],200);
             }
             else{
                 // Retornamos una respuesta json nulo
-                return $response()->json(['incidentes'=>null],200);
+                return $response()->json(['data'=>null],200);
 
             }
     		// it's a date
@@ -178,12 +236,13 @@ class RegistroIncidenteController extends Controller
                         $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('municipio_id',$institucion->municipios->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                         break;
                 }
+                $incidentes_collection = new RegistroIncidenteCollection($incidentes);
                 // Retornamos la respuesta json con estos incidentes
-                return response()->json(['incidentes'=>$incidentes],200);
+                return response()->json(['data'=>$incidentes_collection],200);
             }
             else{
                 // Retornamos null
-                return $response()->json(['incidentes'=>null],200);
+                return response()->json(['data'=>null],200);
 
             }
     		// it's a date
@@ -287,8 +346,10 @@ class RegistroIncidenteController extends Controller
         // Y lo relacionamos al registro
 		$registro_incidente->dependencia_llamada()->save($dependencia);
 
+        $incidente_collection = new RegistroIncidenteResource($registro_incidente);
+
         // Retornamos la respuesta con el incidente
-        return response()->json(['incidente'=>$registro_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada'])],201);
+        return response()->json(['data'=>$incidente_collection],201);
     }
 
     /**
@@ -334,9 +395,9 @@ class RegistroIncidenteController extends Controller
         // si la bandera mostrar se activo
         if ($mostrar) {
             // Retornamos la respuesta del incidente con todas sus relaciones
-            $incidente_resp = $incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','incidente_siguiente','incidente_previo','dependencia_llamada','dependencia_reportes']);
+            $incidente_collection = new RegistroIncidenteResource($incidente);
             // Retornamos un json con la respuesta
-            return response()->json(['incidente'=>$incidente_resp],200);
+            return response()->json(['data'=>$incidente_collection],200);
         }
         else{
             // Retornamos un json nulo
@@ -402,7 +463,8 @@ class RegistroIncidenteController extends Controller
         // Y lo guardamos en la relacion con el incidente
         $registro_incidente->dependencia_reportes()->save($reporte_dependencia);
         // Retornamos una respuesta json con el reporte de la dependencia con su incidente
-        return response()->json(['reporte_dependencia'=>$reporte_dependencia->load('registro_incidente')]);
+        $incidente_collection = new RegistroIncidenteResource($registro_incidente);
+        return response()->json(['data'=>$incidente_collection],201);
     }
 
     /**
@@ -499,8 +561,9 @@ class RegistroIncidenteController extends Controller
         ]);
         // Y guardamos su relacion en el modelo
         $new_incidente->dependencia_llamada()->save($dependencia);
+        $incidente_collection = new RegistroIncidenteResource($new_incidente);
         // Retornamos una respuesta json con el nuevo incidente y sus relaciones
-        return response()->json(['incidente'=>$new_incidente->load(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades','dependencia_llamada','incidente_previo'])],201);
+        return response()->json(['data'=>$incidente_collection],201);
 
     }
 
