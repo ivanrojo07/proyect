@@ -12,7 +12,7 @@
 			</div>
 			<div class="card-body">
 				<table class="table table-bordered text-center">
-					<thead>
+					<thead style="display: table-header-group !important">
 						<th scope="col">
 							Serie
 						</th>
@@ -37,7 +37,7 @@
 					</thead>
 					<tbody>
 						@forelse ($incidentes as $key=>$incidente)
-							<tr>
+							<tr style="page-break-inside: avoid">
 								<th scope="row" class="{{$incidente->impacto->nombre}}">
 									<span class="badge">
 										{{$incidente->id}}

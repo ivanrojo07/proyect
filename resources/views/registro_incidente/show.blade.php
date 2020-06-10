@@ -312,7 +312,7 @@
 	{{-- MODAL PDF --}}
 	 <!-- Modal -->
 	<div class="modal fade" id="pdfIncidente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-		<div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 100%">
+		<div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 65%">
 			<div class="modal-content">
 				<div class="modal-header bg-dark">
 					<h5 class="modal-title" id="exampleModalLongTitle">PDF Incidentes del {{$incidente->fecha_ocurrencia}}</h5>
@@ -325,7 +325,7 @@
 					</iframe>      
 				</div>
 				<div class="modal-footer bg-secondary">
-					<button type="button" class="btn btn-secondary" data-dismiss="modal">Cerrar</button>
+					<button type="button" class="btn boton1" data-dismiss="modal">Cerrar</button>
 				</div>
 			</div>
 		</div>
