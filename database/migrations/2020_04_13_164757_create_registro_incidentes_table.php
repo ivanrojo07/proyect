@@ -24,6 +24,8 @@ class CreateRegistroIncidentesTable extends Migration
             $table->decimal('lat_especifica', 10, 7);
             $table->decimal('long_especifica', 10, 7);
             $table->text('lugares_afectados')->nullable();
+            $table->date('fecha_registro')->nullable();
+            $table->time('hora_registro')->nullable();
             $table->date('fecha_ocurrencia');
             $table->time('hora_ocurrencia');
             $table->string('afectacion_vial')->nullable();
@@ -35,22 +37,30 @@ class CreateRegistroIncidentesTable extends Migration
             // NIVEL DE IMPACTO
             $table->unsignedBigInteger('tipo_impacto_id');
 
-            $table->string('medidas_control');
+            $table->string('medidas_control')->nullable();
             $table->unsignedInteger('personas_afectadas')->default(0);
             $table->unsignedInteger('personas_lesionadas')->default(0);
             $table->unsignedInteger('personas_fallecidas')->default(0);
             $table->unsignedInteger('personas_desaparecidas')->default(0);
             $table->unsignedInteger('personas_evacuadas')->default(0);
             // respuesta institucional(por ver)
-            $table->string('dependencia');
-            $table->string('nombre_empleado');
-            $table->string('cargo_empleado');
+
+            $table->string('dependencia')->nullable();
+            $table->string('nombre_empleado')->nullable();
+            $table->string('cargo_empleado')->nullable();
+
+            // DATOS EXTRAS DEL JSON DE UPDATE INCIDENTE
+
+            $table->string('respuesta_institucional')->nullable();
+
+            $table->string('id_usuario')->nullable();
 
             // Usuario que registro el incidente
             $table->unsignedBigInteger('user_id');
 
             // Si existe seguimiento de un registro previo
-            $table->unsignedBigInteger('registro_incidente_id')->nullable();
+            // $table->unsignedBigInteger('registro_incidente_id')->nullable();
+            $table->unsignedBigInteger('serie_id')->nullable();
 
 
             $table->timestamps();
@@ -69,8 +79,11 @@ class CreateRegistroIncidentesTable extends Migration
             $table->foreign('tipo_impacto_id')->references('id')->on('tipo_impactos');
             // usuario que registro el incidente
             $table->foreign('user_id')->references('id')->on('users');
+
+            // Relacion con series de incidentes
+            $table->foreign('serie_id')->references('id')->on('series');
             // Si existe seguimiento de un registro previo
-            $table->foreign('registro_incidente_id')->references('id')->on('registro_incidentes');
+            // $table->foreign('registro_incidente_id')->references('id')->on('registro_incidentes');
         });
     }
 

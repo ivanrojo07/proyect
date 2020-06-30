@@ -18,12 +18,12 @@ class RegistroIncidenteObserver
     public function created(RegistroIncidente $registroIncidente)
     {
         //
-        try {
-            event(new NewIncidente($registroIncidente));
+        // try {
+        //     event(new NewIncidente($registroIncidente));
             
-        } catch (BroadcastException $e) {
-            Log::warning("Pusher Broadcast Exception, $e");
-        }
+        // } catch (BroadcastException $e) {
+        //     Log::warning("Pusher Broadcast Exception, $e");
+        // }
     }
 
     /**

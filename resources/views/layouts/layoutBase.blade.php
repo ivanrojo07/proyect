@@ -5,7 +5,7 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta name="csrf-token" content="{{ csrf_token() }}">
-    <link rel="icon" type="image/png" href="{{ asset('favicon/'.Auth::user()->institucion->nombre.'/'.Auth::user()->institucion->nombre.'.png') }}" />
+    <link rel="icon" type="image/png" href="{{ Auth::user()->institucion ? asset('favicon/'.Auth::user()->institucion->nombre.'/'.Auth::user()->institucion->nombre.'.png') : asset('favicon/favicon360.png') }}" />
     <title>@yield('titulo')</title>
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css?family=Raleway:100,600" rel="stylesheet" type="text/css">
@@ -102,7 +102,7 @@
                             <!--a role="button"  onclick="funcion_aparecer()" title="Salir" style=""-->
                              
                              <h1 style="color: #40474f;font: 16px arial;">Plataforma Emergencias </h1>
-                             <h6 style="color: #40474f;font: 10px arial;">{{ Auth::user()->institucion->nombre  }}</h6>
+                             <h6 style="color: #40474f;font: 10px arial;">{{ Auth::user()->institucion ? Auth::user()->institucion->nombre : "Sin Institución" }}</h6>
                             <!--/a-->
                           </div>
 
@@ -185,41 +185,40 @@
       <main>
         <!-- modal de login -->
         <div id="miModal" href="{{ route('logout') }}" >
-                        <div class="logoutbutton" style="text-align: end">
+          <div class="logoutbutton" style="text-align: end">
 
-                              <!--span aria-hidden="true" id="botoncerrar"  >&nbsp;&times;&nbsp;</span-->
-                               <span onclick="funcion_cerrar()"role="button" style="background: transparent;border: none; color: #40474f; font-size: 26px;" class="glbl glbl-close"  title="Cerrar"></span>
+                <!--span aria-hidden="true" id="botoncerrar"  >&nbsp;&times;&nbsp;</span-->
+                 <span onclick="funcion_cerrar()"role="button" style="background: transparent;border: none; color: #40474f; font-size: 26px;" class="glbl glbl-close"  title="Cerrar"></span>
 
-                          <div id="sesionmodal">
-                            @guest
-                                @else
-                                <div class="botonlogin">
-                                  Incidentes | {{ Auth::user()->name }}
-                                </div>
+            <div id="sesionmodal">
+              @guest
+                  @else
+                  <div class="botonlogin">
+                    Incidentes | {{ Auth::user()->name }}
+                  </div>
 
-                            @endguest
-                          </div>
+              @endguest
+            </div>
 
-                        </div>
-                        <h3 style="border-bottom:  double #f5f5f5;font-size: 16px;text-align: start">Contacto</h3>
-                        <div id="textologin">
-                          @yield('contenidosession')
-                          Centro de Tecnologías Unificadas<br><br>
-                          Lago Zurich No. 245<br>
-                          Torre Presa Falcón, Piso 19, Plaza Carso,<br>
-                          Ampliación Granada, Miguel Hidalgo,<br>
-                          Ciudad de México, México<br><br>
-                          Teléfono: +(52)5590003902 ext.520<br>
-                          <!--Correo: contacto@claro360.com-->
-                        </div>
+          </div>
+          <h3 style="border-bottom:  double #f5f5f5;font-size: 16px;text-align: start">Contacto</h3>
+          <div id="textologin">
+            @yield('contenidosession')
+            Centro de Tecnologías Unificadas<br><br>
+            Lago Zurich No. 245<br>
+            Torre Presa Falcón, Piso 19, Plaza Carso,<br>
+            Ampliación Granada, Miguel Hidalgo,<br>
+            Ciudad de México, México<br><br>
+            Teléfono: +(52)5590003902 ext.520<br>
+            <!--Correo: contacto@claro360.com-->
+          </div>
 
-                        <div id="salidasesion">
-                          <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
-                          @csrf
-                          </form>
-                          <button type="button" id="botonsesion" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <strong>{{ __('Cerrar Sesión') }} </strong></button>
-                        </div>
-
+          <div id="salidasesion">
+            <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
+            @csrf
+            </form>
+            <button type="button" id="botonsesion" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <strong>{{ __('Cerrar Sesión') }} </strong></button>
+          </div>
         </div>
           <!-- modal de login close -->
 
@@ -343,38 +342,50 @@
 
     @auth
         <script>
+          @if (Auth::user()->institucion)
+            {{-- expr --}}
             @switch(Auth::user()->institucion->tipo_institucion)
                 @case("Federal")
                     Echo.private("incidentes_federal").listen('NewIncidente',(res)=>{
-                        console.log(res.registro);
+                        // console.log(res.registro);
                         var registro = res.registro;
-                        crearToast(registro)
-                    }); 
+                        crearToastIncidente(registro)
+                    }).listen("NewReporteDependencia",(res)=>{
+                      // console.log(res);
+                      crearToastReporte(res.reporte);
+                    });
                     @break
                 @case("Estatal")
                     Echo.private("incidentes_estatal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
-                        console.log(res.registro);
+                        // console.log(res.registro);
                         var registro = res.registro;
-                        crearToast(registro)
-                    }); 
+                        crearToastIncidente(registro)
+                    }).listen("NewReporteDependencia",(res)=>{
+                      // console.log(res);
+                      crearToastReporte(res.reporte);
+                    });
                     @break
                 
                 @case("Municipal")
                     Echo.private("incidentes_municipal.{{Auth::user()->institucion_id}}").listen('NewIncidente',(res)=>{
-                        console.log(res.registro);
+                        // console.log(res.registro);
                         var registro = res.registro;
-                        crearToast(registro)
-                    }); 
+                        crearToastIncidente(registro)
+                    }).listen("NewReporteDependencia",(res)=>{
+                      // console.log(res);
+                      crearToastReporte(res.reporte);
+                    });
                     @break
 
                 @default
                         
             @endswitch
+          @endif
             
-            function crearToast(incidente) {
+            function crearToastIncidente(incidente) {
                 var html_toast = `  <div class="toast"  data-autohide="false" id="incidente_${incidente.id}" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:1;position:relative;">
                                       <div class="toast-header ${incidente.impacto.nombre === "Alto" ? 'bg-danger' : (incidente.impacto.nombre === "Medio" ? 'bg-warning' : 'bg-success')}">
-                                        <strong class="mr-auto"><a href="{{ url('incidente') }}/${incidente.id}">Nuevo incidente con folio #${incidente.id}!</a></strong>
+                                        <strong class="mr-auto"><a class="text-white" href="{{ url('incidente') }}/${incidente.id}">Nuevo incidente con folio #${incidente.id}!</a></strong>
                                         <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
                                           <span aria-hidden="true">&times;</span>
                                         </button>
@@ -385,6 +396,21 @@
                                     </div>`;
                 $("#alertas").append(html_toast);
                 $('#incidente_'+incidente.id).toast('show');
+            }
+            function crearToastReporte(reporte){
+              var html_toast =`<div class="toast"  data-autohide="false" id="reporte_${reporte.id}" role="alert" aria-live="assertive" aria-atomic="true" style="z-index:1;position:relative;">
+                                <div class="toast-header ${reporte.registro_incidente.impacto.nombre === "Alto" ? 'bg-danger' : (reporte.registro_incidente.impacto.nombre === "Medio" ? 'bg-warning' : 'bg-success')}">
+                                  <strong class="mr-auto"><a class="text-white" href="{{ url('incidente') }}/${reporte.registro_incidente.id}">Nuevo Reporte de dependencia #${reporte.id}!</a></strong>
+                                  <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                                </div>
+                                <div class="toast-body bg-secondary">
+                                  Existe un nuevo reporte de dependencia para el incidente #${reporte.registro_incidente.id} en ${reporte.registro_incidente.municipio.nombre+", "+reporte.registro_incidente.estado.nombre}.
+                                </div>
+                              </div>`;
+              $("#alertas").append(html_toast);
+              $('#reporte_'+reporte.id).toast('show');
             }
             
         </script>

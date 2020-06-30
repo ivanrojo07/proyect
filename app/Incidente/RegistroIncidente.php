@@ -16,19 +16,19 @@ class RegistroIncidente extends Model
      *
      * @return void
      */
-    protected static function booted()
-    {
-        // Crea el id antes de que se grabe el registro en la base de datos por medio del handler create
-        static::creating(function ($registroIncidente) {
-            //ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
-            $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
-        });
-        // Crea el id antes de que se grabe el registro en la base de datos por medio del handler save
-        static::saving(function ($registroIncidente) {
-            // ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
-            $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
-        });
-    }
+    // protected static function booted()
+    // {
+    //     // Crea el id antes de que se grabe el registro en la base de datos por medio del handler create
+    //     static::creating(function ($registroIncidente) {
+    //         //ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
+    //         $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
+    //     });
+    //     // Crea el id antes de que se grabe el registro en la base de datos por medio del handler save
+    //     static::saving(function ($registroIncidente) {
+    //         // ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
+    //         $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
+    //     });
+    // }
 
     protected $fillable=[
     	'descripcion',
@@ -36,6 +36,8 @@ class RegistroIncidente extends Model
     	'lat_especifica',
     	'long_especifica',
     	'lugares_afectados',
+        'fecha_registro',
+        'hora_registro',
     	'fecha_ocurrencia',
     	'hora_ocurrencia',
     	'afectacion_vial',
@@ -50,7 +52,9 @@ class RegistroIncidente extends Model
     	'personas_evacuadas',
     	'dependencia',
     	'nombre_empleado',
-    	'cargo_empleado'
+    	'cargo_empleado',
+        'respuesta_institucional',
+        'id_usuario'
     ];
 
     protected $hidden =[
@@ -167,6 +171,18 @@ class RegistroIncidente extends Model
     {
         return $this->hasMany('App\Dependencia\ReporteDependencia','registro_incidente_id','id');
     }
+
+    /**
+     * Se la serie del incidente
+     *
+     * @return \Illuminate\Database\Relations\HasOne
+     */
+    public function serie()
+    {
+        return $this->belongsTo('App\Incidente\Serie','serie_id','id');
+    }
+
+
 
     // Accesor para estatus
     public function getEstatusAttribute($value)

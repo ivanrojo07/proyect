@@ -14,10 +14,17 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('blueprint',function(){
-	return view('blueprint');
+	return view('blueprints');
 });
 Route::get('/', function () {
-    return view('welcome');
+	// Si esta autenticado, redirigir al home
+	if (Auth::user()) {
+		return redirect()->route('home');
+	}
+	else{
+		// si no, mostrar vista principal
+    	return view('welcome');		
+	}
 });
 
 Auth::routes([

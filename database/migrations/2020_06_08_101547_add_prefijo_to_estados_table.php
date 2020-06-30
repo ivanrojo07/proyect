@@ -28,7 +28,7 @@ class AddPrefijoToEstadosTable extends Migration
     {
         Schema::table('estados', function (Blueprint $table) {
             //
-            $table->dreopColumn('prefijo');
+            $table->dropColumn('prefijo');
         });
     }
 }

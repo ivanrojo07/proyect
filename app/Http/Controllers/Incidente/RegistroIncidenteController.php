@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Incidente;
 use App\Estado;
 use App\Http\Controllers\Controller;
 use App\Incidente\RegistroIncidente;
+use App\Incidente\Serie;
 use App\Incidente\SubcategoriaIncidente;
 use App\Incidente\TipoImpacto;
 use App\Incidente\TipoSeguimiento;
@@ -192,6 +193,10 @@ class RegistroIncidenteController extends Controller
 		];
 		// Validamos el request con las reglas de validacion
 		$request->validate($rules);
+		$serie = Serie::create([
+			'catalogo_incidente_id' => $request->incidente,
+    		'estado_id' => $request->estado
+		]);
 		// Obtenemos un nuevo modelo
 		$registro_incidente = new RegistroIncidente([
 			'descripcion' => $request->descripcion,
@@ -199,6 +204,8 @@ class RegistroIncidenteController extends Controller
 			'lat_especifica' => $request->latitud,
 			'long_especifica' => $request->longitud,
 			'lugares_afectados' => $request->lugares_afectados,
+			'fecha_registro' => Date('Y-m-d'),
+			'hora_registro' => Date('H:i:s'),
 			'fecha_ocurrencia' => $request->fecha,
 			'hora_ocurrencia' => $request->hora,
 			'afectacion_vial' => $request->afectacion_vial,
@@ -215,6 +222,7 @@ class RegistroIncidenteController extends Controller
 			'nombre_empleado' => $request->nombre,
 			'cargo_empleado' =>$request->cargo
 		]);
+		$registro_incidente->serie_id = $serie->id;
 		// Agregamos las relaciones correspondientes
 		$registro_incidente->catalogo_incidente_id = $request->incidente;
 		$registro_incidente->estado_id = $request->estado;
@@ -421,6 +429,7 @@ class RegistroIncidenteController extends Controller
 			'nombre_empleado' => $request->nombre,
 			'cargo_empleado' =>$request->cargo
 		]);
+		$nuevo_incidente->serie_id = $incidente->serie_id;
 		// Agregamos las relaciones, incluyendo el incidente previo a esta actualizacion
 		$nuevo_incidente->catalogo_incidente_id = $incidente->catalogo_incidente->id;
 		$nuevo_incidente->estado_id = $incidente->estado->id;
@@ -428,7 +437,6 @@ class RegistroIncidenteController extends Controller
 		$nuevo_incidente->tipo_seguimiento_id = $request->tipo_seguimiento;
 		$nuevo_incidente->tipo_impacto_id = $request->nivel_impacto;
 		$nuevo_incidente->user_id = Auth::user()->id;
-		$nuevo_incidente->registro_incidente_id = $incidente->id;
 		// Se graba el modelo a la base de datos
 		$nuevo_incidente->save();
 		// Insertamos las localidades afectadas

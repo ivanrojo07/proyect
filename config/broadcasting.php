@@ -42,6 +42,7 @@ return [
                 'port' => 6001,
                 'schema' => 'http'
             ],
+            'log'=>true,
         ],
 
         'redis' => [

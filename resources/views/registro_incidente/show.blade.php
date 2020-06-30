@@ -7,7 +7,7 @@
 	<div class="panel-content">
 		<div class="col-12 d-flex justify-content-between">
 			<label style="margin-top:1%;margin-left:1%;">
-				<h4 style="font-size: 20px;font-weight: bold;">Incidente #{{ $incidente->id }} | <span class="span-{{$incidente->impacto->nombre}}"></span> Prioridad: {{ $incidente->impacto->nombre }}</h4>
+				<h4 style="font-size: 20px;font-weight: bold;">Incidente #{{ $incidente->serie_id }} | <span class="span-{{$incidente->impacto->nombre}}"></span> Prioridad: {{ $incidente->impacto->nombre }}</h4>
 				<h6 style="font-size: 15px;">{{
 					$incidente->catalogo_incidente->subcategoria->categoria->nombre
 					." | ".
@@ -20,7 +20,7 @@
 			</label>
 			<div class="align-self-center">
 				<a href="{{ url('/incidente')}}?fecha={{ $incidente->fecha_ocurrencia }}" class="btn boton1 m-2" style="background-color: #f5f5f5 !important; color: #231f20;">Regresar</a>
-				<a href="{{ route('incidente.edit',['incidente'=>$incidente]) }}" class="btn boton1 m-2 {{ $incidente->incidente_siguiente || $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}" style="background-color: #da291c !important; color: #f5f5f5;">Actualizar</a>
+				<a href="{{ route('incidente.edit',['incidente'=>$incidente]) }}" class="btn boton1 m-2 {{ $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}" style="background-color: #da291c !important; color: #f5f5f5;">Actualizar</a>
 			</div>
 		</div>
 		<ul class="nav nav-tabs"  >
@@ -42,6 +42,12 @@
 				<p class="info">
 					{{$incidente->fecha_ocurrencia}}
 				</p>
+				<p class="label">
+					Fecha de Registro
+				</p>
+				<p class="info">
+					{{$incidente->fecha_registro}}
+				</p>
 			</div>
 			<div class="col-12 col-md-3 col-xl-3">
 				<p class="label">
@@ -49,6 +55,12 @@
 				</p>
 				<p class="info">
 					{{$incidente->hora_ocurrencia}}
+				</p>
+				<p class="label">
+					Hora de Registro
+				</p>
+				<p class="info">
+					{{$incidente->hora_registro}}
 				</p>
 			</div>
 		</div>
@@ -198,7 +210,7 @@
 					Dirección
 				</p>
 				<p class="info">
-					{{$incidente->locacion}}
+					{{$incidente->locacion ? $incidente->locacion : "N/A"}}
 				</p>
 			</div>
 			<div class="col-12 col-md-3 mt-3">
@@ -255,7 +267,7 @@
 							Medidas de control
 						</p>
 						<p class="info">
-							{{$incidente->medidas_control ? $incidente->medidas_control : '' }}
+							{{$incidente->medidas_control ? $incidente->medidas_control : 'N/A' }}
 						</p>
 					</div>
 					<div class="col-12 col-md-6 mt-3">
@@ -269,7 +281,7 @@
 										Dependencia
 									</p>
 									<p class="info">
-										{{$incidente->dependencia}}
+										{{$incidente->dependencia ? $incidente->dependencia : "N/A"}}
 									</p>
 								</div>
 								<div class="col-12">
@@ -277,7 +289,7 @@
 										Nombre
 									</p>
 									<p class="info">
-										{{$incidente->nombre_empleado}}
+										{{$incidente->nombre_empleado ? $incidente->nombre_empleado : "N/A"}}
 									</p>
 								</div>
 								<div class="col-12">
@@ -285,7 +297,7 @@
 										Cargo
 									</p>
 									<p class="info">
-										{{$incidente->cargo_empleado}}
+										{{$incidente->cargo_empleado ? $incidente->cargo_empleado : "N/A"}}
 									</p>
 								</div>
 							</div>
@@ -293,9 +305,21 @@
 					</div>
 				</div>
 				<div class="d-flex justify-content-around mt-3">
-					<a class="btn boton1 m-2 {{ $incidente->incidente_previo ? '' : 'disabled' }}" href="{{ $incidente->incidente_previo ? route('incidente.show',['incidente'=>$incidente->incidente_previo]) : '#' }}" style="background-color: #f5f5f5 !important; color: #231f20;">Incidente Previo</a>
 					<button type="button" class="btn boton1 m-2" style="background-color: #b3282d !important; color: #f5f5f5;" data-toggle="modal" data-target="#pdfIncidente">PDF</button>
-					<a class="btn boton1 m-2 {{ $incidente->incidente_siguiente ? '' : 'disabled' }}" href="{{ $incidente->incidente_siguiente ? route('incidente.show',['incidente'=>$incidente->incidente_siguiente]) : '#' }}" style="background-color: #da291c !important; color: #f5f5f5;">Incidente Siguiente</a>
+					<div class="card">
+						<div class="card-header bg-dark text-white">
+							Historial de incidentes
+						</div>
+						<div class="card-body bg-secondary">
+							<li class="list-group">
+								@foreach ($incidente->serie->registro_incidentes as $registro)
+									{{-- <ul class="list-group-item"> --}}
+										<a class="{{ $registro->id == $incidente->id ? 'list-group-item disabled' : 'list-group-item' }}" href="{{ route('incidente.show',['incidente'=>$registro]) }}">{{"Folio #$registro->serie_id $registro->id"}}</a>
+									{{-- </ul> --}}
+								@endforeach
+							</li>
+						</div>
+					</div>
 				</div>
 			</div>
 				<div class="col-12 mt-3 mb-3">

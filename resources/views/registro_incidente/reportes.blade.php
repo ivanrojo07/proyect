@@ -1,9 +1,10 @@
 @if ($reportes->isNotEmpty())
 	<div class="card bg-secondary">
-		<div class="card-header bg-dark" id="reportesDependencia">
+		<div class="card-header bg-dark" id="reportesDependencia"  data-toggle="collapse" data-target="#collapseReporteDependencia" aria-expanded="false" aria-controls="collapseReporteDependencia">
 			<h5 class="mb-0">
-				<button class="btn btn-link collapsed" data-toggle="collapse" data-target="#collapseReporteDependencia" aria-expanded="false" aria-controls="collapseReporteDependencia">
+				<button class="btn btn-link text-white collapsed" data-toggle="collapse" data-target="#collapseReporteDependencia" aria-expanded="false" aria-controls="collapseReporteDependencia">
 					Reportes dependencia
+					<span class="glbl2 glbl glbl-down"></span>
 				</button>
 			</h5>
 		</div>
@@ -11,98 +12,128 @@
 			<div class="card-body">
 				@foreach ($reportes as $index=>$reporte)
 					<div class="text-center mt-5">
-						<h5>Reporte {{$index+1}}</h5>
+						<h3>Reporte {{$index+1}}</h3>
 					</div>
 					<div class="for-group row">
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								ZP
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->zp}}">
+							<p class="info">
+								{{$reporte->zp}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Sector
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->sector}}">
+							<p class="info">
+								{{$reporte->sector}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Cuadrante
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->cuadrante}}">
+							<p class="info">
+								{{$reporte->cuadrante}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Hora de lectura
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->h_lectura}}">
+							<p class="info">
+								{{$reporte->h_lectura}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Motivo
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->motivo}}">
+							<p class="info">
+								{{$reporte->motivo}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Observaciones
 							</label>
-							<textarea class="form-control" readonly="">{{$reporte->observacion}}</textarea>
+							<p class="info">
+								{{$reporte->observacion}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Fecha de transmisión
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->f_transmision}}">
+							<p class="info">
+								{{$reporte->f_transmision}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Atención 
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->atencion}}">
+							<p class="info">
+								{{$reporte->atencion}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Razonamiento 
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->razonamiento}}">
+							<p class="info">
+								{{$reporte->razonamiento}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Fecha de razonamiento 
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->f_razonamiento}}">
+							<p class="info">
+								{{$reporte->f_razonamiento}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Observaciones de no atención 
 							</label>
-							<textarea class="form-control" readonly="">{{$reporte->razonamiento}}</textarea>
+							<p class="info">
+								{{$reporte->razonamiento}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Encargado 
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->nombre_encargado}}">
+							<p class="info">
+								{{$reporte->nombre_encargado}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Razón de no atención 
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->razon_noatencion}}">
+							<p class="info">
+								{{$reporte->razon_noatencion}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Dependencia
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->dependencia}}">
+							<p class="info">
+								{{$reporte->dependencia}}
+							</p>
 						</div>
 						<div class="col-12 col-md-4 mt-2">
-							<label class="text-md-right col-form-label-sm">
+							<label class="label">
 								Folio
 							</label>
-							<input class="form-control" readonly="" value="{{$reporte->folio}}">
+							<p class="info">
+								{{$reporte->folio}}
+							</p>
 						</div>
 					</div>
 				@endforeach

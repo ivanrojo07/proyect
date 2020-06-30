@@ -26,22 +26,22 @@ Route::middleware('auth:api')
 	->name('incindentes.')
 	->group(function(){
 
-		Route::get('/select/{fechas}','RegistroIncidenteController@select')->name('select')->where(array('fechas'=>'[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}-[0-9]{2}-[0-9]{2}+'));
-		Route::post('/serie','RegistroIncidenteController@serieIncidente');
 
 		Route::get('/','RegistroIncidenteController@index')->name('index');
+		Route::post('/update','RegistroIncidenteController@updateIncidente')->name('update');
+		Route::post('/serie','RegistroIncidenteController@getSerie')->name('serie');
 		Route::get('/today','RegistroIncidenteController@incidentesHoy')->name('today');
 		Route::get('/show/{incidente}','RegistroIncidenteController@showIncidente')->name('show');
 		Route::post('/store','RegistroIncidenteController@storeIncidente')->name('store');
-		Route::post('/update/{incidente}','RegistroIncidenteController@updateIncidente')->name('update');
 		Route::post('/reporte_dependencia','RegistroIncidenteController@reporteDependencia')->name('reporte_dependencia');
 		Route::get('/catalogo_incidente','CatalogoIncidenteController@catalogo')->name('catalogo_incidente');
 		Route::get('/tipo_seguimiento','CatalogoIncidenteController@tipoSeguimiento')->name('tipo_seguimiento');
 		Route::get('/nivel_impacto','CatalogoIncidenteController@nivelImpacto')->name('nivel_impacto');
 
+		Route::get('/select/{fechas}','RegistroIncidenteController@select')->name('select')->where(array('fechas'=>'[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}-[0-9]{2}-[0-9]{2}+'));
 
-		Route::get('/{fecha}','RegistroIncidenteController@incidentesDate')->name('date');
-		Route::get('/{fecha1}/{fecha2}','RegistroIncidenteController@incidentesBetween')->name('between');
+		// Route::get('/{fecha}','RegistroIncidenteController@incidentesDate')->name('date');
+		// Route::get('/{fecha1}/{fecha2}','RegistroIncidenteController@incidentesBetween')->name('between');
 });
 
 Route::middleware('auth:api')

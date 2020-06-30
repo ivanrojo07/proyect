@@ -40,7 +40,7 @@
 							<tr style="page-break-inside: avoid">
 								<th scope="row" class="{{$incidente->impacto->nombre}}">
 									<span class="badge">
-										{{$incidente->id}}
+										{{$incidente->serie_id}}
 									</span>
 								</th>
 								<td>

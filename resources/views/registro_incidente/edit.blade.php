@@ -24,7 +24,7 @@
 				</label>
 				<div class="align-self-center">
 					<a href="{{ route('incidente.show',['incidente'=>$incidente]) }}" class="btn boton1 m-2" style="background-color: #f5f5f5 !important; color: #231f20;">Regresar</a>
-					<button type="button" data-toggle="modal" data-target="#confirmSubmit" class="btn boton1 m-2 {{ $incidente->incidente_siguiente || $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}" style="background-color: #da291c !important; color: #f5f5f5;">Registrar</button>
+					<button type="button" data-toggle="modal" data-target="#confirmSubmit" class="btn boton1 m-2 {{ $incidente->seguimiento->nombre == 'Final' || $incidente->seguimiento->nombre == 'único' ? 'disabled' : '' }}" style="background-color: #da291c !important; color: #f5f5f5;">Registrar</button>
 				</div>
 			</div>
 			<ul class="nav nav-tabs"  >
@@ -97,7 +97,7 @@
 						Municipio
 					</label>
 					<p class="info">
-						{{$incidente->municipio->nombre}}
+						{{ $incidente->municipio ? $incidente->municipio->nombre : "N/A"}}
 					</p>
 				</div>
 			</div>
@@ -327,7 +327,7 @@
 	        document.getElementsByTagName("head")[0].appendChild(script);
 	        script.src = src;
 	    }
-	    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
+	    loadScript('https://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
 	            function(){/*log('google-loader has been loaded, but not the maps-API ');*/});
 	    function initialize() 
 	    {
@@ -449,7 +449,7 @@
 
 	    $(document).ready(function(){
 	    	// Obtener localidades de este municipio
-		    var municipio_id = {{$incidente->municipio->id}};
+		    var municipio_id = {{ $incidente->municipio ? $incidente->municipio->id : "null"}};
 		    var localidades_html = $("#localidades_afectadas");
 		    var mis_localidades = @json($incidente->localidades->pluck('id'));
 		    axios.get(`{{ url('api/web/municipios/') }}/${municipio_id}/localidades`).then(res=>{

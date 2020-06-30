@@ -55,7 +55,7 @@
 								<tr>
 									<td class="{{ $incidente->impacto->nombre }}">
 										<a href="{{ route('incidente.show',['incidente'=>$incidente]) }}" style="text-decoration: none; color: white;">
-											{{$incidente->id}}
+											{{"$incidente->serie_id"}}
 										</a>
 									</td>
 									<td>

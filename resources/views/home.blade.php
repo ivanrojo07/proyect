@@ -57,10 +57,3 @@
 @section('contenido')
     {{-- EMPTY --}}
 @endsection
-@push('scripts')
-    <script type="text/javascript">
-        $("#fecha").change(function(){
-            $("#changeFecha").submit();
-        })
-    </script>
-@endpush

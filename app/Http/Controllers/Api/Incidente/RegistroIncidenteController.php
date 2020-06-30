@@ -4,14 +4,136 @@ namespace App\Http\Controllers\Api\Incidente;
 
 use App\Dependencia\Dependencia;
 use App\Dependencia\ReporteDependencia;
+use App\Estado;
 use App\Http\Controllers\Controller;
-use App\Http\Resources\RegistroIncidenteCollection;
 use App\Http\Resources\RegistroIncidente as RegistroIncidenteResource;
+use App\Http\Resources\RegistroIncidenteCollection;
+use App\Http\Resources\ReporteDependencia as ReporteDependenciaResource;
+use App\Incidente\CatalogoIncidente;
 use App\Incidente\RegistroIncidente;
+use App\Incidente\Serie;
 use Illuminate\Http\Request;
 
 class RegistroIncidenteController extends Controller
 {
+
+    public function getSerie(Request $request){
+        $rules = [
+            'codigo' => "required|numeric|exists:catalogo_incidentes,clave",
+            'prefijo_edo' => "required|string|exists:estados,prefijo"
+        ];
+
+        // Validamos el request
+        $validator = $request->validate($rules);
+        // dd($request->codigo);
+        $incidente = CatalogoIncidente::where('clave','LIKE',"$request->codigo")->first();
+        $estado = Estado::where('prefijo',$request->prefijo_edo)->first();
+
+        // creamos un nuevo serie
+        $serie = new Serie([
+            'catalogo_incidente_id' => $incidente->id,
+            'estado_id' => $estado->id
+        ]);
+        $serie->save();
+
+        return response()->json(['serie'=> $serie->id,'status'=>200],200);
+
+    }
+
+
+    public function updateIncidente(Request $request)
+    {
+        // creamos las reglas de validacion
+        $rules=[
+            'incidente.serie' => "required|numeric|exists:series,id",
+            'incidente.clave' => "required|numeric|exists:catalogo_incidentes,clave",
+            'incidente.prefijoestado' => "required|string|exists:estados,prefijo",
+            'incidente.descripcion' => 'required|string|max:560',
+            'incidente.lugaresafectados' => 'nullable|string|max:200',
+            'incidente.ubicacionespecifica.lat'   => 'required|numeric',
+            'incidente.ubicacionespecifica.long'  => 'required|numeric',
+            'incidente.fecharegistro' => 'required|date|date_format:Y-m-d',
+            'incidente.horaregistro'  => 'required|date_format:H:i:s',
+            'incidente.fechaocurrencia' => 'required|date|date_format:Y-m-d',
+            'incidente.horaocurrencia'  => 'required|date_format:H:i:s',
+            'incidente.medidascontrol' => 'nullable|string|max:200',
+            'incidente.afectacionvial'    => 'nullable|string|max:200',
+            'incidente.personasafectadas'  => 'nullable|numeric|min:0',
+            'incidente.infraestructuraafectada' => 'nullable|string|max:200',
+            'incidente.personaslesionadas' => 'nullable|numeric|min:0',
+            'incidente.danoscolaterales' => 'nullable|string|max:200',
+            'incidente.personasfallecidas' => 'nullable|numeric|min:0',
+            'incidente.status' => 'required|boolean',
+            'incidente.personasdesaparecidas' => 'nullable|numeric|min:0',
+            'incidente.tiposeguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
+            'incidente.personasevacuadas' => 'nullable|numeric|min:0',
+            'incidente.radioNivelImpacto' => 'required|numeric|exists:tipo_impactos,id',
+            'incidente.id_usuario' => "nullable|numeric",
+
+            'incidente.respuestainstitucional'   => 'nullable|array|max:200',
+            'incidente.dependencias.datos_llamada' => 'nullable|array',
+            'incidente.dependencias.tiempo_llamada' => 'nullable|array',
+            'incidente.dependencias.tiempo_atencion' => 'nullable|array',
+            'incidente.dependencias.descripcion_llamada' => 'nullable|array'
+        ];
+        // Validamos el request con las reglas de validacion
+        $request->validate($rules);
+        // obtenemos los parametros del nuevo incidente
+        $incidente_param = $request->incidente;
+        // obtenemos los parametros de la respuesta institucional
+        $respuesta_institucional = $incidente_param['respuestainstitucional'];
+        // Obtenemos los parametros de la dependencia
+        $llamada_dependencia = $incidente_param['dependencias'];
+
+        $catalogo_incidente = CatalogoIncidente::where('clave','LIKE',"%".$incidente_param['clave']."%")->first();
+        $estado = Estado::where('prefijo','LIKE',"%".$incidente_param['prefijoestado']."%")->first();
+        // creamos un nuevo modelo registro de incidente
+        $new_incidente = new RegistroIncidente([
+            'descripcion' => $incidente_param['descripcion'],
+            'lat_especifica' => $incidente_param['ubicacionespecifica']['lat'],
+            'long_especifica' => $incidente_param['ubicacionespecifica']['long'],
+            'lugares_afectados' => $incidente_param['lugaresafectados'],
+            'fecha_registro' => $incidente_param['fecharegistro'],
+            'hora_registro' => $incidente_param['horaregistro'],
+            'fecha_ocurrencia' => $incidente_param['fechaocurrencia'],
+            'hora_ocurrencia' => $incidente_param['horaocurrencia'],
+            'afectacion_vial' => $incidente_param['afectacionvial'],
+            'afectacion_infraestructural' => $incidente_param['infraestructuraafectada'],
+            'danio_colateral' => $incidente_param['danoscolaterales'],
+            'estatus' => $incidente_param['status'],
+            'medidas_control' => $incidente_param['medidascontrol'],
+            'personas_afectadas' => $incidente_param['personasafectadas'],
+            'personas_lesionadas' => $incidente_param['personaslesionadas'],
+            'personas_fallecidas' => $incidente_param['personasfallecidas'],
+            'personas_desaparecidas' => $incidente_param['personasdesaparecidas'],
+            'personas_evacuadas' => $incidente_param['personasevacuadas'],
+            'respuestainstitucional' => $incidente_param['respuestainstitucional'],
+            'id_usuario' => $incidente_param['id_usuario']
+        ]);
+        // agregamos las relaciones con catalgo de incidente, estado, municipio,tipo seguimiento,tipo impacto,user y registro del incidente previo
+        $new_incidente->catalogo_incidente_id = $catalogo_incidente->id;
+        $new_incidente->estado_id = $estado->id;
+        // $new_incidente->municipio_id = $incidente->municipio->id;
+        $new_incidente->tipo_seguimiento_id = $incidente_param['tiposeguimiento'];
+        $new_incidente->tipo_impacto_id = $incidente_param['radioNivelImpacto'];
+        $new_incidente->user_id = $request->user()->id;
+        $new_incidente->serie_id = $incidente_param['serie'];
+        // Guardamos el nuevo incidente
+        $new_incidente->save();
+        // Creamos un nuevo modelo para llamada de la dependencia
+        $dependencia = new Dependencia([
+            'datos_llamada' => $llamada_dependencia['datos_llamada'],
+            'tiempo_llamada' => $llamada_dependencia['tiempo_llamada'],
+            'tiempo_atencion' => $llamada_dependencia['tiempo_atencion'],
+            'descripcion_llamada' => $llamada_dependencia['descripcion_llamada']
+        ]);
+        // Y guardamos su relacion en el modelo
+        $new_incidente->dependencia_llamada()->save($dependencia);
+        $incidente_collection = new RegistroIncidenteResource($new_incidente);
+        // Retornamos una respuesta json con el nuevo incidente y sus relaciones
+        return response()->json(['data'=>$incidente_collection],201);
+
+    }
 
     /**
      * Api de la versión anteriro, regresa incidentes en formato geojson
@@ -461,111 +583,14 @@ class RegistroIncidenteController extends Controller
 			'folio' => $reporte_params['folio']
         ]);
         // Y lo guardamos en la relacion con el incidente
-        $registro_incidente->dependencia_reportes()->save($reporte_dependencia);
+        $reporte_dependencia->registro_incidente_id = $registro_incidente->id;
+        $reporte_dependencia->save();
+        // $registro_incidente->dependencia_reportes()->save($reporte_dependencia);
         // Retornamos una respuesta json con el reporte de la dependencia con su incidente
-        $incidente_collection = new RegistroIncidenteResource($registro_incidente);
-        return response()->json(['data'=>$incidente_collection],201);
+        $reporte_collection = new ReporteDependenciaResource($reporte_dependencia);
+        return response()->json(['data'=>$reporte_collection],201);
     }
 
-    /**
-     * Update the specified resource in storage.
-     *
-     * Ruta POST ../api/incidentes/update/{incidente}
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function updateIncidente(Request $request,RegistroIncidente $incidente)
-    {
-        // creamos las reglas de validacion
-        $rules=[
-			'incidente.descripcion' => 'required|string|max:560',
-			'incidente.locacion'  => 'required|string|max:250',
-			'incidente.latitud'   => 'required|numeric',
-			'incidente.longitud'  => 'required|numeric',
-			'incidente.lugares_afectados' => 'nullable|string|max:200',
-			'incidente.localidades_afectadas.*' => "nullable|numeric|exists:localidads,id,municipio_id,{$incidente->municipio_id}",
-			'incidente.fecha' => 'required|date|date_format:Y-m-d',
-			'incidente.hora'  => 'required|date_format:H:i',
-			'incidente.afectacion_vial'    => 'nullable|string|max:200',
-			'incidente.personas_afectadas'  => 'required|numeric|min:0',
-			'incidente.infraestructura' => 'nullable|string|max:200',
-			'incidente.personas_lesionadas' => 'required|numeric|min:0',
-			'incidente.danos_colaterales' => 'nullable|string|max:200',
-			'incidente.personas_fallecidas' => 'required|numeric|min:0',
-			'incidente.estatus_incidente' => 'required|boolean',
-			'incidente.personas_desaparecidas' => 'required|numeric|min:0',
-			'incidente.tipo_seguimiento'  => 'required|numeric|exists:tipo_seguimientos,id',
-			'incidente.personas_evacuadas' => 'required|numeric|min:0',
-			'incidente.nivel_impacto' => 'required|numeric|exists:tipo_impactos,id',
-			'incidente.medida_control' => 'required|string|max:200',
-			'respuestainstitucional.dependencia'   => 'required|string|max:200',
-			'respuestainstitucional.nombre' => 'required|string|max:200',
-			'respuestainstitucional.cargo' => 'required|string|max:200',
-			'dependencia.datos_llamada' => 'nullable|array',
-			'dependencia.tiempo_llamada' => 'nullable|array',
-			'dependencia.tiempo_atencion' => 'nullable|array',
-			'dependencia.descripcion_llamada' => 'nullable|array'
-        ];
-        // Validamos el request con las reglas de validacion
-        $request->validate($rules);
-        // obtenemos los parametros del nuevo incidente
-        $incidente_param = $request->incidente;
-        // obtenemos los parametros de la respuesta institucional
-        $respuesta_institucional = $request->respuestainstitucional;
-        // Obtenemos los parametros de la dependencia
-        $dependencia = $request->dependencia;
-
-        // creamos un nuevo modelo registro de incidente
-        $new_incidente = new RegistroIncidente([
-            'descripcion' => $incidente_param['descripcion'],
-            'locacion' => $incidente_param['locacion'],
-            'lat_especifica' => $incidente_param['latitud'],
-            'long_especifica' => $incidente_param['longitud'],
-            'lugares_afectados' => $incidente_param['lugares_afectados'],
-            'fecha_ocurrencia' => $incidente_param['fecha'],
-            'hora_ocurrencia' => $incidente_param['hora'],
-            'afectacion_vial' => $incidente_param['afectacion_vial'],
-            'afectacion_infraestructural' => $incidente_param['infraestructura'],
-            'danio_colateral' => $incidente_param['danos_colaterales'],
-            'estatus' => $incidente_param['estatus_incidente'],
-            'medidas_control' => $incidente_param['medida_control'],
-            'personas_afectadas' => $incidente_param['personas_afectadas'],
-            'personas_lesionadas' => $incidente_param['personas_lesionadas'],
-            'personas_fallecidas' => $incidente_param['personas_fallecidas'],
-            'personas_desaparecidas' => $incidente_param['personas_desaparecidas'],
-            'personas_evacuadas' => $incidente_param['personas_evacuadas'],
-            'dependencia' => $respuesta_institucional['dependencia'],
-            'nombre_empleado' => $respuesta_institucional['nombre'],
-            'cargo_empleado' =>$respuesta_institucional['cargo']
-        ]);
-        // agregamos las relaciones con catalgo de incidente, estado, municipio,tipo seguimiento,tipo impacto,user y registro del incidente previo
-        $new_incidente->catalogo_incidente_id = $incidente->catalogo_incidente->id;
-        $new_incidente->estado_id = $incidente->estado->id;
-        $new_incidente->municipio_id = $incidente->municipio->id;
-        $new_incidente->tipo_seguimiento_id = $incidente_param['tipo_seguimiento'];
-        $new_incidente->tipo_impacto_id = $incidente_param['nivel_impacto'];
-        $new_incidente->user_id = $request->user()->id;
-        $new_incidente->registro_incidente_id = $incidente->id;
-        // Guardamos el nuevo incidente
-        $new_incidente->save();
-        // relacionamos las localidades afectadas
-        $new_incidente->localidades()->attach($incidente_param['localidades_afectadas']);
-        // Creamos un nuevo modelo para llamada de la dependencia
-        $dependencia = new Dependencia([
-            'datos_llamada' => $dependencia['datos_llamada'],
-            'tiempo_llamada' => $dependencia['tiempo_llamada'],
-            'tiempo_atencion' => $dependencia['tiempo_atencion'],
-            'descripcion_llamada' => $dependencia['descripcion_llamada']
-        ]);
-        // Y guardamos su relacion en el modelo
-        $new_incidente->dependencia_llamada()->save($dependencia);
-        $incidente_collection = new RegistroIncidenteResource($new_incidente);
-        // Retornamos una respuesta json con el nuevo incidente y sus relaciones
-        return response()->json(['data'=>$incidente_collection],201);
-
-    }
 
     // /**
     //  * Remove the specified resource from storage.

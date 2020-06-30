@@ -2,8 +2,10 @@
 
 namespace App\Providers;
 
+use App\Dependencia\ReporteDependencia;
 use App\Incidente\RegistroIncidente;
 use App\Observers\RegistroIncidenteObserver;
+use App\Observers\ReporteDependenciaObserver;
 use Illuminate\Support\ServiceProvider;
 
 class AppServiceProvider extends ServiceProvider
@@ -27,5 +29,6 @@ class AppServiceProvider extends ServiceProvider
     {
         //
         RegistroIncidente::observe(RegistroIncidenteObserver::class);
+        ReporteDependencia::observe(ReporteDependenciaObserver::class);
     }
 }

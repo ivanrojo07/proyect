@@ -41,7 +41,7 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-6">
+				<div class="col-12">
 					<label class="text-right col-form-label-sm">
 						Descripción del incidente
 					</label>
@@ -49,12 +49,14 @@
 						{{$incidente->descripcion}}
 					</li>
 				</div>
-				<div class="col-6">
+			</div>
+			<div class="form-group row">
+				<div class="col-12">
 					<label class="text-right col-form-label-sm">
 						Dirección
 					</label>
 					<li class="list-group-item">
-						{{$incidente->locacion}}
+						{{$incidente->locacion ? $incidente->locacion : "N/A"}}
 					</li>
 				</div>
 			</div>
@@ -77,7 +79,7 @@
 				</div>
 			</div>
 			<div class="form-group row">
-				<div class="col-6">
+				<div class="col-12">
 					<label class="text-right col-form-label-sm">
 						Localidades afectadas
 					</label>
@@ -97,7 +99,9 @@
 						</li>
 					</ul>
 				</div>
-				<div class="col-6">
+			</div>
+			<div class="form-group row">
+				<div class="col-12">
 					<label class="text-right col-form-label-sm">
 						Otros lugares afectados
 					</label>
@@ -130,6 +134,24 @@
 							</label>
 							<li class="list-group-item">
 								{{$incidente->hora_ocurrencia}}
+							</li>
+						</div>
+					</div>
+					<div class="form-group row">
+						<div class="col-6">
+							<label class="text-right col-form-label-sm">
+								Fecha de registro
+							</label>
+							<li class="list-group-item">
+								{{$incidente->fecha_registro}}
+							</li>
+						</div>
+						<div class="col-6">
+							<label class="text-right col-form-label-sm">
+								Hora de registro
+							</label>
+							<li class="list-group-item">
+								{{$incidente->hora_registro}}
 							</li>
 						</div>
 					</div>

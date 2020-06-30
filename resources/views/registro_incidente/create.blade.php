@@ -300,7 +300,7 @@
         document.getElementsByTagName("head")[0].appendChild(script);
         script.src = src;
     }
-    loadScript('http://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
+    loadScript('https://maps.googleapis.com/maps/api/js?v=3&sensor=false&callback=initialize&libraries=places&key={{env('MAP_KEY')}}',
             function(){/*log('google-loader has been loaded, but not the maps-API ');*/});
     function initialize() 
     {

@@ -19,7 +19,7 @@ class RegistroIncidente extends JsonResource
             "properties" => [
                 "title" => "incidentes",
                 "description" => [
-                    'serie' => $this->id,
+                    'serie' => $this->serie_id,
                     'descripcion' => $this->descripcion,
                     'catalogo_incidente' => $this->catalogo_incidente->load(["prioridad","subcategoria","subcategoria.categoria"]),
                     'locacion' => $this->locacion,
@@ -30,6 +30,8 @@ class RegistroIncidente extends JsonResource
                     'municipio' => $this->municipio,
                     'localidades_afectadas' => $this->localidades,
                     'lugares_afectados' => $this->lugares_afectados,
+                    'fecha_registro' => $this->fecha_registro,
+                    'hora_registro' => $this->hora_registro,
                     'fecha_ocurrencia' => $this->fecha_ocurrencia,
                     'hora_ocurrencia' => $this->hora_ocurrencia,
                     'afectacion_vial' => $this->afectacion_vial,
@@ -43,14 +45,13 @@ class RegistroIncidente extends JsonResource
                     'personas_fallecidas' => $this->personas_fallecidas,
                     'personas_desaparecidas' => $this->personas_desaparecidas,
                     'personas_evacuadas' => $this->personas_evacuadas,
+                    'respuesta_institucional_json' => $this->respuesta_institucional,
                     'respuesta_institucional' =>[
                         'dependencia' => $this->dependencia,
                         'nombre_empleado' => $this->nombre_empleado,
                         'cargo_empleado' => $this->cargo_empleado
                     ],
                     'usuario' => $this->user,
-                    'incidente_siguiente'=> $this->incidente_siguiente,
-                    'incidente_previo' => $this->incidente_previo,
                     'dependencia_llamada' => $this->dependencia_llamada,
                     'dependencia_reportes' => $this->dependencia_reportes
                 ],

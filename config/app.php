@@ -234,4 +234,76 @@ return [
 
     ],
 
+
+    /*
+    |--------------------------------------------------------------------------
+    | Debug BlackList
+    |--------------------------------------------------------------------------
+    |
+    | Oculta variables que puedan comprometer al proyecto
+    |
+    */
+    'debug_blacklist' => [
+        '_ENV' => [
+            'APP_KEY',
+            'DB_DATABASE',
+            'DB_PASSWORD',
+            'DB_USERNAME',
+            'REDIS_PASSWORD',
+            'MAIL_PASSWORD',
+            'PUSHER_APP_KEY',
+            'PUSHER_APP_SECRET',
+            'DB_CONNECTION',
+            'DB_HOST',
+            'DB_PORT',
+            'DB_CONNECTION_SECOND',
+            'DB_HOST_SECOND',
+            'DB_PORT_SECOND',
+            'DB_DATABASE_SECOND',
+            'DB_USERNAME_SECOND',
+            'DB_PASSWORD_SECOND',
+            'PUSHER_APP_ID',
+            'MIX_PUSHER_APP_KEY',
+            'API_INIDENTESTOKEN',
+            'REDIS_HOST',
+            'REDIS_PORT',
+            'MAIL_DRIVER',
+            'MAIL_HOST',
+            'MAIL_PORT',
+            'REDIS_HOST',
+        ],
+        '_SERVER' => [
+            'APP_KEY',
+            'DB_DATABASE',
+            'DB_PASSWORD',
+            'DB_USERNAME',
+            'REDIS_PASSWORD',
+            'MAIL_PASSWORD',
+            'PUSHER_APP_KEY',
+            'PUSHER_APP_SECRET',
+            'DB_CONNECTION',
+            'DB_HOST',
+            'DB_PORT',
+            'DB_CONNECTION_SECOND',
+            'DB_HOST_SECOND',
+            'DB_PORT_SECOND',
+            'DB_DATABASE_SECOND',
+            'DB_USERNAME_SECOND',
+            'DB_PASSWORD_SECOND',
+            'PUSHER_APP_ID',
+            'MIX_PUSHER_APP_KEY',
+            'API_INIDENTESTOKEN',
+            'REDIS_HOST',
+            'REDIS_PORT',
+            'MAIL_DRIVER',
+            'MAIL_HOST',
+            'MAIL_PORT',
+            'REDIS_HOST',
+        ],
+        '_POST' => [
+            'password',
+        ],
+    ],
+
+
 ];

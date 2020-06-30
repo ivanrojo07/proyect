@@ -13,20 +13,20 @@ class ReporteDependencia extends Model
 
     protected $fillable=[
     	'zp',
-		'sector',
-		'cuadrante',
-		'h_lectura',
-		'motivo',
-		'observacion',
-		'f_transmision',
-		'atencion',
-		'razonamiento',
-		'f_razonamiento',
-		'obs_noatencion',
-		'nombre_encargado',
-		'razon_noatencion',
-		'dependencia',
-		'folio'
+  		'sector',
+  		'cuadrante',
+  		'h_lectura',
+  		'motivo',
+  		'observacion',
+  		'f_transmision',
+  		'atencion',
+  		'razonamiento',
+  		'f_razonamiento',
+  		'obs_noatencion',
+  		'nombre_encargado',
+  		'razon_noatencion',
+  		'dependencia',
+  		'folio'
     ];
 
     protected $hidden=[
