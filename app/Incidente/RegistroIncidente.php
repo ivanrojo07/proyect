@@ -16,20 +16,8 @@ class RegistroIncidente extends Model
      *
      * @return void
      */
-    // protected static function booted()
-    // {
-    //     // Crea el id antes de que se grabe el registro en la base de datos por medio del handler create
-    //     static::creating(function ($registroIncidente) {
-    //         //ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
-    //         $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
-    //     });
-    //     // Crea el id antes de que se grabe el registro en la base de datos por medio del handler save
-    //     static::saving(function ($registroIncidente) {
-    //         // ID = Año.Mes.Dia.TotalDeRegistrosEnLaBD
-    //         $registroIncidente->id = intval(Date('Ymd').count(DB::select('select * from registro_incidentes')));
-    //     });
-    // }
 
+    // campos a registrar
     protected $fillable=[
     	'descripcion',
         'locacion',
@@ -54,9 +42,10 @@ class RegistroIncidente extends Model
     	'nombre_empleado',
     	'cargo_empleado',
         'respuesta_institucional',
+        // No entendí porque usan esto pero lo agregan
         'id_usuario'
     ];
-
+    // Campos a ocultar en json
     protected $hidden =[
         'catalogo_incidente_id',
         'estado_id',
@@ -173,7 +162,7 @@ class RegistroIncidente extends Model
     }
 
     /**
-     * Se la serie del incidente
+     *  La serie del incidente
      *
      * @return \Illuminate\Database\Relations\HasOne
      */

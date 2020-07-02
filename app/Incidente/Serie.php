@@ -21,21 +21,24 @@ class Serie extends Model
             $serie->id = intval(Date('Ymd').count(DB::select('select * from series')));
         });
     }
-    //
+    // Registramos el id del incidente y el estado donde se registro
     protected $fillable=[
     	'catalogo_incidente_id',
     	'estado_id'
     ];
 
+    // El catalogo nacional de incidente que se relacionó
     public function catalogo_incidente()
     {
     	return $this->belongsTo('App\Incidente\CatalogoIncidente');
     }
 
+    // El estado donde proviene la serie 
     public function estado(){
     	return $this->belongsTo('App\Estado');
     }
 
+    // Los registros de las diferentes dependencias
     public function registro_incidentes()
     {
     	return $this->hasMany('App\Incidente\RegistroIncidente');
