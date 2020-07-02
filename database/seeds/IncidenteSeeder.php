@@ -4,6 +4,7 @@ use App\Dependencia\Dependencia;
 use App\Dependencia\ReporteDependencia;
 use App\Incidente\CatalogoIncidente;
 use App\Incidente\RegistroIncidente;
+use App\Incidente\Serie;
 use App\Localidad;
 use App\Municipio;
 use Illuminate\Database\Seeder;
@@ -81,8 +82,10 @@ class IncidenteSeeder extends Seeder
 			    	'lat_especifica' => ($ubicacion_especifica ? ($ubicacion_especifica['lat'] ? $ubicacion_especifica['lat'] : 0.0 ) : 0.0),
 			    	'long_especifica' => ($ubicacion_especifica ? ($ubicacion_especifica['long'] ? $ubicacion_especifica['long'] : 0.0) : 0.0),
 			    	'lugares_afectados' => $row->poblaciones_afectadas ,
-			    	'fecha_ocurrencia' => ( $row->f_ocurrencia ? $row->f_ocurrencia : Date('Y-m-d')),
+			    	'fecha_ocurrencia' => ( $row->f_ocurrencia ? $row->f_ocurrencia : Date('Y-m-d',strtotime("2019-10-08"))),
 			    	'hora_ocurrencia' => ($row->h_ocurrencia ? $row->h_ocurrencia : Date('H:i:s')),
+            'fecha_registro' => ( $row->f_registro ? $row->f_registro : Date('Y-m-d',strtotime("2019-10-08"))),
+            'hora_registro' => ($row->h_registro ? $row->h_registro : Date('H:i:s')),
 			    	'afectacion_vial' => $row->afectacion_vial,
 			    	'afectacion_infraestructural' => $row->infraestructura_afectada,
 			    	'danio_colateral' => ($row->danio_colaterales ? $row->danio_colaterales : 0),
@@ -111,9 +114,16 @@ class IncidenteSeeder extends Seeder
        			$registro->user_id = 2;
        			$registro->save();
        			if ($serie_anterior == $row->numserie) {
-       				$registro->registro_incidente_id = $id_anterior;
+       				$registro->serie_id = $id_anterior;
        			}
-       			$id_anterior = $registro->id;
+            else{
+              $serie = Serie::create([
+                'catalogo_incidente_id' => $catalogo->id,
+                'estado_id' => ($row->prefijo_estado == null ? 9 : $estados[$row->prefijo_estado]['id'])
+              ]);
+              $id_anterior = $serie->id;
+              $registro->serie_id = $id_anterior;
+            }
        			$serie_anterior = $row->numserie;
        			$registro->save();
        			if ($zonas_afectadas && !empty($zonas_afectadas)) {

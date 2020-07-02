@@ -5,6 +5,7 @@ namespace App\Observers;
 use App\Dependencia\ReporteDependencia;
 use App\Events\NewReporteDependencia;
 use Illuminate\Broadcasting\BroadcastException;
+use Illuminate\Support\Facades\Log;
 
 class ReporteDependenciaObserver
 {

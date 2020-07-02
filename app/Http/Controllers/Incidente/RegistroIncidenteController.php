@@ -433,7 +433,7 @@ class RegistroIncidenteController extends Controller
 		// Agregamos las relaciones, incluyendo el incidente previo a esta actualizacion
 		$nuevo_incidente->catalogo_incidente_id = $incidente->catalogo_incidente->id;
 		$nuevo_incidente->estado_id = $incidente->estado->id;
-		$nuevo_incidente->municipio_id = $incidente->municipio->id;
+		$nuevo_incidente->municipio_id = ( $incidente->municipio ? $incidente->municipio->id : null);
 		$nuevo_incidente->tipo_seguimiento_id = $request->tipo_seguimiento;
 		$nuevo_incidente->tipo_impacto_id = $request->nivel_impacto;
 		$nuevo_incidente->user_id = Auth::user()->id;

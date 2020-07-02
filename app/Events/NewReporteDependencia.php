@@ -46,8 +46,10 @@ class NewReporteDependencia implements ShouldBroadcast
             
         }
         // Introducir channels de las instituciones que tienen  el mismo municipio
-        foreach ($this->reporte->registro_incidente->municipio->institucions as $institucion) {
-            array_push($channels, new PrivateChannel('incidentes_municipal.'.$institucion->id));
+        if ($this->reporte->registro_incidente->municipio) {
+            foreach ($this->reporte->registro_incidente->municipio->institucions as $institucion) {
+                array_push($channels, new PrivateChannel('incidentes_municipal.'.$institucion->id));
+            }   
         }
         return $channels;
     }
