@@ -45,6 +45,17 @@ Route::middleware('auth:api')
 });
 
 Route::middleware('auth:api')
+	->namespace('Api\Covid')
+	->prefix('test_covid')
+	->name('test_covid.')
+	->group(function(){
+
+		Route::post('/store','CovidController@store')->name('store');
+		Route::get('/select/{fechas}','CovidController@select')->name('select')->where(array('fechas'=>'[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}-[0-9]{2}-[0-9]{2}+'));
+
+});
+
+Route::middleware('auth:api')
 	->namespace('Api\Estado')
 	->prefix('estados')
 	->name('estados.')

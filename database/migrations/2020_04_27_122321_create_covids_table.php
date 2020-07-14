@@ -33,7 +33,7 @@ class CreateCovidsTable extends Migration
             $table->integer('escurrimiento_nasal');
             $table->integer('dolor_cuerpo');
             $table->integer('conjuntivitis');
-            $table->integer('condiciones_medicas');
+            $table->string('condiciones_medicas');
             $table->integer('embarazada');
             $table->integer('meses_embarazo');
             $table->integer('dias_sintomas');

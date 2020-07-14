@@ -174,7 +174,7 @@ class RegistroIncidenteController extends Controller
             }
             else{
                 // Retornamos null
-                return $response()->json(["data"=>null],200);
+                return response()->json(["data"=>null],200);
 
             }
             // it's a date

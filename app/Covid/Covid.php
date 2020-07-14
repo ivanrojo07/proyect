@@ -41,10 +41,16 @@ class Covid extends Model
     	'origen',
     	'perfil',
     	'rango',
-    	'nivel'
+    	'nivel',
+        'id_usuario',
+        'edad',
+        'genero',
+        'cp',
+        'score'
     ];
 
     protected $hidden = [
+        'user_id',
     	'created_at',
     	'updated_at',
     	'deleted_at'
