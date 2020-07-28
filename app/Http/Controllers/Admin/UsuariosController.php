@@ -7,9 +7,19 @@ use App\Roles\Institucion;
 use App\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Http;
 
 class UsuariosController extends Controller
 {
+    public $usuario_360_url, $registro_usuario, $asignar_modulo;
+
+    public function __construct()
+    {
+        $this->usuario_360_url = env("USUARIOS_360_URL");
+        $this->registro_usuario = "/registro";
+        $this->asignar_modulo = "/registro_modulo";
+    }
+
     /**
      * Display a listing of the resource.
      *
@@ -43,6 +53,27 @@ class UsuariosController extends Controller
         return view('admin.usuario.form',['instituciones'=>$instituciones,'edit'=>false]);
     }
 
+    public function setParamNewUsuario($data)
+    {
+        return [
+            "correo" => $data["email"],
+            "nombre" => $data["nombre"],
+            "apellido_paterno" => $data["apellido_paterno"],
+            "apellido_materno" => $data["apellido_materno"],
+            "contrasenia" => $data["password"]
+        ];
+    }
+
+    public function setParamModulo($id360, $institucion_id,$activo)
+    {
+        return [
+            "id360" => "$id360",
+            "modulo" => "incidentes",
+            "institucion_id" => intval($institucion_id),
+            "activo" => $activo
+        ];
+    }
+
     /**
      * Store a newly created resource in storage.
      *
@@ -62,22 +93,52 @@ class UsuariosController extends Controller
         ];
         // Validamos el request con las reglas
         $request->validate($rules);
-        // Creamos un modelo usuario
-        $user = User::create([
-            'nombre' => $request->nombre,
-            'apellido_paterno' => $request->apellido_paterno,
-            'apellido_materno' => $request->apellido_materno,
-            'email' => $request->email,
-            'password' => Hash::make($request->password),
-        ]);
-        // Buscamos la institucion con el íd dado
-        $institucion = Institucion::find($request->institucion);
-        // Y lo asociamos con el usuario
-        $user->institucion()->associate($institucion);
-        // Grabamos el modelo en la bd
-        $user->save();
-        // Redirigimos al index
-        return redirect()->route('admin.usuarios.index')->with('mensaje',"Se creo un usuario");
+
+        $registro_usuario_param = $this->setParamNewUsuario($request);
+        // dd($registro_usuario_param);
+        $response = Http::post($this->usuario_360_url.$this->registro_usuario,$registro_usuario_param);
+        if ($response->ok()) {
+            $body = $response->json();
+            if ($body["success"]) {
+                // Registrar modulo en claro 360
+                $registro_modulo_param = $this->setParamModulo($body["id360"],$request->institucion,"1");
+                $res_modulo = Http::post($this->usuario_360_url.$this->asignar_modulo,$registro_modulo_param);
+                $body_modulo = $res_modulo->json();
+                if ($res_modulo->ok() && $body_modulo["success"]) {
+                    // Creamos un modelo usuario
+                    $user = User::create([
+                        'nombre' => $request->nombre,
+                        'apellido_paterno' => $request->apellido_paterno,
+                        'apellido_materno' => $request->apellido_materno,
+                        'email' => $request->email,
+                        'password' => Hash::make($request->password),
+                    ]);
+                    $user->id = $body["id360"];
+                    // Buscamos la institucion con el íd dado
+                    $institucion = Institucion::find($request->institucion);
+                    // Y lo asociamos con el usuario
+                    $user->institucion()->associate($institucion);
+                    // Grabamos el modelo en la bd
+                    $user->save();
+                    // Redirigimos al index
+                    return redirect()->route('admin.usuarios.index')->with('mensaje',$body['mensaje']);
+                }
+                else{
+                    return redirect()->route("admin.usuarios.index")->with("mensaje","No se asigno el modulo");
+                }
+                
+            }
+            else if ($body["failure"]) {
+                return redirect()->route("admin.usuarios.index")->with("mensaje",$body['mensaje']);
+            }
+            else{
+                return redirect()->route("admin.usuarios.index")->with("mensaje","Error con en el servidor con la creación de usuarios 360");
+            }
+        }
+        else{
+            return redirect()->route("admin.usuarios.index")->with("mensaje","Error con en el servidor con la creación de usuarios 360");
+        }
+       
     }
 
     /**
@@ -160,9 +221,18 @@ class UsuariosController extends Controller
      */
     public function destroy(User $usuario)
     {
-        // Eliminamos al usuario
-        $usuario->delete();
-        // Redirigimos al index 
-        return redirect()->route('admin.usuarios.index')->with('mensaje',"Se elimino el usuario correctamente");
+         // Registrar modulo en claro 360
+        $registro_modulo_param = $this->setParamModulo($usuario->id,$usuario->institucion_id,"0");
+        $res_modulo = Http::post($this->usuario_360_url.$this->asignar_modulo,$registro_modulo_param);
+        $body_modulo = $res_modulo->json();
+        if ($res_modulo->ok() && $body_modulo["success"]) {
+            // Eliminamos al usuario
+            $usuario->delete();
+            // Redirigimos al index 
+            return redirect()->route('admin.usuarios.index')->with('mensaje',"Se elimino el usuario correctamente");
+        }
+        else{
+            return redirect()->route('admin.usuarios.index')->with('mensaje',"Se elimino el usuario correctamente");
+        }
     }
 }

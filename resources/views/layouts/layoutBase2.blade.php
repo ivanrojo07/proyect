@@ -103,7 +103,14 @@
       </div>
   </header>
   <div id="menuServicios" class="menuServicios">
-    @include('claro360.modulos')
+    <ul>
+      <li>
+        <a href="#">
+          <div></div>
+          <label>Enlace</label>
+        </a>
+      </li>
+    </ul>
   </div>
   <address class="cerrarSesion" id="ventanaSesion">
     <div class="menuContenedor">
@@ -157,6 +164,32 @@
                   </div>
                   {{-- Para seccione de vista --}}
                   @yield('contenido')
+                  {{-- Para secciones de modal --}}
+                  @yield('modal')
+
+                  {{-- Modal de acciones --}}
+                  @if (Session::has("mensaje"))
+                      {{-- modal confirmar guardado/editar usuario --}}
+                      <!-- Modal -->
+                      <div class="modal fade" id="actionServer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+                        <div class="modal-dialog modal-dialog-centered" role="document">
+                            <div class="modal-content">
+                              <div class="modal-header bg-dark">
+                            <h5 class="modal-title" id="exampleModalLongTitle">Acción</h5>
+                                  <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                                    <span aria-hidden="true">&times;</span>
+                                  </button>
+                              </div>
+                            <div class="modal-body bg-secondary">
+                                  {{Session::get('mensaje')}}
+                            </div>
+                              <div class="modal-footer bg-secondary">
+                                  <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
+                              </div>
+                            </div>
+                      </div>
+                      </div>
+                  @endif
         </div>
       </div>
     </main>
@@ -187,39 +220,13 @@
 
   </section>
 
-    <footer>
+  	<footer>
         <div class="texto"><h6>© 360 HQ S.A de C.V 2019. Todos los derechos reservados.</h6></div>
         <div class="logo"><img src="{{ Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_footer) : asset('images/claro2min.png') }}" class="img-fluid logofoter" alt="claro-360" ></div>
     </footer>
-  {{-- Para secciones de modal --}}
-      @yield('modal')
-
-      {{-- Modal de acciones --}}
-      @if (Session::has("mensaje"))
-          {{-- modal confirmar guardado/editar usuario --}}
-          <!-- Modal -->
-          <div class="modal fade" id="actionServer" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-            <div class="modal-dialog modal-dialog-centered" role="document">
-                <div class="modal-content">
-                  <div class="modal-header bg-dark">
-                <h5 class="modal-title" id="exampleModalLongTitle">Acción</h5>
-                      <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-                        <span aria-hidden="true">&times;</span>
-                      </button>
-                  </div>
-                <div class="modal-body bg-secondary">
-                      {{Session::get('mensaje')}}
-                </div>
-                  <div class="modal-footer bg-secondary">
-                      <button type="button" class="btn btn-danger" data-dismiss="modal">Aceptar</button>
-                  </div>
-                </div>
-          </div>
-          </div>
-      @endif
-
-  <script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
-  <script type="text/javascript" src="{{ asset('js/controlmodal.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
+	<script type="text/javascript" src="{{ asset('js/controlmodal.js') }}"></script>
+    <script type="text/javascript" src="{{ asset('js/togglefect.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/vendor/modernizr-3.5.0.min.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/vendor/jquery-ui.1.12.1.js') }}"></script>
     <script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
@@ -230,8 +237,6 @@
     <script type="text/javascript" src="{{ asset('js/jquery-validation-1.17.0/messages_es.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/jquery.dataTables.js') }}"></script>
     <script type="text/javascript" src="{{ asset('js/dataTables.bootstrap.min.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/btns-toggle.js') }}"></script>
-    <script type="text/javascript" src="{{ asset('js/togglefect.js') }}"></script>
 
     <!--script> alert('El ancho de la resolucion de pantalla es de '+screen.width+'pixeles'+'El alto de la resolucion de pantalla es de '+screen.height+'pixeles');</script-->
     {{--

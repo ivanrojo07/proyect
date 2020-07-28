@@ -185,16 +185,7 @@ background-color: #c0c0c0 !important;
 	font-weight:bold;
 	border-radius: 10px;
 }
-div.titulo{
-	background-color:#313131;
-	border: 1px solid  #313131;
-	color:white;
-}
-div.titulo:hover{
-	background-color:#313131;
-	border: 1px solid  #313131;
-	color:white;
-}
+
 .list-group-item{
 	/*background-color: #f5f5f5;
 	color: #242935;
@@ -693,9 +684,6 @@ textarea {
 	}
 	.btnfecha{
 		height: 10%;
-	}
-	div.titulo{
-		text-align: center;
 	}
 	.lscamaras{
 		height: auto;

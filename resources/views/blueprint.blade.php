@@ -1,4 +1,4 @@
-@extends('layouts.layoutBase')
+@extends('layouts.layoutBase2')
 
 {{-- titulo de la pestaña --}}
 @section('titulo')
@@ -8,18 +8,27 @@
 
 {{-- Menu de navegación --}}
 @section('botonera')
-	<a href="#"><span role="button" class="glbl glbl-home"  title="Inicio"></span></a>
+	<ul class="botonera">
+		<li>
+			<a href="/" title="Inicio">
+				<span class="glbl glbl-home"></span>
+			</a>
+		</li>
+		<li>
+			<a href="/mosaico" title="Mosaico de Video"><span class="glbl glbl-mosaico"></span></a>
+		</li>
+	</ul>
 @endsection
 
 
 {{-- Titulo del sidebar --}}
-@section('titulopanel')
+@section('tituloPanel')
 	<h6>Tienda CDMX</h6>
 @endsection
 
 
 {{-- Contenido del sidebar --}}
-@section('panellateral')
+@section('contenidoPanel')
 	<h4>Aqui va el contenido de la vista de Dashboard</h4>
 @endsection
 

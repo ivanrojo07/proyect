@@ -14,7 +14,7 @@ use Illuminate\Support\Facades\Route;
 */
 
 Route::get('blueprint',function(){
-	return view('blueprints');
+	return view('blueprint');
 });
 Route::get('/', function () {
 	// Si esta autenticado, redirigir al home
@@ -27,9 +27,17 @@ Route::get('/', function () {
 	}
 });
 
-Auth::routes([
-	'register'=>false
-]);
+// Auth::routes([
+// 	'register'=>false
+// ]);
+Route::post('logout', "Auth\LoginController@logout")->name("logout");
+
+Route::middleware(["guest"])->group(function(){
+	Route::get("/login", "Auth\LoginController@showLoginForm")->name('login');
+	Route::post("/login", "Auth\LoginController@handleProviderCallback")->name("login_submit");
+	// Route::get("access_token/{user_id}/{token}", 'Auth\LoginController@getAccessToken')->name("getAccessToken");
+	Route::get("API/cuenta360/access_token/{user_id}/{access_token}",'Auth\LoginController@verificaCuenta360')->name("a_t_cuenta360");
+});
 
 Route::get('/home', 'HomeController@index')->name('home');
 

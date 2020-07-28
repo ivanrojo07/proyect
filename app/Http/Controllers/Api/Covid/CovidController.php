@@ -6,6 +6,7 @@ use App\Covid\Covid;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\CovidCollection;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class CovidController extends Controller
 {
@@ -17,7 +18,7 @@ class CovidController extends Controller
         $fecha2 = $req_fechas[1];
         if (\DateTime::createFromFormat('Y-m-d', $fecha1) && \DateTime::createFromFormat('Y-m-d', $fecha1)->format('Y-m-d') == $fecha1  && \DateTime::createFromFormat('Y-m-d', $fecha2) && \DateTime::createFromFormat('Y-m-d', $fecha2)->format('Y-m-d') == $fecha2 & strtotime($fecha1) < strtotime($fecha2)) {
 
-            $tests = Covid::whereBetween('fecha',[$fecha1,$fecha2])->orderBy('id','DESC')->get();
+            $tests = Covid::whereBetween(DB::raw('DATE(fecha)'),[$fecha1,$fecha2])->orderBy('id','DESC')->get();
 
             $test_collection = new CovidCollection($tests);
 

@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::post('/getAccessToken','Auth\LoginController@getAccessToken')->name('getAccessToken');
+
 Route::post('oauth/login','Api\Auth\LoginController@login');
 
 Route::middleware('auth:api')

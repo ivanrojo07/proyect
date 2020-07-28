@@ -29,9 +29,6 @@
 @section('titulopanel')
     <div  class="titulolateral">
         <h5>Expediente de Incidencias 
-            <a>
-                <span class="glbl2 glbl glbl-down"></span>
-            </a>
         </h5>
         
     </div>
@@ -41,16 +38,16 @@
 @section('panellateral')
     <ul class="list-group">
         <a href="{{ route('incidente.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
-            <span>Incidentes</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+            <span>Incidentes</span>
         </a>
         <a href="{{ route('admin.usuarios.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
-            <span>Usuarios</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+            <span>Usuarios</span>
         </a>
         <a href="{{ route('admin.institucion.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
-            <span>Instituciones</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+            <span>Instituciones</span>
         </a>
         <a href="{{ route('covid.index') }}" class="list-group-item list-group-item-action list-group-item-secondary">
-            <span>Covid-19</span><span class="glbl2 glbl glbl-down" style="color: white"></span>
+            <span>Covid-19</span>
         </a>
     </ul>
 @endsection
