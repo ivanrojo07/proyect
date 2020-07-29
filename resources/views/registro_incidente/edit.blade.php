@@ -5,7 +5,7 @@
 
 {{-- Contenido --}}
 @section('contenido')
-	<form method="POST" action="{{ route('incidente.update',['incidente'=>$incidente]) }}">
+	<form method="POST" id="update_registro_form" action="{{ route('incidente.update',['incidente'=>$incidente]) }}">
 	@csrf
 	@method('PUT')
 		<div class="panel-content">
@@ -272,7 +272,12 @@
 	  			</div>
 	  		</div>
 		</div>
-		{{-- modal confirmar incidente --}}
+	</form>
+@endsection
+
+{{-- Scripts --}}
+@section('scripts')
+	{{-- modal confirmar incidente --}}
 	    <!-- Modal -->
 	    <div class="modal fade" id="confirmSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	      <div class="modal-dialog modal-dialog-centered" role="document">
@@ -288,16 +293,11 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="submit" class="btn btn-danger">Registrar</button>
+	            <button type="button" onclick="event.preventDefault(); document.getElementById('update_registro_form').submit();" class="btn btn-danger">Registrar</button>
 	          </div>
 	        </div>
 	      </div>
 	    </div>
-	</form>
-@endsection
-
-{{-- Scripts --}}
-@section('scripts')
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script>

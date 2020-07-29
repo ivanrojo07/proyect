@@ -244,14 +244,12 @@
 
 {{-- Titulo de sidebar --}}
 @section('titulopanel')
-	<div  class="titulolateral">
-        <h5>Incidentes 
-            <a>
-                <span class="glbl2 glbl glbl-down"></span>
-            </a>
+	{{-- <div  class="titulo-menu"> --}}
+
+        <h5 style="color: black;">Incidentes 
         </h5>
         
-    </div>
+    {{-- </div> --}}
 @endsection
 
 {{-- Contenido del sidebar --}}

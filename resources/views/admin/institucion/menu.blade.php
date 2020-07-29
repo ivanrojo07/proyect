@@ -214,13 +214,8 @@
 
 {{-- Titulo de sidebar --}}
 @section('titulopanel')
-	<div  class="titulolateral">
-        <h5>Administración de instituciones 
-            <a>
-                <span class="glbl2 glbl glbl-down"></span>
-            </a>
+        <h5 style="color: black;">Administración de instituciones 
         </h5>
-    </div>
 @endsection
 
 {{-- Contenido del sidebar --}}

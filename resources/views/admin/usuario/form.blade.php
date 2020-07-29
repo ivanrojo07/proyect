@@ -5,7 +5,7 @@
 
 {{-- Contenido de la vista --}}
 @section('contenido')
-	<form action="{{ $edit ? route('admin.usuarios.update',['usuario'=>$user]) : route('admin.usuarios.store') }}" method="POST">
+	<form id="formulario" action="{{ $edit ? route('admin.usuarios.update',['usuario'=>$user]) : route('admin.usuarios.store') }}" method="POST">
 		@csrf
 		@if ($edit)
 			@method('PUT')
@@ -87,7 +87,11 @@
 				</div>
 			</div>
 		</div>
-		{{-- modal confirmar guardado/editar usuario --}}
+	</form>
+@endsection
+
+@section('scripts')
+	{{-- modal confirmar guardado/editar usuario --}}
 	    <!-- Modal -->
 	    <div class="modal fade" id="confirmSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	      <div class="modal-dialog modal-dialog-centered" role="document">
@@ -103,10 +107,9 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="submit" class="btn btn-danger">{{ $edit ? "Actualizar" : "Guardar"}}</button>
+	            <button type="button" onclick="event.preventDefault(); document.getElementById('formulario').submit();" class="btn btn-danger">{{ $edit ? "Actualizar" : "Guardar"}}</button>
 	          </div>
 	        </div>
 	      </div>
 	    </div>
-	</form>
 @endsection

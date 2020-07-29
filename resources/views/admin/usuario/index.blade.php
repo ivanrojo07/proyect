@@ -66,27 +66,7 @@
 											@csrf
 											@method('DELETE')
 											<button type="button" data-toggle="modal" data-target="#confirmDelete_{{$user->id}}" onclick="formularioID({{$user->id}})" class="btn btn-sm boton3">Eliminar</button>
-											{{-- modal confirmar eliminar --}}
-										    <!-- Modal -->
-										    <div class="modal fade" id="confirmDelete_{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-										      <div class="modal-dialog modal-dialog-centered" role="document">
-										        <div class="modal-content">
-										          <div class="modal-header bg-dark">
-										            <h5 class="modal-title" id="exampleModalLongTitle">Confirmación</h5>
-										            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-										              <span aria-hidden="true">&times;</span>
-										            </button>
-										          </div>
-										          <div class="modal-body bg-secondary">
-										            ¿Estás seguro que deseas eliminar este usuario?
-										          </div>
-										          <div class="modal-footer bg-secondary">
-										            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-										            <button type="submit" class="btn btn-danger">Eliminar</button>
-										          </div>
-										        </div>
-										      </div>
-										    </div>
+											
 										</form>
 									</td>
 								</tr>
@@ -105,6 +85,29 @@
 
 {{-- Scripts --}}
 @section('scripts')
+	@foreach ($usuarios as $user)
+		{{-- modal confirmar eliminar --}}
+	    <!-- Modal -->
+	    <div class="modal fade" id="confirmDelete_{{$user->id}}" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+	      <div class="modal-dialog modal-dialog-centered" role="document">
+	        <div class="modal-content">
+	          <div class="modal-header bg-dark">
+	            <h5 class="modal-title" id="exampleModalLongTitle">Confirmación</h5>
+	            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	              <span aria-hidden="true">&times;</span>
+	            </button>
+	          </div>
+	          <div class="modal-body bg-secondary">
+	            ¿Estás seguro que deseas eliminar este usuario?
+	          </div>
+	          <div class="modal-footer bg-secondary">
+	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
+	            <button type="button" onclick="event.preventDefault(); document.getElementById('delete_{{ $user->id}}').submit();" class="btn btn-danger">Eliminar</button>
+	          </div>
+	        </div>
+	      </div>
+	    </div>
+	@endforeach
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 @endsection

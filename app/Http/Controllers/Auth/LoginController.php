@@ -72,6 +72,7 @@ class LoginController extends Controller
             'email' => "required|string",
             "password" => "required|string"
         ]);
+        // return $this->loginUsuario360($request);
         // Verificamos si el usuario existe en la base de datos local
         $existingUser = User::where('email',$request['email'])->first();
         // Si existe en local, logeamos desde la plataforma
@@ -92,7 +93,7 @@ class LoginController extends Controller
         // Verificar si el usuario y contraseña coincide
         if (Auth::attempt(array("email"=>$email, "password" => $password))) {
             // Logeamos el usuario en la plataforma
-            auth()->login($user,true);
+            auth()->login($user,false);
             // El token aún es valido. Redirigimos al inicio.
             return redirect()->route('home');
 
@@ -124,12 +125,19 @@ class LoginController extends Controller
                     $claro360_user = $body["claro360"];
                     $existingUser = User::where("email",$claro360_user["correo"])->first();
                     if ($existingUser && !empty($existingUser->password)) {
-                        return $this->loginPlataforma($existingUser,$request);
+                        if (Auth::attempt(array("email"=>$request['email'], "password" => $request['password']))) {
+                            // Logeamos el usuario en la plataforma
+                            auth()->login($existingUser,false);
+                            // El token aún es valido. Redirigimos al inicio.
+                            return redirect()->route('home');
+
+                        }
+                        // return $this->loginPlataforma($existingUser,$request);
                     }
                     else if($existingUser && empty($existingUser->password)){
                         $existingUser->password = Hash::make($request['password']);
                         $existingUser->save();
-                        auth()->login($existingUser,true);
+                        auth()->login($existingUser,false);
                     }
                     else{
                         // Crear nuevo usuario
@@ -145,7 +153,7 @@ class LoginController extends Controller
                         $newUser->institucion_id = $body["incidentes"][0]['institucion_id'];
                         $newUser->save();
 
-                        auth()->login($newUser,true);
+                        auth()->login($newUser,false);
                         return redirect()->route("home");
                     }
                 }
@@ -203,7 +211,7 @@ class LoginController extends Controller
                     
                     $existingUser = User::where("email",$claro360["correo"])->first();
                     if ($existingUser) {
-                        auth()->login($existingUser,true);
+                        auth()->login($existingUser,false);
                         return redirect()->route("home");
                     }
                     else{
@@ -220,7 +228,7 @@ class LoginController extends Controller
                         $newUser->institucion_id = $body["incidentes"][0]['institucion_id'];
                         $newUser->save();
 
-                        auth()->login($newUser,true);
+                        auth()->login($newUser,false);
                         return redirect()->route("home");
 
                     }

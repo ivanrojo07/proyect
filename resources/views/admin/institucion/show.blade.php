@@ -12,33 +12,12 @@
 				
 			</label>
 			<div class="align-self-center">
-				<form action="{{ route('admin.institucion.destroy',['institucion'=>$institucion]) }}" method="POST">
+				<form action="{{ route('admin.institucion.destroy',['institucion'=>$institucion]) }}" id="delete_form" method="POST">
 					<a href="{{ route('admin.institucion.index') }}" class="btn boton1 m-2" style="background-color: #f5f5f5 !important; color: #231f20;">Regresar</a>
 					<a href="{{ route('admin.institucion.edit',['institucion'=>$institucion]) }}" class="btn boton1 m-2" style="background-color: #da291c !important; color: #f5f5f5;">Actualizar</a>
 					@csrf
 					@method('DELETE')
 					<button type="button" data-toggle="modal" data-target="#confirmDelete" class="btn boton1 m-2" style="background-color: #b3282d !important; color: #f5f5f5;">Eliminar</button>
-					{{-- modal confirmar guardado/editar usuario --}}
-				    <!-- Modal -->
-				    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
-				      <div class="modal-dialog modal-dialog-centered" role="document">
-				        <div class="modal-content">
-				          <div class="modal-header bg-dark">
-				            <h5 class="modal-title" id="exampleModalLongTitle">Confirmación</h5>
-				            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
-				              <span aria-hidden="true">&times;</span>
-				            </button>
-				          </div>
-				          <div class="modal-body bg-secondary">
-				            ¿Estás seguro que deseas eliminar esta institución?
-				          </div>
-				          <div class="modal-footer bg-secondary">
-				            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-				            <button type="submit" class="btn btn-danger">Eliminar</button>
-				          </div>
-				        </div>
-				      </div>
-				    </div>
 
 				</form>
 			</div>
@@ -182,6 +161,27 @@
 
 {{-- Scripts --}}
 @section('scripts')
+	{{-- modal confirmar guardado/editar usuario --}}
+    <!-- Modal -->
+    <div class="modal fade" id="confirmDelete" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+      <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+          <div class="modal-header bg-dark">
+            <h5 class="modal-title" id="exampleModalLongTitle">Confirmación</h5>
+            <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+              <span aria-hidden="true">&times;</span>
+            </button>
+          </div>
+          <div class="modal-body bg-secondary">
+            ¿Estás seguro que deseas eliminar esta institución?
+          </div>
+          <div class="modal-footer bg-secondary">
+            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
+            <button type="button" onclick="event.preventDefault(); document.getElementById('delete_form').submit();" class="btn btn-danger">Eliminar</button>
+          </div>
+        </div>
+      </div>
+    </div>
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script type="text/javascript">

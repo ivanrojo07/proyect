@@ -5,7 +5,7 @@
 
 {{-- Contenido de la vista --}}
 @section('contenido')
-<form action="{{ route('admin.institucion.update',['institucion'=>$institucion]) }}" method="POST" enctype="multipart/form-data">
+<form action="{{ route('admin.institucion.update',['institucion'=>$institucion]) }}" id="update_form" method="POST" enctype="multipart/form-data">
 	@csrf
 	@method('PUT')
 	<div class="panel-content">
@@ -150,7 +150,12 @@
 			</div>
 		</div>
 	</div>
-	{{-- modal confirmar guardado/editar usuario --}}
+</form>
+@endsection
+
+{{-- Scripts --}}
+@section('scripts')
+{{-- modal confirmar guardado/editar usuario --}}
     <!-- Modal -->
     <div class="modal fade" id="confirmSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
       <div class="modal-dialog modal-dialog-centered" role="document">
@@ -166,16 +171,11 @@
           </div>
           <div class="modal-footer bg-secondary">
             <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-            <button type="submit" class="btn btn-danger">Actualizar</button>
+            <button type="button" onclick="event.preventDefault(); document.getElementById('update_form').submit();" class="btn btn-danger">Actualizar</button>
           </div>
         </div>
       </div>
     </div>
-</form>
-@endsection
-
-{{-- Scripts --}}
-@section('scripts')
 <script type="text/javascript">
 	$("#tipo_institucion").change(function(){
 		var tipo_institucion = $(this).val();

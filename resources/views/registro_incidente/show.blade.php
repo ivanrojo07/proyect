@@ -333,7 +333,12 @@
 		</div>
 	</div>
 
-	{{-- MODAL PDF --}}
+	
+@endsection
+
+{{-- Scripts --}}
+@section('scripts')
+{{-- MODAL PDF --}}
 	 <!-- Modal -->
 	<div class="modal fade" id="pdfIncidente" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 		<div class="modal-dialog modal-dialog-centered" role="document" style="min-width: 65%">
@@ -354,10 +359,6 @@
 			</div>
 		</div>
 	</div>
-@endsection
-
-{{-- Scripts --}}
-@section('scripts')
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script>

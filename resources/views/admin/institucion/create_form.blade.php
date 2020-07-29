@@ -5,7 +5,7 @@
 
 {{-- Contenido de la vista --}}
 @section('contenido')
-	<form action="{{ route('admin.institucion.store') }}" method="POST" enctype="multipart/form-data">
+	<form action="{{ route('admin.institucion.store') }}" method="POST" id="create_form" enctype="multipart/form-data">
 		@csrf
 		<div class="panel-content">
 			<div class="col-12 d-flex justify-content-between">
@@ -136,8 +136,12 @@
 				</div>
 			</div>
 		</div>
+	</form>
+@endsection
 
-		{{-- modal confirmar incidente --}}
+{{-- Scripts --}}
+@section('scripts')
+{{-- modal confirmar incidente --}}
 	    <!-- Modal -->
 	    <div class="modal fade" id="confirmSubmit" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
 	      <div class="modal-dialog modal-dialog-centered" role="document">
@@ -153,16 +157,11 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="submit" class="btn btn-danger">Guardar</button>
+	            <button type="button" onclick="event.preventDefault(); document.getElementById('create_form').submit();" class="btn btn-danger">Guardar</button>
 	          </div>
 	        </div>
 	      </div>
 	    </div>
-	</form>
-@endsection
-
-{{-- Scripts --}}
-@section('scripts')
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script type="text/javascript">

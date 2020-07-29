@@ -27,11 +27,9 @@
 
 {{-- titulo del sidebar --}}
 @section('titulopanel')
-    <div  class="titulolateral">
-        <h5>Expediente de Incidencias 
-        </h5>
+    <h5 style="color: black;">Expediente de Incidencias 
+    </h5>
         
-    </div>
 @endsection
 
 {{-- contenido del sidebar --}}
