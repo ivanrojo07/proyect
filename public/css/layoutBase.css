@@ -306,7 +306,7 @@ header{
 	}
 
 	section main .container-fluid{
-		background-color: rgba(255, 255, 255, 0.6);
+		/*background-color: rgba(255, 255, 255, 0.6);*/
 		border: 1px solid transparent;
 	}
 

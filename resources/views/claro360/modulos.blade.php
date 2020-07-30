@@ -68,7 +68,7 @@
 
 	@if ($plan_interno = Session::get("modulos360.plan_interno"))
 		<li>
-			<a href="#" onclick="crearLiga('http://planfamiliar-pc.ml/API/cuenta360/access_token/')">
+			<a href="#" onclick="crearLiga('https://planfamiliar-pc.ml/API/cuenta360/access_token/')">
 				<div></div>
 				<label>Plan Interno</label>
 			</a>
