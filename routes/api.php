@@ -36,10 +36,10 @@ Route::middleware('auth:api')
 		// Route::get('/today','RegistroIncidenteController@incidentesHoy')->name('today');
 		// Route::get('/show/{incidente}','RegistroIncidenteController@showIncidente')->name('show');
 		// Route::post('/store','RegistroIncidenteController@storeIncidente')->name('store');
-		// Route::post('/reporte_dependencia','RegistroIncidenteController@reporteDependencia')->name('reporte_dependencia');
-		// Route::get('/catalogo_incidente','CatalogoIncidenteController@catalogo')->name('catalogo_incidente');
-		// Route::get('/tipo_seguimiento','CatalogoIncidenteController@tipoSeguimiento')->name('tipo_seguimiento');
-		// Route::get('/nivel_impacto','CatalogoIncidenteController@nivelImpacto')->name('nivel_impacto');
+		Route::post('/reporte_dependencia','RegistroIncidenteController@reporteDependencia')->name('reporte_dependencia');
+		Route::get('/catalogo_incidente','CatalogoIncidenteController@catalogo')->name('catalogo_incidente');
+		Route::get('/tipo_seguimiento','CatalogoIncidenteController@tipoSeguimiento')->name('tipo_seguimiento');
+		Route::get('/nivel_impacto','CatalogoIncidenteController@nivelImpacto')->name('nivel_impacto');
 
 
 		// Route::get('/{fecha}','RegistroIncidenteController@incidentesDate')->name('date');

@@ -1,15 +1,17 @@
 <ul>
-	@if ($plataforma360 = Session::get("modulos360.plataforma360"))
-		<li>
-			<a href="#" onclick="crearLiga('{{$plataforma360['url']}}/API/cuenta360/access_token/')">
-				<div></div>
-				<label>Plataforma 360</label>
-			</a>
-		</li>
+	@if ($plataformas360 = Session::get("modulos360.plataforma360"))
+		@foreach ($plataformas360 as $plataforma360)
+			<li>
+				<a href="#" onclick="crearLiga('{{$plataforma360['url']}}API/cuenta360/access_token/')">
+					<div></div>
+					<label>Plataforma 360</label>
+				</a>
+			</li>
+		@endforeach
 	@endif
 	@if ($telemedicina_medico = Session::get("modulos360.telemedicina_medico"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$telemedicina_medico['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Telemedicina Medico</label>
 			</a>
@@ -18,7 +20,7 @@
 
 	@if ($telemedicina_paciente = Session::get("modulos360.telemedicina_paciente"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$telemedicina_paciente['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Telemedicina Paciente</label>
 			</a>
@@ -28,7 +30,7 @@
 
 	@if ($facturacion = Session::get("modulos360.facturacion"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$facturacion['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Facturación</label>
 			</a>
@@ -38,7 +40,7 @@
 
 	@if ($app360 = Session::get("modulos360.app360"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$app360['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>App 360</label>
 			</a>
@@ -48,7 +50,7 @@
 
 	@if ($mapagis = Session::get("modulos360.mapagis"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$mapagis['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Mapa GIS</label>
 			</a>
@@ -58,7 +60,7 @@
 
 	@if ($lineamientos = Session::get("modulos360.lineamientos"))
 		<li>
-			<a href="#">
+			<a href="#" onclick="crearLiga('{{$lineamientos['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Lineamientos</label>
 			</a>
@@ -68,9 +70,19 @@
 
 	@if ($plan_interno = Session::get("modulos360.plan_interno"))
 		<li>
-			<a href="#" onclick="crearLiga('https://planfamiliar-pc.ml/API/cuenta360/access_token/')">
+			<a href="#" onclick="crearLiga('{{$plan_interno['url']}}API/cuenta360/access_token/')">
 				<div></div>
 				<label>Plan Interno</label>
+			</a>
+		</li>
+	@endif
+
+
+	@if ($videovigilancia = Session::get("modulos360.videovigilancia"))
+		<li>
+			<a href="#" onclick="crearLiga('{{$videovigilancia['url']}}API/cuenta360/access_token/')">
+				<div></div>
+				<label>Video Vigilancia</label>
 			</a>
 		</li>
 	@endif
@@ -81,7 +93,7 @@
 		function crearLiga($url){
 			var params = {
 				"user_id" : "{{Session::get('claro360.id')}}",
-				"token" : "{{Session::get('claro360.token')}}"
+				"token" : "{{Auth::user()->claro_token}}"
 			};
 			var id, access_token;
 			console.log(params);

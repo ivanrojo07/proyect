@@ -24,6 +24,7 @@ class User extends Authenticatable
         'apellido_materno',
         'email',
         'password',
+        'claro_token'
     ];
 
     /**
