@@ -6,6 +6,7 @@ use App\Covid\Covid;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 
 class CovidController extends Controller
@@ -35,7 +36,7 @@ class CovidController extends Controller
             // Si no existe la fecha la creamos con la fecha actual
             $date = Date('Y-m-d');
         }
-        $registros_covid = Covid::where('fecha',$date)->orderBy('hora','asc')->get();
+        $registros_covid = Covid::where(DB::raw('DATE(fecha)'),$date)->orderBy('hora','asc')->get();
         return view('covid.index',[
             'registros' => $registros_covid,
             'fecha' => $date
@@ -115,12 +116,16 @@ class CovidController extends Controller
             'hora' => Date('H:i:s'),
             'proyecto' => "sedena",
             'origen' => "Web",
-            'perfil' => json_encode([
-                            'edad'=>$request->edad,
-                            'genero' => $request->genero,
-                            'codigo_postal' => $request->codigo_postal
-                        ]),
-            'rango' => $request->score
+            'id_usuario' => $request->user()->id,
+            'edad'=>$request->edad,
+            'genero' => $request->genero,
+            'cp' => $request->codigo_postal,
+            // 'perfil' => json_encode([
+            //                 'edad'=>$request->edad,
+            //                 'genero' => $request->genero,
+            //                 'codigo_postal' => $request->codigo_postal
+            //             ]),
+            'score' => $request->score
         ]);
         // le asignamos el usuario que registro
         $registro->user_id = Auth::user()->id;
@@ -141,10 +146,9 @@ class CovidController extends Controller
      */
     public function show(Covid $covid)
     {
-        // creamos en objeto el string en json del perfil
-        $perfil = json_decode($covid->perfil);
+
         // retornamos la vista con el registro
-        return view('covid.show',['covid'=>$covid,'perfil'=>$perfil]);
+        return view('covid.show',['covid'=>$covid]);
     }
 
     /**

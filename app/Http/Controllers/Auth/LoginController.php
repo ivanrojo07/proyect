@@ -88,17 +88,6 @@ class LoginController extends Controller
                 return redirect('/login')->with('mensaje-error',$logueo_360['mensaje-error']);
             }
         }
-        // // return $this->loginUsuario360($request);
-        // // Verificamos si el usuario existe en la base de datos local
-        // $existingUser = User::where('email',$request['email'])->first();
-        // // Si existe en local, logeamos desde la plataforma
-        // if ($existingUser && !empty($existingUser->password)) {
-        //     return $this->loginPlataforma($existingUser,$request);
-        // }
-        // else{
-        //     // De lo contrario logeamos por api usuarios 360
-        //     return $this->loginUsuario360($request);
-        // }
     }
 
     public function loginPlataforma($request)
@@ -110,6 +99,7 @@ class LoginController extends Controller
         if (Auth::attempt(array("email"=>$email, "password" => $password))) {
             // Logeamos el usuario en la plataforma
             $user = User::where('email',$request['email'])->first();
+            // nos logueamos con el usuario con el email
             auth()->login($user,false);
             // El token aún es valido. Redirigimos al inicio.
             return ['login'=>true];
@@ -153,11 +143,19 @@ class LoginController extends Controller
                             return ['login' => true];
 
                         }
+                        else{
+                            // $existingUser->claro_token = $claro360_user['token'];
+                            $existingUser->password = Hash::make($request['password']);
+                            $existingUser->save();
+                            auth()->login($existingUser,false);
+                            
+                            return ['login'=> true];
+                        }
                         // return $this->loginPlataforma($existingUser,$request);
                     }
                     else if($existingUser && empty($existingUser->password)){
                         $this->setSessionJSON($body);
-                        $existingUser->claro_token = $claro360_user['token'];
+                        // $existingUser->claro_token = $claro360_user['token'];
                         $existingUser->password = Hash::make($request['password']);
                         $existingUser->save();
                         auth()->login($existingUser,false);
@@ -171,7 +169,7 @@ class LoginController extends Controller
                             "apellido_materno" => $claro360_user["apellido_materno"],
                             "email" => $claro360_user['correo'],
                             "password" => Hash::make($request['password']),
-                            'claro_token' => $claro360_user['token']
+                            // 'claro_token' => $claro360_user['token']
                         ]);
                         // dd($body["incidentes"][0]['institucion_id']);
                         $newUser->id = $claro360_user['id'];
@@ -207,6 +205,7 @@ class LoginController extends Controller
         if ($response->ok()) {
             $content = $response->json();
             if ($content["success"]) {
+                // Obtenemos el access token de la respuesta
                 $access_token = $content["access_token"];
                 return response()->json(['id360'=>$user_id,"access_token"=>$access_token],201);
             }
@@ -250,7 +249,7 @@ class LoginController extends Controller
                             "apellido_paterno" => $claro360["apellido_paterno"],
                             "apellido_materno" => $claro360["apellido_materno"],
                             "email" => $claro360['correo'],
-                            "claro_token" =>$claro360['token']
+                            // "claro_token" =>$claro360['token']
 
                         ]);
                         // dd($body["incidentes"][0]['institucion_id']);

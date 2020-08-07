@@ -55,7 +55,7 @@
 									Longitud: {{{$registro->lng}}}
 								</td>
 								<td>
-									{{ $registro->rango }}
+									{{ $registro->score }}
 								</td>
 								<td>
 									{{$registro->user->nombre}}

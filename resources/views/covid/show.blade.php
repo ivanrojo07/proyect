@@ -23,34 +23,29 @@
 		</ul>
 	</div>
 	<div class="panel-body pb-4">
-		@if ($errors->any())
-		    <div class="alert alert-danger">
-		        <ul>
-		            @foreach ($errors->all() as $error)
-		                <li>{{ $error }}</li>
-		            @endforeach
-		        </ul>
-		    </div>
-		@endif
 		<div class="text-center text-white">
 			<h3>Perfil Usuario</h3>
 		</div>
 		<div class="row form-group"> 
-		 	<div class="col-12 col-md-4">
-			 	<label class="label">Edad</label>
-			 	<p class="info">{{$perfil->edad." Años"}}</p>
+			<div class="col-12 col-md-4">
+			 	<label class="label">
+			 		Edad 
+			 	</label>
+			 	<p class="info">
+			 		{{$covid->edad-" Años"}}
+			 	</p>
 			</div>
 			<div class="col-12 col-md-4">
 			 	<label for="genero" class="label">
 			 		Genero 
 			 	</label>
 			 	<p class="info">
-			 		{{$perfil->genero}}
+			 		{{$covid->genero}}
 			 	</p>
 			</div>
 			<div class="col-12 col-md-4">
 			 	<label for="codigo_postal" class="label">Código Postal</label>
-			 	<p class="info">{{$perfil->codigo_postal}}</p>
+			 	<p class="info">{{$covid->cp}}</p>
 			</div>
 		</div>
 		<div class="text-center text-white">
@@ -152,7 +147,7 @@
 				</p>
 			</div>
 		</div>
-		@if ($perfil->genero == "Mujer")
+		@if ($covid->genero == "Mujer")
 			<div class="form-group row">
 				<div class="col-12 col-md-6">
 					<label for="embarazada" class="label">
@@ -172,7 +167,7 @@
 				</div>
 			</div>
 		@endif
-		@if ($covid->rango > 8)
+		@if ($covid->score > 8)
 			<div class="form-group row">
 				<div class="col-12 col-md-4 col-lg-3">
 					<label for="dias_sintomas" class="label">
@@ -204,6 +199,12 @@
 				</div>
 			</div>
 		@endif
+		<div class="form-group row">
+			<div class="col-12 col-md-6">
+				{{-- MAPA --}}
+				<div class="mt-5 mb-5" id="map" style="height: 400px;"></div>
+			</div>
+		</div>
 	</div>
 @endsection
 
@@ -228,4 +229,21 @@
         });
         $( "#datepicker" ).datepicker( "setDate", "{{date('d-m-Y',strtotime($covid->fecha))}}" );
     </script>
+    <script type="text/javascript">
+		var map;
+		var marker;
+		function initMap() {
+	        map = new google.maps.Map(document.getElementById('map'), {
+	          center: {lat: {{$covid->lat}}, lng: {{$covid->lng}} },
+	          zoom: 17,
+	          mapTypeId: 'hybrid',
+	          heading: 90,
+    		  tilt: 45
+	        });
+	        marker = new google.maps.Marker({position: {lat: {{$covid->lat}}, lng: {{$covid->lng}} }, map:map })
+
+      	}
+	</script>
+	<script src="https://maps.googleapis.com/maps/api/js?key={{env('MAP_KEY')}}&callback=initMap"
+    ></script>
 @endsection

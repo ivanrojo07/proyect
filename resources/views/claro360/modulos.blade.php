@@ -27,7 +27,6 @@
 		</li>
 	@endif
 
-
 	@if ($facturacion = Session::get("modulos360.facturacion"))
 		<li>
 			<a href="#" onclick="crearLiga('{{$facturacion['url']}}API/cuenta360/access_token/')">
