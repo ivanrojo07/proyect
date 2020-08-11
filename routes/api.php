@@ -22,6 +22,14 @@ Route::post('/getAccessToken','Auth\LoginController@getAccessToken')->name('getA
 
 Route::post('oauth/login','Api\Auth\LoginController@login');
 
+Route::namespace('Api\Institucion')
+	->prefix('institucions')
+	->name('institucions.')
+	->group(function(){
+		Route::get('/','InstitucionController@index')->name('index');
+		Route::get('/{institucion}', 'InstitucionController@show')->name('show');
+});
+
 Route::middleware('auth:api')
 	->namespace('Api\Incidente')
 	->prefix('incidentes')

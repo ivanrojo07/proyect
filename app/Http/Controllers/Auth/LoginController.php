@@ -45,8 +45,9 @@ class LoginController extends Controller
         $this->login_path = "/login";
         $this->get_access_token = "/access_token";
         $this->validate_access_token = "/validate/access_token";
-
+        // informacion de login claro auth 360 usuarios
         $this->usuario360 = [];
+        // Modulos que pueden acceder
         $this->modulos360 = [
             "plataforma360" => null,
             "telemedicina_medico" => null,
@@ -75,16 +76,23 @@ class LoginController extends Controller
         ]);
         // Primero loguear con cuentas de claro 360 (para obtener modulos de plataformas)
         $logueo_360 = $this->loginUsuario360($request);
+        // si logueo por claro 360 es correcta
         if ($logueo_360['login']) {
+            // retornamos a la pagina home
             return  redirect()->route("home");
         }
         // Si no se puede loguear por usuarios 360, lo comparamos con nuestra bd
         else{
+            // llamamos a la funcion login plataforma
             $logueo_local = $this->loginPlataforma($request);
+            // si logueo exitoso
             if ($logueo_local['login']) {
+                // Retornamos a home 
                 return redirect()->route('home');
             }
+            // Si no logueamos
             else{
+                // retorna a login con error de usuario 360
                 return redirect('/login')->with('mensaje-error',$logueo_360['mensaje-error']);
             }
         }
@@ -119,46 +127,64 @@ class LoginController extends Controller
             "correo" => $request['email'],
             "contrasenia" => $request['password']
         ]);
+        // Si status code es 200
         if ($response->ok()) {
+            // Obtenemos la respuesta en formato json
             $body = $response->json();
-            // dd($body);
-
+            // si la llave success es true
             if ($body['success']) {
+                // Si el modulo de incidentes es vacio enn el cuerpo
                 if(empty($body["incidentes"])){
+                    // Retornamos el login en falso con un mensaje de error
                     return ["login"=> false, "mensaje-error" => "No tienes acceso a esta plataforma, verifica tu plan."];
                 }
+                // De lo contrario
                 else{
+                    // Obtenemos el usuario
                     $claro360_user = $body["claro360"];
+                    // verificamos que el usuario exista en nuestra bd
                     $existingUser = User::where("email",$claro360_user["correo"])->first();
+                    // Si existe y su contraseña 
                     if ($existingUser && !empty($existingUser->password)) {
+                        // Verificammos que usuario y contraseña coincidan
                         if (Auth::attempt(array("email"=>$request['email'], "password" => $request['password']))) {
                             // Logeamos el usuario en la plataforma
                             auth()->login($existingUser,false);
-
+                            // mandamos a la función setsession con body
                             $this->setSessionJSON($body);
+                            // guardamos el token resultado
                             $existingUser->claro_token = $claro360_user['token'];
                             $existingUser->save();
 
-                            // El token aún es valido. Redirigimos al inicio.
+                            // Mandamos login a true.
                             return ['login' => true];
 
                         }
                         else{
-                            // $existingUser->claro_token = $claro360_user['token'];
+                            // mandamos func setsession con body
+                            $this->setSessionJSON($body);
+                            // guardamos token, nueva contraseñaaa y guardamos
+                            $existingUser->claro_token = $claro360_user['token'];
                             $existingUser->password = Hash::make($request['password']);
                             $existingUser->save();
+                            // loggeamos a usuario
                             auth()->login($existingUser,false);
-                            
+                            // retornamos login true
                             return ['login'=> true];
                         }
                         // return $this->loginPlataforma($existingUser,$request);
                     }
+                    // Si existe usuario pero su contraseña es vacia
                     else if($existingUser && empty($existingUser->password)){
+                        // mandamos set   session con body
                         $this->setSessionJSON($body);
-                        // $existingUser->claro_token = $claro360_user['token'];
+                        // guardamos token, password, y guardamos
+                        $existingUser->claro_token = $claro360_user['token'];
                         $existingUser->password = Hash::make($request['password']);
                         $existingUser->save();
+                        // Loooogeamosssss a usuario
                         auth()->login($existingUser,false);
+                        // Retornamos login a true
                         return ['login' => true];
                     }
                     else{
@@ -169,21 +195,25 @@ class LoginController extends Controller
                             "apellido_materno" => $claro360_user["apellido_materno"],
                             "email" => $claro360_user['correo'],
                             "password" => Hash::make($request['password']),
-                            // 'claro_token' => $claro360_user['token']
+                            'claro_token' => $claro360_user['token']
                         ]);
                         // dd($body["incidentes"][0]['institucion_id']);
                         $newUser->id = $claro360_user['id'];
                         $newUser->institucion_id = $body["incidentes"][0]['institucion_id'];
                         $newUser->save();
-
+                        // mandamos setsession con body
                         $this->setSessionJSON($body);
+                        // logeamos a usuario
                         auth()->login($newUser,false);
-                        return ['login'=>true, 'mensaje-error' => $body["mensaje"]];
+                        // retornamossssssss true elllllll login
+                        return ['login'=>true];
                     }
                 }
                 
             }
+            // de lo contrario
             else{
+                // mandamos login false con mensaje
                 return ['login'=>false,'mensaje-error'=>"Usuario o contraseña incorrectos"];
             }
         }
@@ -283,7 +313,8 @@ class LoginController extends Controller
         $this->claro360 = $response['claro360'];
 
         if (!empty($response['plataforma360'])) {
-            $this->modulos360['plataforma360'] = $response['plataforma360'];
+
+            $this->modulos360['plataforma360'] = $this->limpiarPlataforma($response['plataforma360']);
         }
         if (!empty($response['telemedicina_medico'])) {
             $this->modulos360['telemedicina_medico'] = $response['telemedicina_medico'][0];
@@ -316,5 +347,21 @@ class LoginController extends Controller
         session(['claro360' => $this->claro360]);
         session(['modulos360' => $this->modulos360]);
 
+    }
+
+    public function limpiarPlataforma($res)
+    {
+        // Array temporal
+        $array_temp = [];
+        // Recorremos el arreglo
+        foreach ($res as $plataforma) {
+            // (funcion array_search: busca la similitud de un string en el arreglo; array_column: busca dentro el arreglo las llaves alias) verifica que el alias no este en nuestro arreglo
+            if(array_search($plataforma['alias'],array_column($array_temp,'alias')) === false){
+                // de no estarlo agregamos el objeto al arreglo
+                array_push($array_temp,$plataforma);
+            }
+        }
+        // Retornamos el array
+        return $array_temp;
     }
 }

@@ -4,7 +4,7 @@
 			<li>
 				<a href="#" onclick="crearLiga('{{$plataforma360['url']}}API/cuenta360/access_token/')">
 					<div></div>
-					<label>Plataforma 360</label>
+					<label>{{$plataforma360['alias']}}</label>
 				</a>
 			</li>
 		@endforeach
@@ -92,7 +92,7 @@
 		function crearLiga($url){
 			var params = {
 				"user_id" : "{{Session::get('claro360.id')}}",
-				"token" : "{{Auth::user()->claro_token}}"
+				"token" : "{{Session::get('claro360.token')}}"
 			};
 			var id, access_token;
 			console.log(params);

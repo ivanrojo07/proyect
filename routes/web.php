@@ -1,5 +1,8 @@
 <?php
 
+use App\Estado;
+use App\Incidente\CategoriaIncidente;
+use App\Roles\Institucion;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -15,6 +18,13 @@ use Illuminate\Support\Facades\Route;
 
 Route::get('blueprint',function(){
 	return view('blueprint');
+});
+
+Route::get('API/Cuenta360/access_token/addService/{user_id}/{access_token}',function(){
+	$estados = Estado::orderBy('nombre','asc')->get();
+	$categorias_incidente = CategoriaIncidente::orderBy('nombre','asc')->get();
+	$instituciones = Institucion::orderBy('nombre','asc')->get();
+	return view('register_form',['estados' => $estados,'categorias_incidente'=> $categorias_incidente,'instituciones'=>$instituciones]);
 });
 Route::get('/', function () {
 	// Si esta autenticado, redirigir al home

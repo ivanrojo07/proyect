@@ -62,7 +62,7 @@
   <header>
       <div class="cabezera header1">
         <a href="{{ url('/home') }}" title="Inicio">
-            <img src="{{ Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_header) : asset('images/claro.png') }}" alt="inicio">
+            <img src="{{ Auth::user() ? (Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_header) : asset('images/claro.png') ) : asset('images/claro.png') }}" alt="inicio">
         </a>
       </div>
 
@@ -90,7 +90,7 @@
           @else
           <div class="sesion">
             <div class="titulo nombre">
-                <h5 class="usuario">Plataforma Emergencias / {{ Auth::user()->institucion ? Auth::user()->institucion->nombre : "Sin Institución" }}</h5>
+                <h5 class="usuario">Plataforma Emergencias / {{ Auth::user() ? (Auth::user()->institucion ? Auth::user()->institucion->nombre : "Sin Institución") : "" }}</h5>
             </div>
 
 
@@ -117,7 +117,7 @@
       <ul>
         <li>
           <a href="#" class="enlace-menu">
-            Incidentes | {{ Auth::user()->full_name }}
+            Incidentes | {{ Auth::user() ? Auth::user()->full_name : "" }}
           </a>
         </li>
       </ul>
@@ -143,12 +143,14 @@
         Correo: contacto@claro360.com
       </p>
     </div>
+    @auth
     <div class="btn-cerrar">
       <form id="logout-form" action="{{ route('logout') }}" method="POST" style="display: none;">
             @csrf
             </form>
             <button type="button" id="botonsesion" onclick="event.preventDefault(); document.getElementById('logout-form').submit();"> <strong>{{ __('Cerrar Sesión') }} </strong></button>
     </div>
+    @endauth
   </address>
 
   <section>
@@ -222,7 +224,7 @@
 
   	<footer>
         <div class="texto"><h6>© 360 HQ S.A de C.V 2019. Todos los derechos reservados.</h6></div>
-        <div class="logo"><img src="{{ Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_footer) : asset('images/claro2min.png') }}" class="img-fluid logofoter" alt="claro-360" ></div>
+        <div class="logo"><img src="{{ Auth::user() ? (Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_footer) : asset('images/claro2min.png')) :  asset('images/claro2min.png') }}" class="img-fluid logofoter" alt="claro-360" ></div>
     </footer>
 	<script type="text/javascript" src="{{ asset('js/app.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/controlmodal.js') }}"></script>
@@ -271,7 +273,7 @@
 
     @auth
         <script>
-          @if (Auth::user()->institucion)
+          @if (Auth::user() && Auth::user()->institucion)
             {{-- expr --}}
             @switch(Auth::user()->institucion->tipo_institucion)
                 @case("Federal")
