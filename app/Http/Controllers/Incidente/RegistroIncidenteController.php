@@ -49,7 +49,7 @@ class RegistroIncidenteController extends Controller
 			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date);
+					$registro_incidentes = RegistroIncidente::where('fecha_ocurrencia',$date)->whereIn('estado_id',$institucion->estados->pluck('id'));
 					break;
 
 				case "Estatal":
@@ -99,7 +99,7 @@ class RegistroIncidenteController extends Controller
 			// obtenemos los estados de cada tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$estados = Estado::orderBy('nombre','asc')->get();
+					$estados = $institucion->estados()->orderBy('nombre','asc')->get()				;
 					break;
 
 				case "Estatal":

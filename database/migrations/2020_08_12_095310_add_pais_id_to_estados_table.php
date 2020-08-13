@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class AddTokenClaroToUsersTable extends Migration
+class AddPaisIdToEstadosTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,9 +13,10 @@ class AddTokenClaroToUsersTable extends Migration
      */
     public function up()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('estados', function (Blueprint $table) {
             //
-            //$table->string('claro_token')->nullable();
+            $table->unsignedBigInteger('pais_id')->default(1);
+            $table->foreign('pais_id')->references('id')->on('pais');
         });
     }
 
@@ -26,9 +27,9 @@ class AddTokenClaroToUsersTable extends Migration
      */
     public function down()
     {
-        Schema::table('users', function (Blueprint $table) {
+        Schema::table('estados', function (Blueprint $table) {
             //
-            $table->dropColumn('claro_token');
+            $table->dropForeign(['pais_id']);
         });
     }
 }

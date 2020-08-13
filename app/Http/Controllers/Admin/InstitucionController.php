@@ -37,12 +37,13 @@ class InstitucionController extends Controller
      */
     public function create()
     {
-        //Obtenemos los Estados de la base de datos
-        $estados = Estado::orderBy('nombre','asc')->get();
+        //Obtenemos los Estados de la republica mexicana de la base de datos
+        $estados_mexico = Estado::where('pais_id',1)->orderBy('nombre','asc')->get();
+        $estados_peru = Estado::where('pais_id',2)->orderBy('nombre','asc')->get();
         // Obtenemos la categoria incidente de la base de datos
         $categorias_incidente = CategoriaIncidente::orderBy('nombre','asc')->get();
         // Retornamos una vista inyectando nuestras variables
-        return view('admin.institucion.create_form',['estados'=>$estados,'categorias_incidente'=>$categorias_incidente]);
+        return view('admin.institucion.create_form',['estados_mexico'=>$estados_mexico,'estados_peru'=>$estados_peru,'categorias_incidente'=>$categorias_incidente]);
     }
 
     /**
@@ -119,8 +120,14 @@ class InstitucionController extends Controller
         switch ($request->tipo_institucion) {
             // Si es federal
             case "Federal":
-                // obtenemos todos los estados
-                $estados = Estado::get();
+                $pais = $request->pais;
+                // Obtenemos todos los estados por pais
+                if ($pais == "mexico") {
+                    $estados = Estado::where('pais_id',1)->get();
+                }
+                else{
+                    $estados = Estado::where('pais_id',2)->get();
+                }
                 // Y lo guardamos en la relacion
                 $institucion->estados()->saveMany($estados);
                 break;
@@ -265,8 +272,14 @@ class InstitucionController extends Controller
         switch ($request->tipo_institucion) {
             // Si es una entidad federal
             case "Federal":
-                // Obtenemos todos los estados
-                $estados = Estado::get();
+                $pais = $request->pais;
+                // Obtenemos todos los estados por pais
+                if ($pais == "mexico") {
+                    $estados = Estado::where('pais_id',1)->get();
+                }
+                else{
+                    $pais = Estado::where('pais',2)->get();
+                }
                 // Y guardamos sus relaciones en la tabla pivote regionables
                 $institucion->estados()->saveMany($estados);
                 break;

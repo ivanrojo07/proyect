@@ -1,5 +1,7 @@
 @extends('layouts.layoutBase')
 
+{{-- TODO realizar vista para peru y modificar listado --}}
+
 {{-- Menu lateral izquierdo, con botones de navegación --}}
 @include('admin.institucion.menu', ['titulo' => 'Nueva Institución'])
 
@@ -59,7 +61,34 @@
 		    </div>
 		    <div class="row form-group">
 				<div class="col-12 col-md-6">
-					<div class="text-center label">
+
+		    		<div class="text-center label m-3">
+		    			<h5>Pais</h5>
+		    		</div>
+		    		<label for="pais" class="text-md-left col-form-label">
+		    			Selecciona el pais de la institución
+		    		</label>
+		    		<select class="form-control" id="pais" name="pais" required="">
+		    			<option value="">Seleccione una opción</option>
+		    			<option value="mexico">México</option>
+		    			<option value="peru">Perú</option>
+		    		</select>
+
+		    		<div class="col-12 d-none" id="div_mexico">
+		    			<div class="text-center label m-3">
+		    				<h5>Estados/Municipios</h5>
+		    			</div>
+		    			<div id="tipo_institucion_mexico"></div>
+		    			<div id="estadosMexico"></div>
+		    		</div>
+		    		<div class="col-12 d-none" id="div_peru">
+		    			<div class="text-center label m-3">
+		    				<h5>Departamentos/Provincias</h5>
+		    			</div>
+		    			<div id="tipo_institucion_peru"></div>
+		    			<div id="estadosPeru"></div>
+		    		</div>
+					{{-- <div class="text-center label m-3">
 						<h5>Estados/Municipios</h5>
 					</div>
 					<label for="regiones" class="text-md-left col-form-label">
@@ -67,26 +96,51 @@
 					</label>
 					<select class="form-control" id="tipo_institucion" name="tipo_institucion" required="">
 						<option value="">Seleccione una opción</option>
-						<option value="Estatal">Estatal</option>
-						<option value="Municipal">Municipal</option>
-						<option value="Federal">Federal/SEDENA</option>
+						<option value="Estatal-Mexico">Estatal(México)</option>
+						<option value="Municipal-Mexico">Municipal(México)</option>
+						<option value="Federal-Mexico">Federal/SEDENA(México)</option>
+						<option value="Estatal-Peru">Estatal(Perú)</option>
+						<option value="Municipal-Peru">Municipal(Perú)</option>
+						<option value="Federal-Peru">Federal/SEDENA(Perú)</option>
 					</select>
-					<select class="form-control mt-2 d-none" id="estado" name="estado">
+					<select class="form-control mt-2 d-none" id="estadoMexico" name="estadoMexico">
 						<option value="">Seleccione el estado correspondiente</option>
-						@foreach ($estados as $estado)
+						@foreach ($estados_mexico as $estado)
 							<option value="{{$estado->id}}">{{$estado->nombre}}</option>
 						@endforeach
 					</select>
-					<div class="row form-group d-none" id="div_estados">
+					<select class="form-control mt-2 d-none" id="estadoPeru" name="estadoPeru">
+						<option value="">Seleccione el estado correspondiente</option>
+						@foreach ($estados_peru as $estado)
+							<option value="{{$estado->id}}">{{$estado->nombre}}</option>
+						@endforeach
+					</select>
+					<div class="row form-group d-none" id="div_estadosMexico">
 						<div class="col-12 mt-2">
 							<label class="text-md-left col-form-label">
 								Seleccione el o los estados donde se activaran los incidentes
 							</label>
 						</div>
-						@foreach ($estados as $estado)
+						@foreach ($estados_mexico as $estado)
 							<div class="col-12 col-md-6 col-lg-4 mt-2">
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
+									<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estadosMexico[]" value="{{$estado->id}}">
+										<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
+								</div>
+							</div>				
+						@endforeach
+					</div>
+
+					<div class="row form-group d-none" id="div_estadosPeru">
+						<div class="col-12 mt-2">
+							<label class="text-md-left col-form-label">
+								Seleccione el o los estados donde se activaran los incidentes
+							</label>
+						</div>
+						@foreach ($estados_peru as $estado)
+							<div class="col-12 col-md-6 col-lg-4 mt-2">
+								<div class="form-check">
+									<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estadosPeru[]" value="{{$estado->id}}">
 										<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
 								</div>
 							</div>				
@@ -99,7 +153,7 @@
 						<div class="row form-group" id="municipios_query">
 							
 						</div>
-					</div>
+					</div> --}}
 				</div>
 				<div class="col-12 col-md-6">
 					<div class="text-center text-white">
@@ -165,33 +219,184 @@
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script type="text/javascript">
-		$("#tipo_institucion").change(function(){
-			var tipo_institucion = $(this).val();
-			if (tipo_institucion == "Municipal") {
-				$("#estado").removeClass('d-none').addClass('d-block');
-				$("#estado").val('');
-				$("#div_estados").removeClass('d-flex').addClass('d-none');
-				$("input[name='estados[]']").prop('checked',false);
-				$("#div_municipios").removeClass("d-none").addClass("d-block");
-			} 
-			else if( tipo_institucion == "Estatal"){
-				$("#estado").removeClass('d-block').addClass('d-none');
-				$("#estado").val('');
-				$("#div_estados").removeClass('d-none').addClass('d-flex');
-				$("input[name='estados[]']").prop('checked',false);
-				$("#div_municipios").removeClass("d-block").addClass("d-none");
+		function displayDivMexico(){
+			$("#div_mexico").removeClass('d-none').addClass('d-block');
+			$("#div_peru").removeClass('d-block').addClass('d-none');
+			createOptionInstitucion('mexico');
+		}
+		function displayDivPeru(){
+			$("#div_peru").removeClass('d-none').addClass('d-block');
+			$("#div_mexico").removeClass('d-block').addClass('d-none');
+			createOptionInstitucion('peru');
+		}
+
+		function createOptionInstitucion(pais){
+			if (pais === "mexico") {
+				$("#tipo_institucion_mexico").html(`
+					<label for="regiones" class="text-md-left col-form-label">
+						Seleccione el tipo de institución que será y las regiones correspondientes
+					</label>
+					<select class="form-control tipo_institucion" name="tipo_institucion" required="">
+						<option value="">Seleccione una opción</option>
+						<option value="Estatal">Estatal</option>
+						<option value="Municipal">Municipal</option>
+						<option value="Federal">Federal/SEDENA</option>
+					</select>
+					`);
+				$("#tipo_institucion_peru").empty();
+			}
+			else if (pais === "peru"){
+				$("#tipo_institucion_peru").html(`
+					<label for="regiones" class="text-md-left col-form-label">
+						Seleccione el tipo de institución que será y las regiones correspondientes
+					</label>
+					<select class="form-control tipo_institucion" name="tipo_institucion" required="">
+						<option value="">Seleccione una opción</option>
+						<option value="Estatal">Estatal</option>
+						<option value="Municipal">Municipal</option>
+						<option value="Federal">Federal</option>
+					</select>
+					`);
+				$("#tipo_institucion_mexico").empty();
+			}
+			else{
+				$("#tipo_institucion_mexico").empty();
+				$("#tipo_institucion_peru").empty();
 
 			}
-			else {
-				$("#estado").removeClass('d-block').addClass('d-none');
-				$("#estado").val('');
-				$("#div_estados").removeClass('d-flex').addClass('d-none');
-				$("input[name='estados[]']").prop('checked',false);
-				$("#div_municipios").removeClass("d-block").addClass("d-none");
+		}
+
+		function showEstados(pais){
+			if (pais === 'mexico') {
+				var html = `
+				<div class="row form-group">
+					<div class="col-12 mt-2">
+						<label class="text-md-left col-form-label">
+							Seleccione el o los estados donde se activaran los incidentes
+						</label>
+					</div>
+					@foreach ($estados_mexico as $estado)
+						<div class="col-12 col-md-6 col-lg-4 mt-2">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
+									<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
+							</div>
+						</div>				
+					@endforeach
+				</div>
+				`;
+				$("#estadosMexico").html(html);
+				$("#estadosPeru").empty();
+
+			}
+			else if(pais === 'peru'){
+				var html = `
+				<div class="row form-group">
+					<div class="col-12 mt-2">
+						<label class="text-md-left col-form-label">
+							Seleccione el o las provincias donde se activaran los incidentes
+						</label>
+					</div>
+					@foreach ($estados_peru as $estado)
+						<div class="col-12 col-md-6 col-lg-4 mt-2">
+							<div class="form-check">
+								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
+									<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
+							</div>
+						</div>				
+					@endforeach
+				</div>
+				`;
+				$("#estadosPeru").html(html);
+				$("#estadosMexico").empty();
+			}
+			else{
+				$("#estadosMexico").empty();
+				$("#estadosPeru").empty();
+			}
+		}
+		function showEstado(pais){
+			if(pais === 'mexico'){
+				var html = `
+				<select class="form-control mt-2" id="estado" name="estado">
+					<option value="">Seleccione el estado correspondiente</option>
+					@foreach ($estados_mexico as $estado)
+						<option value="{{$estado->id}}">{{$estado->nombre}}</option>
+					@endforeach
+				</select>
+				<div id="div_municipios">
+					<div class="col-12 mt-2">
+						Seleccione el o los municipios donde se activaran los incidentes
+					</div>
+					<div class="row form-group" id="municipios_query">
+						
+					</div>
+				</div>
+				`;
+				$("#estadosMexico").html(html);
+				$("#estadosPeru").empty();
+			}
+			else if (pais === 'peru'){
+				var html = `
+				<select class="form-control mt-2" id="estado" name="estado">
+					<option value="">Seleccione el estado correspondiente</option>
+					@foreach ($estados_peru as $estado)
+						<option value="{{$estado->id}}">{{$estado->nombre}}</option>
+					@endforeach
+				</select>
+				<div id="div_municipios">
+					<div class="col-12 mt-2">
+						Seleccione el o los municipios donde se activaran los incidentes
+					</div>
+					<div class="row form-group" id="municipios_query">
+						
+					</div>
+				</div>
+				`;
+				$("#estadosPeru").html(html);
+				$("#estadosMexico").empty();
+			}
+			else{
+				$("#estadosMexico").empty();
+				$("#estadosPeru").empty();
+			}
+		}
+		$("#pais").change(function(){
+			var pais = $(this).val();
+			if (pais === "mexico") {
+				displayDivMexico();
+			}
+			else if (pais === "peru") {
+				displayDivPeru();
+			}
+			else{
+			$("#div_peru").removeClass('d-block').addClass('d-none');
+			$("#div_mexico").removeClass('d-block').addClass('d-none');
+			createOptionInstitucion("");
+			}
+		});
+		$(document).on('change','.tipo_institucion',function(){
+			var tipo_institucion = $(this).val();
+			var pais = $("#pais").val();
+			switch(tipo_institucion){
+				case "Municipal":
+					showEstado(pais);
+					break;
+				case "Estatal":
+					showEstados(pais);
+					break;
+				case "Federal":
+					$("#estadosMexico").empty();
+					$("#estadosPeru").empty();
+					break;
+				default:
+					$("#estadosMexico").empty();
+					$("#estadosPeru").empty();
+					break;
 			}
 		});
 
-		$("#estado").change(function(){
+		$(document).on('change','#estado',function(){
 			var estado_id = $(this).val();
 			$("#municipios_query").empty();
 			axios.get("{{ url('api/web/estados') }}/"+estado_id+"/municipios").then(res=>{
@@ -216,7 +421,7 @@
 			}).catch(err=>{
 				console.log(err);
 			})
-
 		});
+		
 	</script>
 @endsection

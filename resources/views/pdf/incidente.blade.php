@@ -116,7 +116,7 @@
 			</div>
 			<div class="form-group row">
 				<div class="col-6">
-					<img src="https://maps.googleapis.com/maps/api/staticmap?center={{$incidente->lat_especifica}},{{$incidente->long_especifica}}&maptype=hybrid&zoom=18&size=350x250&markers=size:large|color:red|{{$incidente->lat_especifica}},{{$incidente->long_especifica}}&key={{env('STATIC_MAPS_KEY')}}">
+					{{-- <img src="https://maps.googleapis.com/maps/api/staticmap?center={{$incidente->lat_especifica}},{{$incidente->long_especifica}}&maptype=hybrid&zoom=18&size=350x250&markers=size:large|color:red|{{$incidente->lat_especifica}},{{$incidente->long_especifica}}&key={{env('STATIC_MAPS_KEY')}}"> --}}
 				</div>
 				<div class="col-6">
 					<div class="form-group row">

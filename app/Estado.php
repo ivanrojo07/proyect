@@ -22,6 +22,11 @@ class Estado extends Model
         'pivot'
     ];
 
+    public function pais()
+    {
+        return $this->belongsTo('App\Pais');
+    }
+
    	public function municipios(){
    		return $this->hasMany("App\Municipio");
    	}
