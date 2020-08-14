@@ -61,7 +61,7 @@
 <body>
   <header>
       <div class="cabezera header1">
-        <a href="{{ url('/home') }}" title="Inicio">
+        <a href="{{ url('/home') }}" title="Inicio" style="background-color: white;">
             <img src="{{ Auth::user() ? (Auth::user()->institucion ?  asset('storage/'.Auth::user()->institucion->path_imagen_header) : asset('images/claro.png') ) : asset('images/claro.png') }}" alt="inicio">
         </a>
       </div>

@@ -585,6 +585,7 @@ class RegistroIncidenteController extends Controller
         ]);
         // Y lo guardamos en la relacion con el incidente
         $reporte_dependencia->registro_incidente_id = $registro_incidente->id;
+        // Guardamos los  cambios
         $reporte_dependencia->save();
         // $registro_incidente->dependencia_reportes()->save($reporte_dependencia);
         // Retornamos una respuesta json con el reporte de la dependencia con su incidente
