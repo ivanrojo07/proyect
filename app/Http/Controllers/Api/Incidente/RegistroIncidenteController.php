@@ -155,7 +155,7 @@ class RegistroIncidenteController extends Controller
                 switch ($institucion->tipo_institucion) {
                     case "Federal":
                         // Incidentes entre esas fechas
-                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                         break;
 
                     case "Estatal":
@@ -206,7 +206,7 @@ class RegistroIncidenteController extends Controller
                 // Si es institucion federal
                 case "Federal":
                     // Obtenemos todos los incidentes
-                    $incidentes = RegistroIncidente::orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    $incidentes = RegistroIncidente::whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                     break;
                 // Si es una institucion estatal
                 case "Estatal":
@@ -251,7 +251,7 @@ class RegistroIncidenteController extends Controller
                 // Si es una entidad federal
                 case "Federal":
                     // obtenemos todos los incidentes con la fecha de hoy
-                    $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                    $incidentes = RegistroIncidente::where('fecha_ocurrencia',$hoy)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                     break;
                 // Si es una entidad estatal
                 case "Estatal":
@@ -295,7 +295,7 @@ class RegistroIncidenteController extends Controller
                 switch ($institucion->tipo_institucion) {
                     case "Federal":
                         // obtenemos los registro de esa fecha
-                        $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        $incidentes = RegistroIncidente::where('fecha_ocurrencia',$fecha)->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                         break;
 
                     case "Estatal":
@@ -345,7 +345,7 @@ class RegistroIncidenteController extends Controller
                 switch ($institucion->tipo_institucion) {
                     case "Federal":
                         // Incidentes entre esas fechas
-                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
+                        $incidentes = RegistroIncidente::whereBetween('fecha_ocurrencia',[$fecha1,$fecha2])->whereIn('estado_id',$institucion->estados->pluck('id'))->orderBy('id','DESC')->with(['catalogo_incidente','catalogo_incidente.prioridad','catalogo_incidente.subcategoria','catalogo_incidente.subcategoria.categoria','estado','municipio','impacto','seguimiento','user','localidades'])->get();
                         break;
 
                     case "Estatal":
@@ -495,8 +495,9 @@ class RegistroIncidenteController extends Controller
             // Investigamos que tipo de institucion es
             switch ($institucion->tipo_institucion) {
                 case "Federal":
-                    // Se muestra
-                    $mostrar = true;
+                    $estado_incidente = $incidente->estado;
+                    // verificamos que el estado donde se regristro el incidente pertenece a los estados de la institucion
+                    $mostrar = $institucion->estados()->where('regionable_id',$estado_incidente->id)->exists();
                     break;
 
                 case "Estatal":

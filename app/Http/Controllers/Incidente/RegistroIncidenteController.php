@@ -258,7 +258,8 @@ class RegistroIncidenteController extends Controller
 			// Verificamos el tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$mostrar = true;
+					$estado_incidente = $incidente->estado;
+					$mostrar = $institucion->estados()->where('regionable_id',$estado_incidente->id)->exists();
 					break;
 
 				case "Estatal":
@@ -315,7 +316,7 @@ class RegistroIncidenteController extends Controller
 			// Obtenemos los estados y municipios que pueden acceder por tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$estados = Estado::orderBy('nombre','asc')->get();
+					$estados = $institucion->estados()->orderBy('nombre','asc')->get();
 					break;
 
 				case "Estatal":
