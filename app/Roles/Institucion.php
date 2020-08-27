@@ -5,6 +5,12 @@ namespace App\Roles;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/************************************************
+ *                                              *
+ *      Institución que pertenece el usuario    *
+ *                                              *
+ ************************************************/
 class Institucion extends Model
 {
 	use SoftDeletes;
@@ -69,6 +75,8 @@ class Institucion extends Model
      */
     public function estados()
     {
+
+       
         return $this->morphedByMany('App\Estado', 'regionable')->withTimestamps();
     }
 

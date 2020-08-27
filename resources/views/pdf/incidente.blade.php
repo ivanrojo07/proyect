@@ -10,7 +10,7 @@
 				$incidente->impacto->nombre == 'Alto' ? 'bg-danger text-white' : (
 					$incidente->impacto->nombre == 'Medio' ? 'bg-warning text-dark' :
 						'bg-success text-white')}}">
-			<h3 class="col-10">{{$incidente->catalogo_incidente->clave." ".$incidente->catalogo_incidente->nombre}} / Detalles del Incidente</h3>
+			<h3 class="col-10">{{$incidente->catalogo_incidente ? $incidente->catalogo_incidente->clave." ".$incidente->catalogo_incidente->nombre : "N/A"}} / Detalles del Incidente</h3>
 			<span class="col-2 badge badge-pill badge-secondary">{{$incidente->fecha_ocurrencia." ".$incidente->hora_ocurrencia}}</span>
 		</div>
 		<div class="card-body">
@@ -20,7 +20,7 @@
 						Tipo de incidente
 					</label>
 					<li class="list-group-item">
-						{{$incidente->catalogo_incidente->clave.' / '.$incidente->catalogo_incidente->nombre}}
+						{{ $incidente->catalogo_incidente ? $incidente->catalogo_incidente->clave.' / '.$incidente->catalogo_incidente->nombre : "N/A" }}
 					</li>
 				</div>
 				<div class="col-4">

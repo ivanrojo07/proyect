@@ -26,18 +26,8 @@
         body{
             color: white;
         }
-        /*
-        div{
-         border: 1px solid gray;
-         color: white;
-        }*/
+        
         .list-group-item{
-         /*padding-top: 3%;
-         padding-bottom:3%;
-          margin-top: 1%;
-          margin-bottom: 1%;
-          background-color: #737373;
-          color: white;/*/
           border-bottom: 4px solid #40474f;
         }
         span{

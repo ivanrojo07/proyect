@@ -28,6 +28,8 @@
 			</ul>
 		</div>
 		<div class="panel-body">
+
+      		<ul class="errorMessages"></ul>
 			@if ($errors->any())
 			    <div class="alert alert-danger">
 			        <ul>
@@ -107,9 +109,38 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="button" onclick="event.preventDefault(); document.getElementById('formulario').submit();" class="btn btn-danger">{{ $edit ? "Actualizar" : "Guardar"}}</button>
+	            <button type="button" id="submit" class="btn btn-danger">{{ $edit ? "Actualizar" : "Guardar"}}</button>
 	          </div>
 	        </div>
 	      </div>
 	    </div>
+	    <script type="text/javascript">
+	    	$(document).ready(function(){
+		        $("#submit").click(function(){
+		          if ($("#formulario").valid() == false) {
+		            var errorList = $( "ul.errorMessages")
+		            errorList.empty();
+		            errorList.addClass("alert alert-danger")
+		            $("#formulario").find( ":invalid" ).each(function( index, node ) {
+		                  console.log(node);
+		                  // Find the field's corresponding label
+		                  var label = $( "label[for=" + node.id + "] "),
+		                      // Opera incorrectly does not fill the validationMessage property.
+		                      message = node.validationMessage || 'No es valor valido.';
+
+		                  errorList
+		                      .show()
+		                      .append( "<li><span>En el campo '" + label.html() + "':</span> " + message + "</li>" );
+		              });
+		            $("#confirmSubmit").modal("hide");
+
+		          }
+		          else{
+		            $("#formulario").submit();
+		          }
+
+		        
+		        });
+		    });
+	    </script>
 @endsection

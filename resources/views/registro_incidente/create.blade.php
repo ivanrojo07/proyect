@@ -25,6 +25,7 @@
   		</ul>
   	</div>
   	<div class="panel-body">
+      <ul class="errorMessages"></ul>
       @if ($errors->any())
         <div class="alert alert-danger">
           <ul>
@@ -33,6 +34,7 @@
             @endforeach
           </ul>
         </div>
+        <ul class="errorMessages"></ul>
       @endif
   		<div class="row mb-4">
   			<div class="col-12 col-md-3 mt-2">
@@ -163,10 +165,12 @@
               <label for="nivel_impacto" class="label">
                 Nivel de Impacto
               </label>
-              <div class="col-12">
+              <div class="col-12" id="nivel_impacto">
                 @foreach ($tipo_impacto as $impacto)
                   <div class="form-check form-check-inline {{$impacto->nombre}}">
-                    <input class="form-check-input" type="radio" name="nivel_impacto" id="nivel_impacto_{{$impacto->id}}" {{ old('nivel_impacto') == $impacto->id ? 'checked=""' : '' }} value="{{$impacto->id}}" required="">
+                    <input class="form-check-input" type="radio" name="nivel_impacto" id="nivel_impacto_{{$impacto->id}}" {{ old('nivel_impacto') == $impacto->id ? 'checked=""' : '' }} value="{{$impacto->id}}" @if ($loop->last)
+                      required=""
+                    @endif>
                       <label class="form-check-label" for="nivel_impacto_{{$impacto->id}}">{{$impacto->nombre}}</label>
                   </div>
                 @endforeach
@@ -267,7 +271,7 @@
           </div>
           <div class="modal-footer bg-secondary">
             <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-            <button type="button" onclick="event.preventDefault(); document.getElementById('create_incidente_form').submit();" class="btn btn-danger">Registrar</button>
+            <button type="button" id="submit" class="btn btn-danger">Registrar</button>
           </div>
         </div>
       </div>
@@ -275,7 +279,33 @@
   <script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
   <script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
   <script>
-  
+    $(document).ready(function(){
+        $("#submit").click(function(){
+          if ($("#create_incidente_form").valid() == false) {
+            var errorList = $( "ul.errorMessages")
+            errorList.empty();
+            errorList.addClass("alert alert-danger")
+            $("#create_incidente_form").find( ":invalid" ).each(function( index, node ) {
+                  console.log(node);
+                  // Find the field's corresponding label
+                  var label = $( "label[for=" + node.id + "] "),
+                      // Opera incorrectly does not fill the validationMessage property.
+                      message = node.validationMessage || 'No es valor valido.';
+
+                  errorList
+                      .show()
+                      .append( "<li><span>En el campo '" + label.html() + "':</span> " + message + "</li>" );
+              });
+            $("#confirmSubmit").modal("hide");
+
+          }
+          else{
+            $("#create_incidente_form").submit();
+          }
+
+        
+        });
+    });
 
         $("#datepicker").datepicker({
           onSelect: function(e) {

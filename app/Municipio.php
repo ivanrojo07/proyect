@@ -5,6 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/************************************
+ *                                  *
+ *      Municipio de los Estados    *
+ *                                  *
+ ************************************/
 class Municipio extends Model
 {
     //

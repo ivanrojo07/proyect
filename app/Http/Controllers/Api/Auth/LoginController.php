@@ -18,8 +18,11 @@ class LoginController extends Controller
     {
         // inicializamos nuestras variables publicas
     	$this->token_url = url('/oauth/token');
+        // Obtenemos el registro #2 de la tabla clients
     	$this->client = Client::find(2);
+        // Nueva clase GuzzleClient
     	$this->http = new GuzzleClient;
+        // Reglas de validación
     	$this->rules = [
     		'email' => 'required|string|email',
     		'password' => 'required|string'

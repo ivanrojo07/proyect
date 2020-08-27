@@ -10,20 +10,29 @@ use Illuminate\Support\Facades\DB;
 
 class CovidController extends Controller
 {
-    
+    /****************************************************
+     *                                                  *
+     *  Selecciona los incidentes sucedidos en un rango *
+     *                      de fechas                   *
+     *                                                  *
+     ****************************************************/
 
     public function select($fechas, Request $request){
+        // Separamos las fechas de incidentes en un array 
         $req_fechas = explode("_",$fechas);
+        // Obtener las dos fechas del array
         $fecha1 = $req_fechas[0];
         $fecha2 = $req_fechas[1];
+        // Si las fechas tienen un formato valido y son mayor o igual la segunda que la primera
         if (\DateTime::createFromFormat('Y-m-d', $fecha1) && \DateTime::createFromFormat('Y-m-d', $fecha1)->format('Y-m-d') == $fecha1  && \DateTime::createFromFormat('Y-m-d', $fecha2) && \DateTime::createFromFormat('Y-m-d', $fecha2)->format('Y-m-d') == $fecha2 & strtotime($fecha1) < strtotime($fecha2)) {
-
+            // Realizamos la busqueda entre fechas, convirtiendo el campo fecha en formato date
             $tests = Covid::whereBetween(DB::raw('DATE(fecha)'),[$fecha1,$fecha2])->orderBy('id','DESC')->get();
-
+            // Y agregamos en una collección json 
             $test_collection = new CovidCollection($tests);
-
+            // Retornamos en una respuesta json
             return response()->json(['data'=>$test_collection],200);
         }
+        // De lo contrario, retornamos un error con status 422
         else{
             return response()->json(['error'=>'formato de fechas incorrecto'],422);
         }
@@ -37,7 +46,7 @@ class CovidController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        //reglas de validación
         $rules = [
             'lat' => "required|numeric",
             'lng' => "required|numeric",
@@ -68,7 +77,9 @@ class CovidController extends Controller
 
 
         ];
+        // Validamos el formulario
         $request->validate($rules);
+        // Creamos un objeto
         $test = new Covid([
             'convivir_enfermo' => $request->convivir_enfermo,
             'fiebre' => $request->fiebre,
@@ -98,8 +109,11 @@ class CovidController extends Controller
             'cp' => $request->cp,
             'score' => $request->score
         ]);
+        // Lo relacionamos por el que creo el registro
         $test->user_id = $request->user()->id;
+        // salvamos
         $test->save();
+        // retornamos el registro en formato json
         return response()->json(['registro'=>$test],201);
     }
 

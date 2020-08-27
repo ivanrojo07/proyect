@@ -14,6 +14,7 @@ class RegistroIncidenteCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        // Retornamos un arreglo geojson con los objetos resultantes
         return [
             "type" => "FeatureCollection",
             "features" => $this->collection,

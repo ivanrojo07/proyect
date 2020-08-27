@@ -8,7 +8,7 @@
 		<div class="col-12 d-flex justify-content-between">
 			<label style="margin-top:1%;margin-left:1%;">
 				<h4 style="font-size: 20px;font-weight: bold;">Incidente #{{ $incidente->serie_id }} | <span class="span-{{$incidente->impacto->nombre}}"></span> Prioridad: {{ $incidente->impacto->nombre }}</h4>
-				<h6 style="font-size: 15px;">{{
+				<h6 style="font-size: 15px;">{{ $incidente->catalogo_incidente ? 
 					$incidente->catalogo_incidente->subcategoria->categoria->nombre
 					." | ".
 					$incidente->catalogo_incidente->subcategoria->nombre
@@ -16,6 +16,7 @@
 					$incidente->catalogo_incidente->clave
 					." | ".
 					 $incidente->catalogo_incidente->nombre
+					 : 'N/A'
 				}}</h6>
 			</label>
 			<div class="align-self-center">
@@ -79,7 +80,7 @@
 					Categoria del Catalogo Nacional de Incidente
 				</p>
 				<p class="info">
-					{{$incidente->catalogo_incidente->subcategoria->categoria->nombre}}
+					{{$incidente->catalogo_incidente ? $incidente->catalogo_incidente->subcategoria->categoria->nombre : "N/A"}}
 				</p>
 			</div>
 			<div class="col-12 col-md-3 mt-3">
@@ -87,7 +88,7 @@
 					Subcategoria del Catalogo Nacional de Incidente
 				</p>
 				<p class="info">
-					{{$incidente->catalogo_incidente->subcategoria->nombre}}
+					{{$incidente->catalogo_incidente ? $incidente->catalogo_incidente->subcategoria->nombre : "N/A"}}
 				</p>
 			</div>
 			<div class="col-12 col-md-3 mt-3">
@@ -95,7 +96,7 @@
 					Incidente
 				</p>
 				<p class="info">
-					{{$incidente->catalogo_incidente->nombre}}
+					{{$incidente->catalogo_incidente ? $incidente->catalogo_incidente->nombre : "N/A"}}
 				</p>
 			</div>
 			<div class="col-12 col-md-4 mt-3">

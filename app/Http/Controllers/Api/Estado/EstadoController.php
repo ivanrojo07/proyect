@@ -151,7 +151,7 @@ class EstadoController extends Controller
     	}
     	else{
             // Retornamos un null
-    		return response()->json(['localidades'=>$localidades],200);
+    		return response()->json(['localidades'=>null],200);
     	}
     }
 }

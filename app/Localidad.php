@@ -5,6 +5,12 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/********************************************
+ *                                          *
+ *   Poblados de los paises México y Perú   *
+ *                                          *
+ ********************************************/
 class Localidad extends Model
 {
     //

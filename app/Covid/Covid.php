@@ -4,6 +4,12 @@ namespace App\Covid;
 
 use Illuminate\Database\Eloquent\Model;
 
+
+/************************************
+ *                                  *
+ *      Registro de test Covid      *
+ *                                  *
+ ************************************/
 class Covid extends Model
 {
     //

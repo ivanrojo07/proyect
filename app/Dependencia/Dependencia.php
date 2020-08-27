@@ -5,6 +5,12 @@ namespace App\Dependencia;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/****************************************
+ *                                      *
+ *      Respuesta de la Dependencia     *
+ *          solo por aplicación         *
+ *                                      *
+ ****************************************/
 class Dependencia extends Model
 {
     //

@@ -20,8 +20,11 @@ class InstitucionController extends Controller
      */
     public function index()
     {
+        // Obtenemos todas las instituciones
     	$instituciones = Institucion::orderBy('id','asc')->get();
+        // Creamos una collección json con el resultado
     	$instituciones_collection = new InstitucionCollection($instituciones);
+        // Retornamos la colección como una respuesta json
     	return response()->json($instituciones_collection,200);
     }
 
@@ -35,7 +38,9 @@ class InstitucionController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function show(Institucion $institucion){
+        // Creamos una coleccion json de las instituciones
     	$institucion_collection = new InstitucionResource($institucion);
+        // Retornamos el resultado en una respuesta json
     	return response()->json(['institucion'=>$institucion_collection]);
     } 
 }

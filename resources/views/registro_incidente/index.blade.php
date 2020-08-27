@@ -63,7 +63,7 @@
 										{{$incidente->hora_ocurrencia}}
 									</td>
 									<td>
-										{{$incidente->catalogo_incidente->clave." ".$incidente->catalogo_incidente->nombre}}
+										{{$incidente->catalogo_incidente ? $incidente->catalogo_incidente->clave." ".$incidente->catalogo_incidente->nombre : "N/A"}}
 									</td>
 									<td>
 										{{$incidente->estado->nombre}}

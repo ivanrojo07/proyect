@@ -201,7 +201,7 @@
 			$("#div_estados").removeClass('d-flex').addClass('d-none');
 			$("input[name='municipios[]']").val([]);
 			$("input[name='estados[]']").prop('checked',false);
-			$("#div_municipios").removeClass("d-blockk").addClass("d-none");
+			$("#div_municipios").removeClass("d-block").addClass("d-none");
 		}
 	});
 
@@ -283,7 +283,7 @@
 			$("#estado").val('');
 			$("#div_estados").removeClass('d-flex').addClass('d-none');
 			$("input[name='estados[]']").prop('checked',false);
-			$("#div_municipios").removeClass("d-blockk").addClass("d-none");
+			$("#div_municipios").removeClass("d-block").addClass("d-none");
 		}
 
 		var mis_categorias_incidentes = {{$institucion->categorias_incidente->pluck('id')}};

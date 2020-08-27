@@ -5,6 +5,12 @@ namespace App\Incidente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/*********************************************
+ *                                           *
+ *   Seguimiento que se dará al Incidente    *
+ *                                           *
+ *********************************************/
 class TipoSeguimiento extends Model
 {
 	use SoftDeletes;

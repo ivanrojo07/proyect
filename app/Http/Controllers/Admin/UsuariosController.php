@@ -93,7 +93,7 @@ class UsuariosController extends Controller
         ];
         // Validamos el request con las reglas
         $request->validate($rules);
-
+        // Obbtenemos el parametros de un nuevo usuario
         $registro_usuario_param = $this->setParamNewUsuario($request);
         // dd($registro_usuario_param);
         $response = Http::post($this->usuario_360_url.$this->registro_usuario,$registro_usuario_param);
@@ -223,6 +223,7 @@ class UsuariosController extends Controller
     {
          // Registrar modulo en claro 360
         $registro_modulo_param = $this->setParamModulo($usuario->id,$usuario->institucion_id,"0");
+        // solicitud http
         $res_modulo = Http::post($this->usuario_360_url.$this->asignar_modulo,$registro_modulo_param);
         $body_modulo = $res_modulo->json();
         if ($res_modulo->ok() && $body_modulo["success"]) {

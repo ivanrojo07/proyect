@@ -47,6 +47,8 @@ Route::middleware(["guest"])->group(function(){
 	Route::post("/login", "Auth\LoginController@handleProviderCallback")->name("login_submit");
 	// Route::get("access_token/{user_id}/{token}", 'Auth\LoginController@getAccessToken')->name("getAccessToken");
 	Route::get("API/cuenta360/access_token/{user_id}/{access_token}",'Auth\LoginController@verificaCuenta360')->name("a_t_cuenta360");
+	Route::get('/registrar','Auth\RegisterController@form')->name('registrar_form');
+	Route::post('/registrar','Auth\RegisterController@registrar')->name('registrar');
 });
 
 Route::get('/home', 'HomeController@index')->name('home');

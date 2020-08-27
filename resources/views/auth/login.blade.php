@@ -19,7 +19,12 @@
         <div class=" col-xs-12 col-sm-12 col-md-12 col-lg-12 col-xl-12">
       <button type="submit" class="btn" name="enviar" style="
     text-align: -webkit-center;">Entrar</button></div>
+    <div>
+      <a href="{{ route('registrar_form') }}" class="btn btn-info rounded-pill m-auto" >Registrarse</a>
+      
+    </div>
       <span style="">Las cookies y notificaciones deben de estar activadas en el navegador.</span>
+    
     </form>
       @include('errors.errores')
       @include('errors.campos')

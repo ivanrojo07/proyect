@@ -14,6 +14,7 @@ class CovidCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        // Convierte un array de objetos en un array geojson
         return [
             "type" => "FeatureCollection",
             "features" => $this->collection

@@ -51,6 +51,7 @@ class EstadosController extends Controller
 			return response()->json(["municipios"=>$municipios],201);
 		}
 		else{
+            // Retornamos una respuesta 404 not found
 			return response()->json(['message'=>"Estado no encontrado"],404);
 		}    
     }

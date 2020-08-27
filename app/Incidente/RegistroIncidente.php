@@ -6,6 +6,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Support\Facades\DB;
 
+/****************************************************
+ *                                                  *
+ *      Registro de acontecimiento de incidente     *
+ *                                                  *
+ ****************************************************/
 class RegistroIncidente extends Model
 {
     //

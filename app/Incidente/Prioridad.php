@@ -5,6 +5,11 @@ namespace App\Incidente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/********************************************
+ *                                          *
+ *      Tipo de prioridad del incidente     *
+ *                                          *
+ ********************************************/
 class Prioridad extends Model
 {
 	use SoftDeletes;

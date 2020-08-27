@@ -40,10 +40,17 @@ class LoginController extends Controller
      */
     public function __construct()
     {
+        // Aplicamos un middleware que solo las rutas
+        // Sean visibles si no estas logueado
+        // (excepto el handler logout)
         $this->middleware('guest')->except('logout');
+        // Obtenemos la url de la api
         $this->url = env("USUARIOS_360_URL");
+        // La ruta para login
         $this->login_path = "/login";
+        // ruta de access_token
         $this->get_access_token = "/access_token";
+        // ruta de validación de access_token
         $this->validate_access_token = "/validate/access_token";
         // informacion de login claro auth 360 usuarios
         $this->usuario360 = [];
@@ -70,6 +77,7 @@ class LoginController extends Controller
      */
 
     public function handleProviderCallback(Request $request){
+        // Validamos el formulario 
         $request = $request->validate([
             'email' => "required|string",
             "password" => "required|string"
@@ -100,6 +108,7 @@ class LoginController extends Controller
 
     public function loginPlataforma($request)
     {
+        // Obtenemos email y password
         $email = $request["email"];
         $password = $request["password"];
 
@@ -154,6 +163,7 @@ class LoginController extends Controller
                             $this->setSessionJSON($body);
                             // guardamos el token resultado
                             $existingUser->claro_token = $claro360_user['token'];
+                            // guardamos los cambios
                             $existingUser->save();
 
                             // Mandamos login a true.
@@ -205,7 +215,7 @@ class LoginController extends Controller
                         $this->setSessionJSON($body);
                         // logeamos a usuario
                         auth()->login($newUser,false);
-                        // retornamossssssss true elllllll login
+                        // retornamos true el login
                         return ['login'=>true];
                     }
                 }

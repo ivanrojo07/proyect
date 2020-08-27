@@ -5,6 +5,11 @@ namespace App\Incidente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/*****************************************
+ *                                       *
+ *      Impacto del Incidente            *
+ *                                       *
+ *****************************************/
 class TipoImpacto extends Model
 {
 	use SoftDeletes;

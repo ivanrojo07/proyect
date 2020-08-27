@@ -5,6 +5,11 @@ namespace App;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+/****************************************
+ *                                      *
+ *      Estados de México y Perú        *
+ *                                      *
+ ****************************************/
 class Estado extends Model
 {
     //

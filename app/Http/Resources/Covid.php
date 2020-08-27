@@ -14,6 +14,7 @@ class Covid extends JsonResource
      */
     public function toArray($request)
     {
+        // Transformar el modelo en un objeto geojson
         return [
             "type" => "Feature",
             "properties" => [

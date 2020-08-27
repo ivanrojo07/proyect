@@ -99,7 +99,7 @@ class RegistroIncidenteController extends Controller
 			// obtenemos los estados de cada tipo de institucion
 			switch ($institucion->tipo_institucion) {
 				case "Federal":
-					$estados = $institucion->estados()->orderBy('nombre','asc')->get()				;
+					$estados = $institucion->estados()->orderBy('nombre','asc')->get();
 					break;
 
 				case "Estatal":

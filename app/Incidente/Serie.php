@@ -5,6 +5,12 @@ namespace App\Incidente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Facades\DB;
 
+/************************************************
+ *                                              *
+ *      Numero de serie para identificar        *
+ *   una serie de incidente(s) relacionados     *
+ *                                              *
+ ************************************************/
 class Serie extends Model
 {
 

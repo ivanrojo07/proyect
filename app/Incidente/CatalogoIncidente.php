@@ -5,6 +5,12 @@ namespace App\Incidente;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
+
+/************************************************
+ *                                              *
+ *      Muestra el tipo del Catalogo            *
+ *                                              *
+ ************************************************/
 class CatalogoIncidente extends Model
 {
 	use SoftDeletes;
@@ -20,6 +26,7 @@ class CatalogoIncidente extends Model
     protected $hidden = [
         'prioridad_id',
         'subcategoria_id',
+        'catalogo_id',
         'created_at',
         'updated_at',
         'deleted_at'
@@ -60,6 +67,17 @@ class CatalogoIncidente extends Model
      */
     public function subcategoria(){
         return $this->belongsTo('App\Incidente\SubcategoriaIncidente','subcategoria_id','id');
+    }
+
+    /**
+     * Obtiene el catalogo al que pertenece
+     *
+     * @return \Illuminate\Database\Relations\BelongsTo
+     */
+    public function catalogo()
+    {
+        return $this->belongsTo("App\Catalogo",'catalogo_id','id');
+        
     }
 
 }

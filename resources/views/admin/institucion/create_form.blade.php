@@ -26,6 +26,7 @@
 			</ul>
 		</div>
 		<div class="panel-body pb-4">
+      		<ul class="errorMessages"></ul>
 			@if ($errors->any())
 			    <div class="alert alert-danger">
 			        <ul>
@@ -38,11 +39,11 @@
 		    <div class="row from-group">
 		    	<div class="col-12 col-md-4">
 					<label for="nombre" class="label">Nombre de la institución</label>
-					<input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre') }}">
+					<input type="text" name="nombre" id="nombre" class="form-control" value="{{ old('nombre') }}" required="">
 				</div>
 				<div class="col-12 col-md-4">
 					<label for="header_1" class="label">Imagen principal</label>
-					<input type="file" accept="image/*" class="form-control" name="header_1" id="header_1">
+					<input type="file" accept="image/*" class="form-control" name="header_1" id="header_1" required="">
 				</div>
 				<div class="col-12 col-md-4">
 					<label for="header_2" class="label">Imagen secundaría</label>
@@ -211,7 +212,7 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="button" onclick="event.preventDefault(); document.getElementById('create_form').submit();" class="btn btn-danger">Guardar</button>
+	            <button type="button" id="submit" class="btn btn-danger">Guardar</button>
 	          </div>
 	        </div>
 	      </div>
@@ -219,6 +220,33 @@
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script type="text/javascript">
+		// $(document).ready(function(){
+	        $("#submit").click(function(){
+	          if ($("#create_form").valid() == false) {
+	            var errorList = $( "ul.errorMessages")
+	            errorList.empty();
+	            errorList.addClass("alert alert-danger")
+	            $("#confirmSubmit").modal("hide");
+	            $("#create_form").find( ":invalid" ).each(function( index, node ) {
+	                  console.log(node);
+	                  // Find the field's corresponding label
+	                  var label = $( "label[for=" + node.id + "] "),
+	                      // Opera incorrectly does not fill the validationMessage property.
+	                      message = node.validationMessage || 'No es valor valido.';
+
+	                  errorList
+	                      .show()
+	                      .append( "<li><span>En el campo '" + label.html() + "':</span> " + message + "</li>" );
+	              });
+
+	          }
+	          else{
+	            $("#create_form").submit();
+	          }
+
+	        
+	        });
+	    // });
 		function displayDivMexico(){
 			$("#div_mexico").removeClass('d-none').addClass('d-block');
 			$("#div_peru").removeClass('d-block').addClass('d-none');
@@ -233,10 +261,10 @@
 		function createOptionInstitucion(pais){
 			if (pais === "mexico") {
 				$("#tipo_institucion_mexico").html(`
-					<label for="regiones" class="text-md-left col-form-label">
+					<label for="tipo_institucion" class="text-md-left col-form-label">
 						Seleccione el tipo de institución que será y las regiones correspondientes
 					</label>
-					<select class="form-control tipo_institucion" name="tipo_institucion" required="">
+					<select class="form-control tipo_institucion" name="tipo_institucion" id="tipo_institucion" required="">
 						<option value="">Seleccione una opción</option>
 						<option value="Estatal">Estatal</option>
 						<option value="Municipal">Municipal</option>
@@ -247,10 +275,10 @@
 			}
 			else if (pais === "peru"){
 				$("#tipo_institucion_peru").html(`
-					<label for="regiones" class="text-md-left col-form-label">
+					<label for="tipo_institucion" class="text-md-left col-form-label">
 						Seleccione el tipo de institución que será y las regiones correspondientes
 					</label>
-					<select class="form-control tipo_institucion" name="tipo_institucion" required="">
+					<select class="form-control tipo_institucion" id="tipo_institucion" name="tipo_institucion" required="">
 						<option value="">Seleccione una opción</option>
 						<option value="Estatal">Estatal</option>
 						<option value="Municipal">Municipal</option>
@@ -271,14 +299,14 @@
 				var html = `
 				<div class="row form-group">
 					<div class="col-12 mt-2">
-						<label class="text-md-left col-form-label">
+						<label class="text-md-left col-form-label" for="estados">
 							Seleccione el o los estados donde se activaran los incidentes
 						</label>
 					</div>
 					@foreach ($estados_mexico as $estado)
 						<div class="col-12 col-md-6 col-lg-4 mt-2">
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
+								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}" required="">
 									<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
 							</div>
 						</div>				
@@ -293,14 +321,14 @@
 				var html = `
 				<div class="row form-group">
 					<div class="col-12 mt-2">
-						<label class="text-md-left col-form-label">
+						<label class="text-md-left col-form-label" for="estados">
 							Seleccione el o las provincias donde se activaran los incidentes
 						</label>
 					</div>
 					@foreach ($estados_peru as $estado)
 						<div class="col-12 col-md-6 col-lg-4 mt-2">
 							<div class="form-check">
-								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}">
+								<input class="form-check-input" type="checkbox" id="{{$estado->nombre}}" name="estados[]" value="{{$estado->id}}" required>
 									<label class="form-check-label" for="{{$estado->nombre}}">{{$estado->nombre}}</label>
 							</div>
 						</div>				
@@ -318,7 +346,8 @@
 		function showEstado(pais){
 			if(pais === 'mexico'){
 				var html = `
-				<select class="form-control mt-2" id="estado" name="estado">
+
+				<select class="form-control mt-2" id="estado" name="estado" required="">
 					<option value="">Seleccione el estado correspondiente</option>
 					@foreach ($estados_mexico as $estado)
 						<option value="{{$estado->id}}">{{$estado->nombre}}</option>
@@ -406,7 +435,7 @@
 						checkbox_html = `
 							<div class="col-12 col-md-6 col-lg-4 mt-2">
 								<div class="form-check">
-									<input class="form-check-input" type="checkbox" id="${municipio.nombre}" name="municipios[]" value="${municipio.id}">
+									<input class="form-check-input" type="checkbox" id="${municipio.nombre}" name="municipios[]" value="${municipio.id}" required>
 										<label class="form-check-label" for="${municipio.nombre}">${municipio.nombre}</label>
 								</div>
 							</div>

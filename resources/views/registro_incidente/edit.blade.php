@@ -34,6 +34,7 @@
 		</div>
 	
 		<div class="panel-body">
+			<ul class="errorMessages"></ul>
 			@if ($errors->any())
 			    <div class="alert alert-danger">
 			        <ul>
@@ -107,7 +108,7 @@
 	  				<div class="row">
 	  					<div class="col-12 mt-2">
 	  						<label for="descripcion" class="label">Descripción del Incidente:</label>
-	  						<textarea name="descripcion" id="descripcion" rows="5" class="form-control">{{old('descripcion') ? old('descripcion') : $incidente->descripcion}}</textarea>
+	  						<textarea name="descripcion" id="descripcion" rows="5" class="form-control" required="">{{old('descripcion') ? old('descripcion') : $incidente->descripcion}}</textarea>
 	  					</div>
 	  					<div class="col-12 mt-2">
 	  						<label for="locacion" class="label">Ubicación:</label>
@@ -293,7 +294,7 @@
 	          </div>
 	          <div class="modal-footer bg-secondary">
 	            <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
-	            <button type="button" onclick="event.preventDefault(); document.getElementById('update_registro_form').submit();" class="btn btn-danger">Registrar</button>
+	            <button type="button" id="submit" class="btn btn-danger">Registrar</button>
 	          </div>
 	        </div>
 	      </div>
@@ -301,6 +302,34 @@
 	<script type="text/javascript" src="{{ asset('js/jquery-flexdatalist-2.2.1/jquery.flexdatalist.min.js') }}"></script>
 	<script type="text/javascript" src="{{ asset('js/funciones/exp1.js') }}"></script>
 	<script>
+
+		$(document).ready(function(){
+	        $("#submit").click(function(){
+	          if ($("#update_registro_form").valid() == false) {
+	            var errorList = $( "ul.errorMessages")
+	            errorList.empty();
+	            errorList.addClass("alert alert-danger")
+	            $("#update_registro_form").find( ":invalid" ).each(function( index, node ) {
+	                  console.log(node);
+	                  // Find the field's corresponding label
+	                  var label = $( "label[for=" + node.id + "] "),
+	                      // Opera incorrectly does not fill the validationMessage property.
+	                      message = node.validationMessage || 'No es valor valido.';
+
+	                  errorList
+	                      .show()
+	                      .append( "<li><span>En el campo '" + label.html() + "':</span> " + message + "</li>" );
+	              });
+	            $("#confirmSubmit").modal("hide");
+
+	          }
+	          else{
+	            $("#update_registro_form").submit();
+	          }
+
+	        
+	        });
+	    });
 	
 
         $("#datepicker").datepicker({

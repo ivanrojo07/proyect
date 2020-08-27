@@ -14,6 +14,7 @@ class RegistroIncidente extends JsonResource
      */
     public function toArray($request)
     {
+        // Creamos un objeto geojson del modelo de registro de incidente
         return [
             "type" => "Feature",
             "properties" => [

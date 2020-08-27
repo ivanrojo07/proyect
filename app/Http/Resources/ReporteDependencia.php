@@ -14,6 +14,8 @@ class ReporteDependencia extends JsonResource
      */
     public function toArray($request)
     {
+        // Retornamos un objeto geojson del modelo reporte dependencia
+        
         return [
             "type" => "Feature",
             "properties" => [

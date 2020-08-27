@@ -14,12 +14,17 @@ class Institucion extends JsonResource
      */
     public function toArray($request)
     {
+        // Si el tipo de institución es federal o estatal
         if ($this->tipo_institucion == "Federal" || $this->tipo_institucion == "Estatal") {
+            // Obtenemos los estados de como regiones
             $regiones = $this->estados;
         }
+        // Si es municipal
         else{
+            // Obtenemos sus municipios como regiones
             $regiones = $this->municipios;
         }
+        // Retornamos un objeto 
         return [
             'id'=>$this->id,
             'nombre'=>$this->nombre,

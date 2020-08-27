@@ -36,7 +36,9 @@ class CovidController extends Controller
             // Si no existe la fecha la creamos con la fecha actual
             $date = Date('Y-m-d');
         }
+        // Buscamos los registros por el rango de una fecha
         $registros_covid = Covid::where(DB::raw('DATE(fecha)'),$date)->orderBy('hora','asc')->get();
+        // Retornamos una vista con la información
         return view('covid.index',[
             'registros' => $registros_covid,
             'fecha' => $date

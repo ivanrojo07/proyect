@@ -14,6 +14,7 @@ class InstitucionCollection extends ResourceCollection
      */
     public function toArray($request)
     {
+        // Retornar un array de objetos
         return ['instituciones'=> $this->collection];
     }
 }

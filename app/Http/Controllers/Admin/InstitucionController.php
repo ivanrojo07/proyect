@@ -22,10 +22,14 @@ class InstitucionController extends Controller
     {
 
         //
+        // Filtramos el campo de busqueda en minusculas
         $search = strtolower($request->search);
+        /*Operador terciario (si el campo busqueda no esta vacio agregamos un where,
+        de lo contrario solo lo ordenamos por nombre)*/
         $instituciones = $search ?
                          Institucion::where("nombre","LIKE", "%$search%")->get()
                           : Institucion::orderBy('nombre','asc')->get();
+        // Retornamos la vista
         return view('admin.institucion.index',['instituciones'=>$instituciones]);
     }
 
@@ -39,6 +43,7 @@ class InstitucionController extends Controller
     {
         //Obtenemos los Estados de la republica mexicana de la base de datos
         $estados_mexico = Estado::where('pais_id',1)->orderBy('nombre','asc')->get();
+        // Obtenemos los estados de peru de la base de datos
         $estados_peru = Estado::where('pais_id',2)->orderBy('nombre','asc')->get();
         // Obtenemos la categoria incidente de la base de datos
         $categorias_incidente = CategoriaIncidente::orderBy('nombre','asc')->get();
@@ -170,8 +175,20 @@ class InstitucionController extends Controller
      */
     public function edit(Institucion $institucion)
     {
+        // Obtenemos el tipo de institució
+        $tipo_institucion = $institucion->tipo_institucion;
+        // Si es municipal
+        if ($tipo_institucion === "Municipal") {
+            // obtenemos un municipio y escalamos hasta obtener el id del pais
+            $municipio  = $institucion->municipios;
+            $pais_id = $municipio[0]->estado->pais->id;
+        }
+        else{
+            // Obtenemos el id del pais de un estado
+            $pais_id = $institucion->estados[0]->pais->id;
+        }
         // Obtenemos los estados de la republica 
-        $estados = Estado::orderBy('nombre','asc')->get();
+        $estados = Estado::where('pais_id',$pais_id)->orderBy('nombre','asc')->get();
         // Obtenemos todas las categorias del incidentes
         $categorias_incidente = CategoriaIncidente::orderBy('nombre','asc')->get();
         // Retornamos la vista con las variables inyectadas
@@ -180,6 +197,7 @@ class InstitucionController extends Controller
             'estados' => $estados, 
             'categorias_incidente' => $categorias_incidente
         ]);
+        
     }
 
     /**
@@ -207,6 +225,20 @@ class InstitucionController extends Controller
         ];
         // Validamos el request con las reglas
         $request->validate($rules);
+        // Verificamos el tipo de institución antes de cambiarlo
+        $tipo_institucion = $institucion->tipo_institucion;
+        // Si es tipo de institucion municipal
+        if ($tipo_institucion === "Municipal") {
+            // Obtenemos los municipios de la institucion
+            $municipio  = $institucion->municipios;
+            // Escogemos el primero, de ahi escalamos hasta llegar al id del pais 
+            $pais_id = $municipio[0]->estado->pais->id;
+        }
+        else{
+
+            // Obtenemos un estado y escalamos al pais de id
+            $pais_id = $institucion->estados[0]->pais->id;
+        }
         // verificamos si header_1 es archivo valido
         if ($request->file('header_1')) {
             // Guardamos la imagen y obtenemos el path
@@ -272,14 +304,8 @@ class InstitucionController extends Controller
         switch ($request->tipo_institucion) {
             // Si es una entidad federal
             case "Federal":
-                $pais = $request->pais;
-                // Obtenemos todos los estados por pais
-                if ($pais == "mexico") {
-                    $estados = Estado::where('pais_id',1)->get();
-                }
-                else{
-                    $pais = Estado::where('pais',2)->get();
-                }
+                // Obtenemos los estados del pais seleccionado
+                $estados = Estado::where('pais_id',$pais_id)->get();
                 // Y guardamos sus relaciones en la tabla pivote regionables
                 $institucion->estados()->saveMany($estados);
                 break;
