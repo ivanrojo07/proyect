@@ -11,8 +11,6 @@ jQuery(document).ready(function($) {
 	const btnSoluciones = $('#soluciones-btn');
 	const servicios = $('#submenu');
 	const menuServicios = $('#menuServicios');
-	const menuSeg = $('#btn-menuSeg');
-	const menuResponsivo = $('#menuResponsivo');
 
 	//Aqui siempre se mantiene oculto el boton de cerrar
 	btnCerrar.hide();
@@ -71,15 +69,21 @@ jQuery(document).ready(function($) {
 	});
 
 
-	//meu servicios
 	servicios.click(function() {
 		menuServicios.toggleClass('menuSerciciosActive');
-		enuResponsivo.removeClass('menuResponsivoActive');
+		menuResponsivo.removeClass('menuResponsivoActive');
 	});
 
-	menuSeg.click(function() {
-	    menuResponsivo.toggleClass('menuResponsivoActive');
-	    menuServicios.removeClass('menuSerciciosActive');
-  });
+	menuServicios.mouseleave(function() {
+		menuServicios.removeClass('menuSerciciosActive');
+	});
+
+	$('#padre').mouseenter(function() {
+		menuServicios.removeClass('menuSerciciosActive');
+	});
+
+	$('.header1').mouseenter(function() {
+		menuServicios.removeClass('menuSerciciosActive');
+	});
 
 });

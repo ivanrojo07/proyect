@@ -270,8 +270,8 @@ class LoginController extends Controller
             $body = $response->json();
             // dd($body);
             if ($body["success"]) {
-                
                 $claro360 = $body["claro360"];
+                $this->setSessionJSON($body);
                 if (!empty($body["incidentes"])) {
                     $this->setSessionJSON($body);
                     
@@ -301,10 +301,12 @@ class LoginController extends Controller
                         return redirect()->route("home");
 
                     }
+                    // 150065/c0d0be74553347588392580f2986eb22
                 }
                 else{
                     // Si la api falla redirigimos al login con el mensaje de que lo intente más tarde.
-                    return redirect('/login')->with('mensaje-error','No tienes acceso a esta plataforma, verifica tu plan.');
+                    session(['body'=>$body]);
+                    return redirect()->route('registrar_modulo');
                 }
             }
             else{

@@ -5,190 +5,137 @@ body{
 	box-sizing: border-box;
 }
 
-header{
-  position: fixed;
-  top: 0;
-  z-index: 10;
-  width: 100%;
-  height: 60px;
-  display: flex;
-  justify-content: space-between;
-  visibility: visible;
-  transition: 0.5s;
-  border-bottom: 3px solid red;
+/*******HEADER********/
+	header{
+		position: fixed;
+		top: 0px;
+		width: 100%;
+		height: 60px;
+		background-color: rgba(255, 255, 255);
+		border-bottom: 3px solid rgba(218, 41, 28);
+		display: flex;
+		justify-content: space-between;
+		flex-wrap: wrap;
+	}
 
-  background-color: #000; /*PROVISIONAL*/
-}
-
-.cabezera{
-  height: 100%;
-  overflow: hidden;
-}
-
-.header1, .header3{
-  width: 25%;
-}
-
-.header2{
-  width: 50%;
-}
-
-.header1{
-  display: flex;
-  justify-content: flex-end;
-  vertical-align: center;
-}
-
-.header1 img{
-  height: 35px;
-  text-align: right;
-  margin-top:10px;
-  margin-right: 15px;
-}
-
-.header2{
-  display: flex;
-  justify-content: space-between;
-}
-
-.header2 .btn-menuSeg{
-	background-color: transparent;
-	color: white;
-	font-size: 18px;
-	font-weight: bold;
-	border: none;
-}
-
-.header2 .menu{
-  padding: 0;
-  height: 100%;
-}
-
-.header2 .menu nav{
-	display: inline-block;
-}
-
-.menu li{
-  display: inline-block;
-  height: 100%;
-  padding: 15px;
-  cursor: pointer;
-  padding-top: 25px;
-}
-
-.header2 .menu li:hover{
-	background-color: #fff;
-}
-
-.header2 .menu li a{
-  display: block;
-  text-decoration: none;
-  font-size: 18px;
-  font-weight: bold;
-  color: white;
-}
-
-.header2 .menu li a:hover{
-	color: #000;
-}
-
-.header2 .busqueda{
-  display: inline-block;
-  width: 50px;
-  height: 50px;
-  border-radius: 100px;
-  background-color: white;
-  margin: 5px 30px 0 0;
-}
-
-.header3 .sesion{
-	width: 100%;
-	height: 100%;
-}
-
-.header3 .sesion{
-	display: flex;
-	justify-content: space-between;
-}
-
-.header3 .sesion .nombre{
-	height: 100%;
-	display: flex;
-	align-items: center;
-	margin-left: 50px;
-}
-
-.header3 .sesion .nombre .usuario{
-	font-size: 14px;
-
-	color: #fff; /*PROVISIONAL*/
-}
-
-.header3 .sesion .toggle-btn{
+	.cabezera{
 		height: 100%;
-}
+		overflow: hidden;
+	}
 
-.header3 .sesion .toggle-btn button{
-	background-color: transparent;
-	border: none;
-	height: 100%;
-	width: 60px;
-}
+	.header1{
+		height: 100%;
+		padding: 10px;
+		display: flex;
+		justify-content: center;
+	}
 
-.header3 .sesion .toggle-btn button span{
-	font-size: 40px;
-	font-weight: bold;
-	background-color: transparent;
-	border: none;
-	margin-top: -4px;
-}
+	.header1 img{
+		height: 40px;
+	}
 
+	.header2 .img1{
+		width: 60px;
+		height: 60px;
+	}
+
+	.header2 .img2{
+		height: 20px;
+	}
+
+	.header2 .img3{
+		height: 20px;
+	}
+
+	.header3 .titulo .tituloPrincipal{
+		font-size: 16px;
+		font-weight: bold;
+		margin-top: 10px;
+		margin-bottom: 2px;
+	}
+
+	.header3 .titulo .tituloSecundario{
+		font-size: 10px;
+	}
+
+	.header4{
+		display: flex;
+		justify-content: space-between;
+	}
+
+	.header4 .nombre{
+		height: 100%;
+		display: flex;
+		align-items: center;
+		margin: 0 auto;
+	}
+
+	.header4 .nombre .usuario{
+		font-size: 12px;
+	}
+
+	.header4 .toggle-btn{
+			height: 100%;
+	}
+
+	.header4 .toggle-btn button{
+		background-color: transparent;
+		border: none;
+		height: 100%;
+		width: 60px;
+	}
+
+	.header4 .toggle-btn button span{
+		font-size: 40px;
+		font-weight: bold;
+		background-color: transparent;
+		color: rgb(0, 0, 0);
+		border: none;
+		margin-top: -4px;
+	}
+/********FIN DE HEADER********/
 
 /********MENU SERVICIOS********/
-	.menuServicios{
-		position: fixed;
-		top: 60px;
-		width: 100%;
-		background-color: black;
-		z-index: 100;
-		display: none;
-	}
+.menuServicios{
+	position: fixed;
+	top: 60px;
+	width: 100%;
+	background-color: black;
+	z-index: 100;
+	display: none;
+}
 
-	.menuSerciciosActive{
-		display: block;
-	}
+.menuSerciciosActive{
+	display: block;
+}
 
-	.menuServicios ul{
-		display: flex;
-		justify-content: space-around;
-		padding: 10px 0 0 0;
-		margin: 0;
-	}
+.menuServicios ul{
+	display: flex;
+	justify-content: space-around;
+	padding: 10px 0 0 0;
+	margin: 0;
+}
 
-	.menuServicios ul li{
-		list-style: none;
-	}
+.menuServicios ul li{
+	list-style: none;
+}
 
-	.menuServicios ul li a{
-		text-align: center;
-	}
+.menuServicios ul li a{
+	text-align: center;
+}
 
-	.menuServicios ul li div{
-		border: 1px solid white;
-		width: 4rem;
-		height: 4rem;
-		border-radius: 10px;
-	}
+.menuServicios ul li div{
+	border: 1px solid white;
+	width: 60px;
+	height: 60px;
+	border-radius: 10px;
+}
 
-	.menuServicios ul li label{
-		display: block;
-		color: white;
-	}
-
-	header .header2 .menuResponsivoActive{
-		background-color: #000;
-	}
-/***** FIN MENU SERVICIOS *****/
+.menuServicios ul li label{
+	display: block;
+	color: white;
+}
+/********FIN DE HEADER********/
 
 /********CERRAR SESION********/
 	.cerrarSesion{
@@ -200,74 +147,185 @@ header{
 		z-index: 1000;
 		width: 0%;
 		transition: 0.6s;
+		overflow: hidden;
 	}
 
-	.cerrarSesion .menuContenedor,
-	.cerrarSesion .textoLogin{
-		height: 45%;
-		max-height: 45%;
-		overflow: auto;
+	.cerrarSesion .titulo{
+		width: 100%;
+		height: 5%;
+		background-color: red;
+		padding: 5px;
 	}
 
-	.cerrarSesion .btn-cerrar{
-		height: 10%;
-		max-height: 10%;
-		border-top: 1px solid rgba(211, 211, 211);
+	.cerrarSesion .titulo .titulo-seg{
+		font-size: 16px;
+		color: #fff;
 	}
 
-	.cerrarSesion .menuContenedor ul{
-	    padding: 0;
+	.cerrarSesion .perfil{
+		width: 100%;
+		height: 40%;
+		background-color: rgb(64, 71, 79);
+		overflow-y: auto;
 	}
 
-	.cerrarSesion .menuContenedor ul li .enlace-menu{
+	.cerrarSesion .perfil .foto{
+		width: 100%;
+		height: 50%;;
+		display: flex;
+		justify-content: center;
+		padding: 10px;
+	}
+
+	.cerrarSesion .perfil .foto .foto-perfil{
+		width: 150px;
+		border-radius: 100%;
+		height: 100%;
+		overflow: hidden;
+	}
+
+	.cerrarSesion .perfil .datos{
+		width: 100%;
+		height: 30%;
+		display: flex;
+	}
+
+	.cerrarSesion .perfil .datos .info{
+		width: 60%;
+		height: 100%;
+		overflow: hidden;
+		padding: 10px 5px;
+	}
+
+	.cerrarSesion .perfil .datos .info p{
+		margin-bottom: 0;
+	}
+
+	.cerrarSesion .perfil .datos .info .nombre,
+	.cerrarSesion .perfil .datos .info .correo,
+	.cerrarSesion .perfil .datos .info .ubicacion{
+		color: #fff;
+	}
+
+	.cerrarSesion .perfil .datos .info .nombre{
+		font-size: 20px;
+	}
+
+	.cerrarSesion .perfil .datos .info .correo{
+		font-size: 16px;
+	}
+
+	.cerrarSesion .perfil .datos .info .ubicacion{
+		font-size: 14px;
+	}
+
+	.cerrarSesion .perfil .datos .semaforo{
+		width: 40%;
+		height: 100%;
+		overflow: hidden;
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.cerrarSesion .perfil .btn-perfil{
+		width: 100%;
+		height: 20%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
+	}
+
+	.cerrarSesion .perfil .btn-perfil .boton-perfil{
 		display: block;
-		padding: 12px;
-		border-bottom: 1px solid rgba(211, 211, 211);
-		color: rgb(64, 71, 79);
-		font-size: 16px;
-		font-weight: bold;
-		margin-top: 3px;
-		text-align: center;
-		text-decoration: none;
+		width: 230px;
+		height: 40px;
+		border: 2px solid #fff;
+		border-radius: 30px;
+		color: #fff;;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 	}
 
-	.cerrarSesion .menuContenedor ul li .enlace-menu:hover{
-		border-bottom: solid 1px #737373;
-		color: rgba(0, 0, 0);
-		text-decoration: none;
+	.cerrarSesion .navegacion{
+		width: 100%;
+		height: 50%;
+		border-top: 2px solid #fff;
+		background-color: rgb(64, 71, 79);
+		border-bottom: 2px solid #fff;
 	}
 
-	.cerrarSesion .textoLogin{
-		text-align: center;
-	}
-
-	.cerrarSesion .textoLogin .tittleLogin{
-		margin-top: 8px;
-		font-size: 16px;
-		font-weight: bold;
-		padding-bottom: 4%;
-		color: rgba(64, 71, 79);
-		border-bottom: 1px solid rgba(211, 211, 211);
-	}
-
-	.cerrarSesion .textoLogin img{
-		width: 30%;
-	}
-
-	.cerrarSesion .textoLogin p{
-		margin-top: 30px;
-		font-size: 12px;
-		color: #929799;
-	}
-
-	.cerrarSesion .btn-cerrar button{
+	.cerrarSesion .navegacion nav{
 		width: 100%;
 		height: 100%;
-		border: none;
-		background-color: rgba(255, 255, 255);
-		color: rgba(218, 41, 28);
+		overflow-y: auto;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion,
+	.cerrarSesion .navegacion nav .menu-sesion .menu-servicios,
+	.cerrarSesion .navegacion nav .menu-sesion .menu-segmentos{
+		padding: 0;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion li{
+		display: block;
+		padding: 10px 20px;
+		border-bottom: 2px solid #fff;
+		cursor: pointer;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion > li:hover,
+	.cerrarSesion .navegacion nav .menu-sesion > li a:hover{
+		background-color: crimson;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion li,
+	.cerrarSesion .navegacion nav .menu-sesion li a{
+		color: #fff;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion li a{
+		display: block;
+		text-decoration: none;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion .menu-servicios li a{
+		display: flex;
+		flex-wrap: wrap;
+		justify-content: space-between;
+		align-items: center;
+		text-decoration: none;
+		padding-left: 15px;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion .menu-servicios li a .icono{
+		height: 100%;
+	}
+
+	.cerrarSesion .navegacion nav .menu-sesion .menu-segmentos li a{
+		display: block;
+		padding-left: 15px;
+		text-decoration: none;
+	}
+
+	.cerrarSesion .btn-sesion{
+		width: 100%;
+		height: 5%;
+		background-color: rgb(64, 71, 79);
+	}
+
+	.cerrarSesion .btn-sesion .boton-sesion{
+		display: block;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		font-size: 16px;
-		font-weight: bold;
+		color: #fff;
+		text-decoration: none;
 	}
 /********FIN DE CERRAR SESION********/
 
@@ -279,7 +337,7 @@ header{
 		height: calc(100% - 90px);
 		overflow: hidden;
 		z-index: 1;
-		background: url('../images/fondosistema.jpg') rgba(0, 0, 0) fixed;
+		background: url('/images/fondosistema.jpg') rgba(0, 0, 0) fixed;
 	}
 
 	section nav, section main, section aside{
@@ -426,73 +484,21 @@ header{
 /***********************PORTRAIT DISPOSITIVO MOVIL CELULAR**********************************************************/
 @media only screen and (max-width: 320px) and (orientation: portrait){
 	/*******HEADER********/
-		header .header1{
-		display: none;
+		.header1{
+			width: 70%;
 		}
 
-		header .header2{
-			width: 90%;
+		.header1 a{
+			margin-left: 70px;
 		}
 
-		.header2 .btn-menuSeg{
-			font-size: 12px;
-		}
-
-		.menu li {
-			padding: 17px 15px; 
-		}
-
-		header .header2 .menuResponsivo{
-			position: fixed;
-			top: 60px;
-			left: 0px;
-			flex-direction: column;
-			width: 100%;
+		.header2, .header3, .header4 .titulo{
 			display: none;
 		}
 
-		header .header2 .menuResponsivoActive{
-			display: block;
-			height: auto;
+		.header4{
+			width: auto;
 		}
-
-		.menuResponsivo li{
-			width: 100%;
-			border-bottom: 2px solid white;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: auto;
-		}
-
-		.header2 .menu li a {
-			text-decoration: none;
-			font-size: 12px;
-			font-weight: bold;
-			color: rgb(255, 255, 255);
-		}
-
-		.menuServicios{
-			top: 60px;
-			width: 100%;
-			height: calc(100% - 60px);
-			overflow: auto;
-		}
-
-		.menuServicios ul{
-			flex-direction: column;
-		}
-
-		.menuServicios ul li{
-			display: flex;
-			justify-content: center;
-			border-bottom: 2px solid white;
-			padding-top: 5px;
-		}
-
-		.header3 .sesion .nombre {
-			display: none;
-	}
 	/********FIN HEADER********/
 
 	/********CERRAR SESIÓN********/
@@ -1106,9 +1112,13 @@ header{
 	/********FIN DEL SECTION********/
 }
 @media only screen and (min-width: 1200px) and (max-width:3000px) and (orientation: portrait){
-  	.header2 .btn-menuSeg{
-    	display: none;
-  	}
+	.cabezera{
+		width: 25%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
+	}
 
 	.cerrarAncho{
 		width: 25%;
@@ -1544,60 +1554,20 @@ header{
 }
 @media only screen and (min-width: 992px) and (max-width: 1150px) and (orientation: landscape){
 	/*******HEADER********/
-		.menu li {
-		padding: 17px 15px; 
+		.header1{
+			width: 93%;
 		}
 
-		header .header2 .menuResponsivo{
-			position: fixed;
-			top: 60px;
-			left: 0px;
-			flex-direction: column;
-			width: 100%;
+		.header1 a{
+			margin-left: 60px;
+		}
+
+		.header2, .header3, .header4 .titulo{
 			display: none;
 		}
 
-		header .header2 .menuResponsivoActive{
-			display: block;
-			height: auto;
-		}
-
-		.menuResponsivo li{
-			width: 100%;
-			border-bottom: 2px solid white;
-			display: flex;
-			align-items: center;
-			justify-content: center;
-			height: auto;
-		}
-
-		.header2 .menu li a {
-			text-decoration: none;
-			font-size: 12px;
-			font-weight: bold;
-			color: rgb(255, 255, 255);
-		}
-
-		.menuServicios{
-			top: 60px;
-			width: 100%;
-			height: calc(100% - 60px);
-			overflow: auto;
-		}
-
-		.menuServicios ul{
-			flex-direction: column;
-		}
-
-		.menuServicios ul li{
-			display: flex;
-			justify-content: center;
-			border-bottom: 2px solid white;
-			padding-top: 5px;
-		}
-
-		.header3 .sesion .nombre {
-			display: none;
+		.header4{
+			width: auto;
 		}
 	/********FIN HEADER********/
 
@@ -1653,8 +1623,20 @@ header{
 /*********************LANDSCAPE DISPOSITIVO MOVIL LAPTOP***********************************************************/
 @media only screen and (min-width: 1151px) and (max-width: 1199px) and (orientation: landscape){
 	/*******HEADER********/
-		.header2 .btn-menuSeg{
+		.header1{
+			width: 90%;
+		}
+
+		.header1 a{
+			margin-left: 60px;
+		}
+
+		.header2, .header3, .header4 .titulo{
 			display: none;
+		}
+
+		.header4{
+			width: auto;
 		}
 	/********FIN HEADER********/
 
@@ -1708,8 +1690,12 @@ header{
 	/********FIN DEL SECTION********/
 }
 @media only screen and (min-width: 1200px) and (max-width: 1360px) and (orientation: landscape){
-	.header2 .btn-menuSeg{
-		display: none;
+	.cabezera{
+		width: 25%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
 	}
 
 	.cerrarAncho{
@@ -1735,8 +1721,16 @@ header{
 
 /*patalla de escritorio utilizado en la empresa*/
 @media only screen and (min-width: 1361px) and (max-width: 1899px) and (orientation : landscape){
-	.header2 .btn-menuSeg{
-		display: none;
+	.header1, .header4{
+		width: 20%;
+	}
+
+	.header2, .header3{
+		width: 30%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
 	}
 
 	.cerrarAncho{
@@ -1759,8 +1753,16 @@ header{
 	}
 }
 @media only screen and (min-width: 1900px) and (max-width: 2299px) and (orientation : landscape){
-	.header2 .btn-menuSeg{
-		display: none;
+	.header1, .header4{
+		width: 20%;
+	}
+
+	.header2, .header3{
+		width: 30%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
 	}
 
 	.cerrarAncho{
@@ -1783,8 +1785,16 @@ header{
 	}
 }
 @media only screen and (min-width: 2300px) and (max-width: 2599px) and (orientation : landscape){
-	.header2 .btn-menuSeg{
-		display: none;
+	.header1, .header4{
+		width: 20%;
+	}
+
+	.header2, .header3{
+		width: 30%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
 	}
 
 	.cerrarAncho{
@@ -1807,8 +1817,16 @@ header{
 	}
 }
 @media only screen and (min-width: 2600px) and (max-width: 3599px) and (orientation : landscape){
-	.header2 .btn-menuSeg{
-		display: none;
+	.header1, .header4{
+		width: 15%;
+	}
+
+	.header2, .header3{
+		width: 35%;
+	}
+
+	.header4{
+		background-color: rgba(245,245,245);
 	}
 
 	.cerrarAncho{

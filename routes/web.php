@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('blueprint',function(){
-	return view('blueprint');
-});
+// Route::get('blueprint',function(){
+// 	return view('blueprint');
+// });
 
 Route::get('API/Cuenta360/access_token/addService/{user_id}/{access_token}',function(){
 	$estados = Estado::orderBy('nombre','asc')->get();
@@ -47,8 +47,12 @@ Route::middleware(["guest"])->group(function(){
 	Route::post("/login", "Auth\LoginController@handleProviderCallback")->name("login_submit");
 	// Route::get("access_token/{user_id}/{token}", 'Auth\LoginController@getAccessToken')->name("getAccessToken");
 	Route::get("API/cuenta360/access_token/{user_id}/{access_token}",'Auth\LoginController@verificaCuenta360')->name("a_t_cuenta360");
+	// Ruta para mostrar formulario y guardar registros de nuevos usuarios
 	Route::get('/registrar','Auth\RegisterController@form')->name('registrar_form');
 	Route::post('/registrar','Auth\RegisterController@registrar')->name('registrar');
+
+	Route::get('registrarte','ModuloController@showForm')->name("registrar_modulo");
+	Route::post('registrarte','ModuloController@submitForm')->name("submit_modulo");
 });
 
 Route::get('/home', 'HomeController@index')->name('home');
