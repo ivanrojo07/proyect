@@ -149,74 +149,81 @@ class LoginController extends Controller
                 }
                 // De lo contrario
                 else{
-                    // Obtenemos el usuario
-                    $claro360_user = $body["claro360"];
-                    // verificamos que el usuario exista en nuestra bd
-                    $existingUser = User::where("email",$claro360_user["correo"])->first();
-                    // Si existe y su contraseña 
-                    if ($existingUser && !empty($existingUser->password)) {
-                        // Verificammos que usuario y contraseña coincidan
-                        if (Auth::attempt(array("email"=>$request['email'], "password" => $request['password']))) {
-                            // Logeamos el usuario en la plataforma
-                            auth()->login($existingUser,false);
-                            // mandamos a la función setsession con body
-                            $this->setSessionJSON($body);
-                            // guardamos el token resultado
-                            $existingUser->claro_token = $claro360_user['token'];
-                            // guardamos los cambios
-                            $existingUser->save();
+                    // dd($body['incidentes'][0]['activo']);
+                    if ($body['incidentes'][0]['activo'] == "1") {
+                        
+                        // Obtenemos el usuario
+                        $claro360_user = $body["claro360"];
+                        // verificamos que el usuario exista en nuestra bd
+                        $existingUser = User::where("email",$claro360_user["correo"])->first();
+                        // Si existe y su contraseña 
+                        if ($existingUser && !empty($existingUser->password)) {
+                            // Verificammos que usuario y contraseña coincidan
+                            if (Auth::attempt(array("email"=>$request['email'], "password" => $request['password']))) {
+                                // Logeamos el usuario en la plataforma
+                                auth()->login($existingUser,false);
+                                // mandamos a la función setsession con body
+                                $this->setSessionJSON($body);
+                                // guardamos el token resultado
+                                $existingUser->claro_token = $claro360_user['token'];
+                                // guardamos los cambios
+                                $existingUser->save();
 
-                            // Mandamos login a true.
-                            return ['login' => true];
+                                // Mandamos login a true.
+                                return ['login' => true];
 
+                            }
+                            else{
+                                // mandamos func setsession con body
+                                $this->setSessionJSON($body);
+                                // guardamos token, nueva contraseñaaa y guardamos
+                                $existingUser->claro_token = $claro360_user['token'];
+                                $existingUser->password = Hash::make($request['password']);
+                                $existingUser->save();
+                                // loggeamos a usuario
+                                auth()->login($existingUser,false);
+                                // retornamos login true
+                                return ['login'=> true];
+                            }
+                            // return $this->loginPlataforma($existingUser,$request);
                         }
-                        else{
-                            // mandamos func setsession con body
+                        // Si existe usuario pero su contraseña es vacia
+                        else if($existingUser && empty($existingUser->password)){
+                            // mandamos set   session con body
                             $this->setSessionJSON($body);
-                            // guardamos token, nueva contraseñaaa y guardamos
+                            // guardamos token, password, y guardamos
                             $existingUser->claro_token = $claro360_user['token'];
                             $existingUser->password = Hash::make($request['password']);
                             $existingUser->save();
-                            // loggeamos a usuario
+                            // Loooogeamosssss a usuario
                             auth()->login($existingUser,false);
-                            // retornamos login true
-                            return ['login'=> true];
+                            // Retornamos login a true
+                            return ['login' => true];
                         }
-                        // return $this->loginPlataforma($existingUser,$request);
-                    }
-                    // Si existe usuario pero su contraseña es vacia
-                    else if($existingUser && empty($existingUser->password)){
-                        // mandamos set   session con body
-                        $this->setSessionJSON($body);
-                        // guardamos token, password, y guardamos
-                        $existingUser->claro_token = $claro360_user['token'];
-                        $existingUser->password = Hash::make($request['password']);
-                        $existingUser->save();
-                        // Loooogeamosssss a usuario
-                        auth()->login($existingUser,false);
-                        // Retornamos login a true
-                        return ['login' => true];
+                        else{
+                            // Crear nuevo usuario
+                            $newUser = New User([
+                                'nombre' => $claro360_user['nombre'],
+                                "apellido_paterno" => $claro360_user["apellido_paterno"],
+                                "apellido_materno" => $claro360_user["apellido_materno"],
+                                "email" => $claro360_user['correo'],
+                                "password" => Hash::make($request['password']),
+                                'claro_token' => $claro360_user['token']
+                            ]);
+                            // dd($body["incidentes"][0]['institucion_id']);
+                            $newUser->id = $claro360_user['id'];
+                            $newUser->institucion_id = $body["incidentes"][0]['institucion_id'];
+                            $newUser->save();
+                            // mandamos setsession con body
+                            $this->setSessionJSON($body);
+                            // logeamos a usuario
+                            auth()->login($newUser,false);
+                            // retornamos true el login
+                            return ['login'=>true];
+                        }
                     }
                     else{
-                        // Crear nuevo usuario
-                        $newUser = New User([
-                            'nombre' => $claro360_user['nombre'],
-                            "apellido_paterno" => $claro360_user["apellido_paterno"],
-                            "apellido_materno" => $claro360_user["apellido_materno"],
-                            "email" => $claro360_user['correo'],
-                            "password" => Hash::make($request['password']),
-                            'claro_token' => $claro360_user['token']
-                        ]);
-                        // dd($body["incidentes"][0]['institucion_id']);
-                        $newUser->id = $claro360_user['id'];
-                        $newUser->institucion_id = $body["incidentes"][0]['institucion_id'];
-                        $newUser->save();
-                        // mandamos setsession con body
-                        $this->setSessionJSON($body);
-                        // logeamos a usuario
-                        auth()->login($newUser,false);
-                        // retornamos true el login
-                        return ['login'=>true];
+                        return ['login'=>false, "mensaje-error"=>"El modulo todavía no se encuentra activo"];
                     }
                 }
                 
@@ -301,7 +308,7 @@ class LoginController extends Controller
                         return redirect()->route("home");
 
                     }
-                    // 150065/c0d0be74553347588392580f2986eb22
+                    
                 }
                 else{
                     // Si la api falla redirigimos al login con el mensaje de que lo intente más tarde.
