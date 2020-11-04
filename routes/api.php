@@ -18,6 +18,8 @@ Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
 
+Route::get('codigo_postal/{codigo_postal}','Api\Estado\CodigoPostalController')->name('codigo_postal')->where(['codigo_postal' => '[0-9]{5}']);
+
 Route::post('/getAccessToken','Auth\LoginController@getAccessToken')->name('getAccessToken');
 
 Route::post('oauth/login','Api\Auth\LoginController@login');
@@ -62,6 +64,7 @@ Route::middleware('auth:api')
 
 		Route::post('/store','CovidController@store')->name('store');
 		Route::get('/select/{fechas}','CovidController@select')->name('select')->where(array('fechas'=>'[0-9]{4}-[0-9]{2}-[0-9]{2}_[0-9]{4}-[0-9]{2}-[0-9]{2}+'));
+		Route::get('/last_ten/{id}','CovidController@lastTen')->name('last_ten');
 
 });
 

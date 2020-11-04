@@ -116,7 +116,7 @@
 			</div>
 			<div class="form-group row">
 				<div class="col-6">
-					<img alt='static Mapbox map of the San Francisco bay area' src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-l+000({{$incidente->long_especifica}},{{$incidente->lat_especifica}})/{{$incidente->long_especifica}},{{$incidente->lat_especifica}},14/400x300?access_token=pk.eyJ1IjoiaXZhbnJvam8wNyIsImEiOiJja2Y4dGw5YzAwMDhtMzVwbDA5dXhweXZ4In0.wA_k1F9j5gtYM6fTwA0tnA" >
+					<img alt='static Mapbox map of the San Francisco bay area' src="https://api.mapbox.com/styles/v1/mapbox/streets-v11/static/pin-s-l+000({{$incidente->long_especifica}},{{$incidente->lat_especifica}})/{{$incidente->long_especifica}},{{$incidente->lat_especifica}},14/400x300?access_token={{env('STATIC_MAPS_KEY')}}" >
 					{{-- <img src="https://maps.googleapis.com/maps/api/staticmap?center={{$incidente->lat_especifica}},{{$incidente->long_especifica}}&maptype=hybrid&zoom=18&size=350x250&markers=size:large|color:red|{{$incidente->lat_especifica}},{{$incidente->long_especifica}}&key={{env('STATIC_MAPS_KEY')}}"> --}}
 				</div>
 				<div class="col-6">

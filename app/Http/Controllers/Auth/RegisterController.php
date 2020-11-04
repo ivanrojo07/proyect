@@ -69,7 +69,7 @@ class RegisterController extends Controller
         ];
         $request->validate($rules);
 
-        // Obbtenemos el parametros de un nuevo usuario
+        // Obtenemos el parametros de un nuevo usuario
         $registro_usuario_param = $this->setParamNewUsuario($request);
         // dd($registro_usuario_param);
         $response = Http::post($this->usuario_360_url.$this->registro_usuario,$registro_usuario_param);

@@ -117,4 +117,12 @@ class CovidController extends Controller
         return response()->json(['registro'=>$test],201);
     }
 
+    public function lastTen($id)
+    {
+        $tests = Covid::where('id_usuario',$id)->orderBy('id','desc')->take(10)->get();
+        $count_tests = count($tests);
+        // $test_collection = new CovidCollection($tests);
+        return response()->json(["id"=>$id,"total"=>$count_tests,'data'=>$tests],200);
+    }
+
 }

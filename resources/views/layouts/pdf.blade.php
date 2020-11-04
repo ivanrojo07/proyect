@@ -37,12 +37,12 @@
 </head>
 <body>
 @yield('header')
-    <nav class="navbar navbar-light bg-withe justify-content-between">
+   {{--  <nav class="navbar navbar-light bg-withe justify-content-between h-50">
         <h3 class="align-self-center">
             Sistema De Monitoreo y Control
         </h3>
-        <img src="{{ $institucion ? public_path('storage/'.$institucion->path_imagen_header) : public_path('images/claro.png') }}" alt="" height="50px" width="250px">
-    </nav>
+        <img src="{{ $institucion ? public_path('storage/'.$institucion->path_imagen_header) : public_path('images/claro.png') }}" alt="" height="50px" width="100">
+    </nav> --}}
     <div style="top: 0px;bottom: 0px !important;">
         @yield('content')
     </div>

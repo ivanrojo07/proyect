@@ -160,10 +160,10 @@ class CovidController extends Controller
      * @param  \App\Covid\Covid  $covid
      * @return \Illuminate\Http\Response
      */
-    public function edit(Covid $covid)
-    {
-        //
-    }
+    // public function edit(Covid $covid)
+    // {
+    //     //
+    // }
 
     /**
      * Update the specified resource in storage.

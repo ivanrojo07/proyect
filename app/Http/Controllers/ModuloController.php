@@ -13,7 +13,7 @@ class ModuloController extends Controller
 
     public function __construct($body = null)
     {
-    	$this->body = session('body');;
+    	$this->body = session('body');
     }
 
 
