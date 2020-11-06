@@ -163,8 +163,10 @@ a:hover {
 }
 
 a:not([href]):not([tabindex]) {
-  color: inherit;
+  /*color: #6f6f6f;*/
+  color: black;
   text-decoration: none;
+  text-decoration-color: white;
 }
 
 a:not([href]):not([tabindex]):hover, a:not([href]):not([tabindex]):focus {
@@ -468,7 +470,8 @@ mark,
 
 .img-fluid {
   max-width: 100%;
-  height: auto;
+  height: 80%;
+
 }
 
 .img-thumbnail {
@@ -1511,12 +1514,12 @@ pre code {
 .table td {
   padding: 0.75rem;
   vertical-align: top;
-  border-top: 1px solid #dee2e6;
+  /*border-top: 1px solid #dee2e6;*/
 }
 
 .table thead th {
   vertical-align: bottom;
-  border-bottom: 2px solid #dee2e6;
+ /* border-bottom: 2px solid #dee2e6;*/
 }
 
 .table tbody + tbody {
@@ -4093,7 +4096,7 @@ input[type="button"].btn-block {
 }
 
 .nav-tabs {
-  border-bottom: 1px solid #dee2e6;
+  /*border-bottom: 1px solid #dee2e6;*/
 }
 
 .nav-tabs .nav-item {
@@ -4983,6 +4986,9 @@ input[type="button"].btn-block {
   white-space: nowrap;
   vertical-align: baseline;
   border-radius: 0.25rem;
+  position: absolute;
+  /*position: relative;
+  bottom: 10px;*/
 }
 
 a.badge:hover, a.badge:focus {
@@ -5202,12 +5208,9 @@ a.badge-dark:hover, a.badge-dark:focus {
 }
 
 .alert-danger {
-  /*color: #721c24;
+  color: #721c24;
   background-color: #f8d7da;
-  border-color: #f5c6cb;*/
-  color: white;
-    background-color: #ff8200;
-    border-color: #ff8200;
+  border-color: #f5c6cb;
 }
 
 .alert-danger hr {
@@ -5330,16 +5333,18 @@ a.badge-dark:hover, a.badge-dark:focus {
   color: #495057;
   text-align: inherit;
 }
-
+/* hver lista*/
 .list-group-item-action:hover, .list-group-item-action:focus {
-  color: #495057;
+  /*color: #495057;*/
+  color: #000;
   text-decoration: none;
-  background-color: #f8f9fa;
+  /*background-color: #0097a9;*/
+  background-color: #929799;
 }
 
 .list-group-item-action:active {
   color: #212529;
-  background-color: #e9ecef;
+  background-color: #283139;
 }
 
 .list-group-item {
@@ -5374,7 +5379,9 @@ a.badge-dark:hover, a.badge-dark:focus {
 }
 
 .list-group-item.active {
-  z-index: 2;
+  /*z-index: 2;*/
+  z-index: 1;
+
   color: #fff;
   background-color: #007bff;
   border-color: #007bff;
@@ -5687,7 +5694,7 @@ a.close.disabled {
 }
 
 .modal-backdrop {
-  position: fixed;
+  position: relative;
   top: 0;
   left: 0;
   z-index: 1040;

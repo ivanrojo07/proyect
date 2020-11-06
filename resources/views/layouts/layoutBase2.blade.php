@@ -19,7 +19,7 @@
     <link rel="stylesheet" type="text/css" href="{{ asset('css/dashboard.css') }}">
       <link rel="stylesheet" type="text/css" href="{{ asset('css/global-icons.css') }}">
 
-    <style type="text/css">
+   {{--  <style type="text/css">
         .ocultar{
           display:none;
         }
@@ -44,7 +44,7 @@
         }
 
 
-    </style>
+    </style> --}}
     @yield('estilos')
 
 </head>
@@ -335,6 +335,51 @@
             }
             
         </script>
+        <script>
+    $('.segmentos').mouseover(function() {
+        $('.servicios').addClass('d-none');
+        $('.segmentos').removeClass('activo');
+        $('#'+this.id).addClass('activo');
+        document.getElementById("menuServicios").style.height="auto";
+        document.getElementById("menuServicios").style.display="block";
+        document.getElementById("ul"+this.id).classList.remove('d-none');
+        setTimeout(function(){
+            $('.servicios').addClass('d-none');
+            $('.segmentos').removeClass('activo');
+            document.getElementById("menuServicios").style.height="0px";
+            document.getElementById("menuServicios").style.display="none";
+        }, 10000);        
+    });
+    $('.segmentosV').mouseover(function() {
+        $('.segmentos').removeClass('activo');
+        document.getElementById("menuServicios").style.height="0px";
+        document.getElementById("menuServicios").style.display="none";
+    });
+    $('.menuServicios').click(function() {
+        $( '.servicios' ).addClass('d-none');
+        $('.segmentos').removeClass('activo');
+        document.getElementById("menuServicios").style.height="0px";
+        document.getElementById("menuServicios").style.display="none";
+    }); 
+    $(document).ready(function(){
+        $('#iconServ').click(function() {
+            $('.servicios').addClass('d-none');
+            $('.segmentos').removeClass('activo');
+            //$('#'+this.id).addClass('activo');
+            document.getElementById("menuServicios").style.height="auto";
+            document.getElementById("menuServicios").style.display="block";
+            document.getElementById("servicios").classList.remove('d-none');
+            /*setTimeout(function(){
+                $('.servicios').addClass('d-none');
+                $('.segmentos').removeClass('activo');
+                document.getElementById("menuServicios").style.height="0px";
+                document.getElementById("menuServicios").style.display="none";
+            }, 10000);*/
+            
+            //alert("CLICK ICONO SERVICIOS");
+        });        
+    });
+</script>
     @endauth
 
     @yield('scripts')

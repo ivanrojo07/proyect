@@ -363,6 +363,7 @@ $.extend( $.validator, {
 		required: "This field is required.",
 		remote: "Please fix this field.",
 		email: "Please enter a valid email address.",
+		mayus:"mayusculas,minusculas y numeros",
 		url: "Please enter a valid URL.",
 		date: "Please enter a valid date.",
 		dateISO: "Please enter a valid date (ISO).",
@@ -1373,6 +1374,15 @@ $.extend( $.validator, {
 			}
 			return value.length > 0;
 		},
+		mayus: function( value, element ) {
+
+			// Copyright (c) 2010-2013 Diego Perini, MIT licensed
+			// https://gist.github.com/dperini/729294
+			// see also https://mathiasbynens.be/demo/url-regex
+			// modified to allow protocol-relative URLs
+			return this.optional( element ) || /^(?=.*\d)(?=.*[a-záéíóúüñ]).*[A-ZÁÉÍÓÚÜÑ]/.test( value );
+		},
+
 
 		// https://jqueryvalidation.org/email-method/
 		email: function( value, element ) {

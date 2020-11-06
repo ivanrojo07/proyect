@@ -57,7 +57,7 @@
             }
         </style>
     </head>
-    <body>
+    <body style="background: url(/images/fondosistema.jpg) rgba(0, 0, 0) fixed;">
         <div class="flex-center position-ref full-height">
             @if (Route::has('login'))
                 <div class="top-right links text-white ">

@@ -12,7 +12,7 @@ body{
 		width: 100%;
 		height: 60px;
 		background-color: rgba(255, 255, 255);
-		border-bottom: 3px solid rgba(218, 41, 28);
+		/*border-bottom: 3px solid rgba(218, 41, 28);*/
 		display: flex;
 		justify-content: space-between;
 		flex-wrap: wrap;
@@ -47,20 +47,21 @@ body{
 		height: 20px;
 	}
 
-	.header3 .titulo .tituloPrincipal{
+	.header3 .titulob .tituloPrincipal{
 		font-size: 16px;
 		font-weight: bold;
 		margin-top: 10px;
 		margin-bottom: 2px;
 	}
 
-	.header3 .titulo .tituloSecundario{
+	.header3 .titulob .tituloSecundario{
 		font-size: 10px;
 	}
 
 	.header4{
 		display: flex;
 		justify-content: space-between;
+		background-color: #061d32;
 	}
 
 	.header4 .nombre{
@@ -71,7 +72,8 @@ body{
 	}
 
 	.header4 .nombre .usuario{
-		font-size: 12px;
+		/*font-size: 12px;*/
+		color: white;
 	}
 
 	.header4 .toggle-btn{
@@ -89,7 +91,7 @@ body{
 		font-size: 40px;
 		font-weight: bold;
 		background-color: transparent;
-		color: rgb(0, 0, 0);
+		color: white;
 		border: none;
 		margin-top: -4px;
 	}
@@ -125,7 +127,7 @@ body{
 }
 
 .menuServicios ul li div{
-	border: 1px solid white;
+	/*border: 1px solid white;*/
 	width: 60px;
 	height: 60px;
 	border-radius: 10px;
@@ -149,32 +151,33 @@ body{
 		transition: 0.6s;
 		overflow: hidden;
 	}
-
-	.cerrarSesion .titulo{
+	.contSesion{
+		height: 90%;	
+	}
+	.cerrarSesion .tituloS{
 		width: 100%;
 		height: 5%;
-		background-color: red;
-		padding: 5px;
+		background-color: #282828;
+		padding: 5px 10px;
 	}
 
-	.cerrarSesion .titulo .titulo-seg{
+	.cerrarSesion .tituloS .titulo-seg{
 		font-size: 16px;
 		color: #fff;
 	}
 
 	.cerrarSesion .perfil{
 		width: 100%;
-		height: 40%;
-		background-color: rgb(64, 71, 79);
+		height: 45%;
+		background-color: #ffffff;
 		overflow-y: auto;
+		padding: 3px 10px;
 	}
 
 	.cerrarSesion .perfil .foto{
 		width: 100%;
-		height: 50%;;
 		display: flex;
 		justify-content: center;
-		padding: 10px;
 	}
 
 	.cerrarSesion .perfil .foto .foto-perfil{
@@ -191,10 +194,9 @@ body{
 	}
 
 	.cerrarSesion .perfil .datos .info{
-		width: 60%;
+		width: 70%;
 		height: 100%;
 		overflow: hidden;
-		padding: 10px 5px;
 	}
 
 	.cerrarSesion .perfil .datos .info p{
@@ -208,27 +210,37 @@ body{
 	}
 
 	.cerrarSesion .perfil .datos .info .nombre{
-		font-size: 20px;
+		font-size: 15px;
 	}
 
 	.cerrarSesion .perfil .datos .info .correo{
-		font-size: 16px;
+		/*font-size: 14px;*/
 	}
 
 	.cerrarSesion .perfil .datos .info .ubicacion{
-		font-size: 14px;
+		/*font-size: 14px;*/
 	}
 
 	.cerrarSesion .perfil .datos .semaforo{
-		width: 40%;
-		height: 100%;
+		width: 30%;
+		height: 70%;
 		overflow: hidden;
 		display: flex;
 		flex-wrap: wrap;
 		justify-content: center;
 		align-items: center;
+		/*border: 2px solid white;
+    	border-radius: 30px;*/
+    	color:#000;
 	}
-
+	.colorS{
+		border-radius:15px;
+		width:15px;
+		height:15px;
+		/*background: transparent;*/
+		border:solid #000 1px;
+		margin: 2px;
+	}
 	.cerrarSesion .perfil .btn-perfil{
 		width: 100%;
 		height: 20%;
@@ -240,7 +252,7 @@ body{
 	.cerrarSesion .perfil .btn-perfil .boton-perfil{
 		display: block;
 		width: 230px;
-		height: 40px;
+		height: 30px;
 		border: 2px solid #fff;
 		border-radius: 30px;
 		color: #fff;;
@@ -251,7 +263,7 @@ body{
 
 	.cerrarSesion .navegacion{
 		width: 100%;
-		height: 50%;
+		height: 55%;
 		border-top: 2px solid #fff;
 		background-color: rgb(64, 71, 79);
 		border-bottom: 2px solid #fff;
@@ -277,8 +289,11 @@ body{
 	}
 
 	.cerrarSesion .navegacion nav .menu-sesion > li:hover,
-	.cerrarSesion .navegacion nav .menu-sesion > li a:hover{
-		background-color: crimson;
+	.cerrarSesion .navegacion nav .menu-sesion > li a:hover,
+	.cerrarSesion .navegacion nav .menu-sesion .menu-servicios > li:hover,
+	.cerrarSesion .navegacion nav .menu-sesion .menu-segmentos > li:hover{
+		background-color: #282828;
+		color: white;
 	}
 
 	.cerrarSesion .navegacion nav .menu-sesion li,
@@ -327,6 +342,11 @@ body{
 		color: #fff;
 		text-decoration: none;
 	}
+
+	.toggleActiveS{
+	    background-color: #061d32;
+		color: white;
+	}
 /********FIN DE CERRAR SESION********/
 
 /********SECTION********/
@@ -364,12 +384,12 @@ body{
 	}
 
 	section main .container-fluid{
-		/*background-color: rgba(255, 255, 255, 0.6);*/
-		border: 1px solid transparent;
+		/*background-color: rgba(255, 255, 255, 0.6);
+		border: 1px solid transparent;*/
 	}
 
 	section aside{
-		background-color: rgba(64, 71, 79);
+		background-color: #40474f;
 		height: calc(100% - 50px);
 		display: block;
 		z-index: 10;
@@ -387,7 +407,7 @@ body{
 	section aside .contenidoMenu{
 		width: 100%;
 		max-height: 100%;
-		background-color: rgba(0, 151, 169);
+		/*background-color: rgba(0, 151, 169);*/
 		overflow: auto;
 	}
 
@@ -492,12 +512,16 @@ body{
 			margin-left: 70px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
 			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -566,12 +590,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
 			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -641,12 +669,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -709,12 +740,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -777,12 +811,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -846,12 +883,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -915,12 +955,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -983,12 +1026,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -1052,12 +1098,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
 			width: auto;
+		    background-color: #fff;
+		}
+		.header4 .toggle-btn button span{
+			color: black;
 		}
 	/********FIN HEADER********/
 
@@ -1117,14 +1166,19 @@ body{
 	}
 
 	.header4{
-		background-color: rgba(245,245,245);
+		/*background-color: rgba(245,245,245);*/
 	}
 
 	.cerrarAncho{
 		width: 25%;
 		transition: 0.6s;
 	}
-
+	.cerrarSesion .perfil{
+		height: 20%;
+	}
+	.cerrarSesion .navegacion{
+		height: 80%;
+	}
 	section nav{
 		width: 25%;
 	}
@@ -1153,12 +1207,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1166,6 +1224,21 @@ body{
 		.cerrarAncho{
 			width: 100%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 12%
+		}
+		.contSesion{
+			height: 76%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 12%
+		}
+		.cerrarSesion .perfil{
+			display: none;
+		}
+		.cerrarSesion .navegacion{
+			height: 100%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1221,19 +1294,37 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
 	/********CERRAR SESIÓN********/
 		.cerrarAncho{
-			width: 70%;
+			width: 100%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 12%
+		}
+		.contSesion{
+			height: 76%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 12%
+		}
+		.cerrarSesion .perfil{
+			display: none;
+		}
+		.cerrarSesion .navegacion{
+			height: 100%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1289,12 +1380,15 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
-
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1302,6 +1396,21 @@ body{
 		.cerrarAncho{
 			width: 60%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 8%
+		}
+		.contSesion{
+			height: 84%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 8%
+		}
+		.cerrarSesion .perfil{
+			height: 60%;
+		}
+		.cerrarSesion .navegacion{
+			height: 40%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1357,12 +1466,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}	
 
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1370,6 +1483,21 @@ body{
 		.cerrarAncho{
 			width: 60%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 8%
+		}
+		.contSesion{
+			height: 84%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 8%
+		}
+		.cerrarSesion .perfil{
+			height: 60%;
+		}
+		.cerrarSesion .navegacion{
+			height: 40%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1425,12 +1553,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1438,6 +1570,21 @@ body{
 		.cerrarAncho{
 			width: 50%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 8%
+		}
+		.contSesion{
+			height: 84%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 8%
+		}
+		.cerrarSesion .perfil{
+			height: 60%;
+		}
+		.cerrarSesion .navegacion{
+			height: 40%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1494,12 +1641,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
-			width: auto;	
+			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1507,6 +1658,21 @@ body{
 		.cerrarAncho{
 			width: 40%;
 			transition: 0.6s;
+		}
+		.cerrarSesion .tituloS{
+			height: 8%
+		}
+		.contSesion{
+			height: 84%;	
+		}
+		.cerrarSesion .btn-sesion{
+			height: 8%
+		}
+		.cerrarSesion .perfil{
+			height: 60%;
+		}
+		.cerrarSesion .navegacion{
+			height: 40%;
 		}
 	/********FIN DE CERRAR SESIÓN********/
 
@@ -1562,12 +1728,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
 			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1576,7 +1746,13 @@ body{
 			width: 40%;
 			transition: 0.6s;
 		}
-	/********FIN DE CERRAR SESIÓN********/
+		.cerrarSesion .perfil{
+			height: 50%;
+		}
+		.cerrarSesion .navegacion{
+			height: 50%;
+		}
+	/********FIN DE CERRAR SESIÓN********/s
 
 	/********SECTION********/
 		section{
@@ -1631,12 +1807,16 @@ body{
 			margin-left: 60px;
 		}
 
-		.header2, .header3, .header4 .titulo{
+		.header2, .header3, .header4 .titulob{
 			display: none;
 		}
 
 		.header4{
 			width: auto;
+			background-color: white;
+		}
+		.header4 .toggle-btn button span{
+			color: black;	
 		}
 	/********FIN HEADER********/
 
@@ -1695,7 +1875,44 @@ body{
 	}
 
 	.header4{
-		background-color: rgba(245,245,245);
+		/*background-color: rgba(245,245,245);*/
+	}
+
+	.cerrarAncho{
+		width: 25%;
+		transition: 0.6s;
+	}
+	.cerrarSesion .perfil .datos .semaforo{
+		height: 65%;
+	}
+	section nav{
+		width: 27%;
+	}
+
+	section aside{
+		width: 27%;
+	}
+	
+	section main{
+		width: 73%;
+		height: 100%;
+		padding: 10px;
+	}
+}
+/*********************LANDSCAPE DISPOSITIVO PC ESCRITORIO***********************************************************/
+
+/*patalla de escritorio utilizado en la empresa*/
+@media only screen and (min-width: 1361px) and (max-width: 1899px) and (orientation : landscape){
+	.header1, .header4{
+		width: 25%;
+	}
+
+	.header2, .header3{
+		width: 25%;
+	}
+
+	.header4{
+		/*background-color: rgba(245,245,245);*/
 	}
 
 	.cerrarAncho{
@@ -1714,41 +1931,6 @@ body{
 	section main{
 		width: 75%;
 		height: 100%;
-		padding: 10px;
-	}
-}
-/*********************LANDSCAPE DISPOSITIVO PC ESCRITORIO***********************************************************/
-
-/*patalla de escritorio utilizado en la empresa*/
-@media only screen and (min-width: 1361px) and (max-width: 1899px) and (orientation : landscape){
-	.header1, .header4{
-		width: 20%;
-	}
-
-	.header2, .header3{
-		width: 30%;
-	}
-
-	.header4{
-		background-color: rgba(245,245,245);
-	}
-
-	.cerrarAncho{
-		width: 20%;
-		transition: 0.6s;
-	}
-
-	section nav{
-		width: 20%;
-	}
-
-	section aside{
-		width: 20%;
-	}
-	
-	section main{
-		width: 80%;
-		height: 100%;
 		padding: 15px;
 	}
 }
@@ -1762,7 +1944,7 @@ body{
 	}
 
 	.header4{
-		background-color: rgba(245,245,245);
+		/*background-color: rgba(245,245,245);*/
 	}
 
 	.cerrarAncho{
@@ -1794,7 +1976,7 @@ body{
 	}
 
 	.header4{
-		background-color: rgba(245,245,245);
+		/*background-color: rgba(245,245,245);*/
 	}
 
 	.cerrarAncho{
@@ -1826,14 +2008,28 @@ body{
 	}
 
 	.header4{
-		background-color: rgba(245,245,245);
+		/*background-color: rgba(245,245,245);*/
 	}
 
 	.cerrarAncho{
 		width: 15%;
 		transition: 0.6s;
 	}
-
+	.cerrarSesion .tituloS{
+		height: 3%;
+	}
+	.contSesion{
+		height: 94%;
+	}
+	.cerrarSesion .perfil{
+		height: 20%;
+	}
+	.cerrarSesion .navegacion{
+		height: 80%;
+	}
+	.cerrarSesion .btn-sesion{
+		height: 3%;
+	}
 	section nav{
 		width: 15%;
 	}

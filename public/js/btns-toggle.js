@@ -86,4 +86,21 @@ jQuery(document).ready(function($) {
 		menuServicios.removeClass('menuSerciciosActive');
 	});
 
+
+    $(function(){ 
+	    $(document).ready(function(){ 
+			$('.collapse').on('show.bs.collapse',function(){
+				$('.collapse.show').collapse('toggle');
+				//console.log('ACTIVA#p'+this.id);
+				$('#p'+this.id).addClass("toggleActiveS");
+			});
+			$('.collapse').on('hide.bs.collapse',function(){
+				//$('.collapse').collapse('toggle');
+				//console.log('DESACT#p'+this.id);
+				$('#p'+this.id).removeClass("toggleActiveS");
+			});
+		});
+
+	});
+
 });

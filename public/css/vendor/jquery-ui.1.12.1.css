@@ -318,7 +318,7 @@ button.ui-button::-moz-focus-inner {
 	display: none;
 }
 .ui-datepicker .ui-datepicker-header {
-	background-color: #061d32;/*color del calendario*/
+	background-color: #75787b;/*color del calendario*/
 	position: relative;
 	padding: .2em 0;
 }
@@ -378,7 +378,7 @@ button.ui-button::-moz-focus-inner {
 	margin: 0 0 .4em;
 }
 .ui-datepicker th {
-
+	background-color: #0497a9;
 	padding: .7em .3em;
 	text-align: center;
 	font-weight: bold;
@@ -955,7 +955,7 @@ html .ui-button.ui-state-disabled:active {
 	border: 1px solid #a5a7a8;
 	background: #a5a7a8;
 	font-weight: normal;
-	color: #fff;
+	color: #000;
 }
 .ui-state-default a,
 .ui-state-default a:link,
@@ -1003,8 +1003,8 @@ a.ui-button:focus {
 a.ui-button:active,
 .ui-button:active,
 .ui-button.ui-state-active:hover {
-	border: 1px solid #ddd;
-	background: #ddd;
+	border: 1px solid #75787b;
+	background: #75787b;
 	font-weight: normal;
 	color: #000;
 }
@@ -1025,8 +1025,8 @@ a.ui-button:active,
 .ui-state-highlight,
 .ui-widget-content .ui-state-highlight,
 .ui-widget-header .ui-state-highlight {
-	border: 1px solid #061d32;
-	background: #061d32;
+	border: 1px solid #ff8200;
+	background: #ff8200;
 	color: #fff;
 }
 .ui-state-checked {

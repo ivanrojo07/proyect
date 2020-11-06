@@ -86,9 +86,21 @@ $.validator.addMethod( "accept", function( value, element, param ) {
 }, $.validator.format( "Please enter a value with a valid mimetype." ) );
 
 $.validator.addMethod( "alphanumeric", function( value, element ) {
-	return this.optional( element ) || /^\w+$/i.test( value );
+	//return this.optional( element ) || /^\w+$/i.test( value );
+	return this.optional( element ) || /^(?=.*\d)(?=.*[a-záéíóúüñ]).*[A-ZÁÉÍÓÚÜÑ]/.test( value );
 }, "Letters, numbers, and underscores only please" );
 
+/////////////////////////////////////////////////////////////////////////////////
+ $.validator.addMethod("mayus",function(value,element){
+ 	return  this.optional( element ) || /^(?=.*\d)(?=.*[a-záéíóúüñ]).*[A-ZÁÉÍÓÚÜÑ]/.test( value ); 
+ },"La contraseña debe contener al menos una letra mayúscula, una minúscula, un dígito." );
+
+
+
+ $.validator.addMethod("letras_espacios", function(value, element) {
+    return this.optional(element) || /^[a-zA-Z\s]+$/.test(value);
+}, "Sólo letras y espacios");
+ ////////////////////////////////////////////////////
 /*
  * Dutch bank account numbers (not 'giro' numbers) have 9 digits
  * and pass the '11 check'.
