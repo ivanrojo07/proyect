@@ -193,7 +193,7 @@ class InstitucionController extends Controller
         $categorias_incidente = CategoriaIncidente::orderBy('nombre','asc')->get();
         // Retornamos la vista con las variables inyectadas
         return view('admin.institucion.edit_form',[
-            'institucion'=>$institucion, 
+            'institucion'=> $institucion, 
             'estados' => $estados, 
             'categorias_incidente' => $categorias_incidente
         ]);

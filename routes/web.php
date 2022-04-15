@@ -16,9 +16,9 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-// Route::get('blueprint',function(){
-// 	return view('blueprint');
-// });
+Route::get('blueprint',function(){
+	return view('blueprint');
+});
 
 Route::get('API/Cuenta360/access_token/addService/{user_id}/{access_token}',function(){
 	$estados = Estado::orderBy('nombre','asc')->get();
